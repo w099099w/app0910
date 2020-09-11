@@ -1,0 +1,33 @@
+{
+  "__type__": "cc.Material",
+  "_name": "sprite-flash-light",
+  "_objFlags": 0,
+  "_native": "",
+  "_effectAsset": {
+    "__uuid__": "54dbb362-acb1-491e-85d2-0db475e5a964"
+  },
+  "_techniqueIndex": 0,
+  "_techniqueData": {
+    "0": {
+      "defines": {
+        "USE_TEXTURE": true,
+        "ENABLE_LIGHT": true
+      },
+      "props": {
+        "lightColor": {
+          "__type__": "cc.Color",
+          "r": 249,
+          "g": 249,
+          "b": 245,
+          "a": 255
+        },
+        "lightAngle": 1,
+        "lightCenterPoint": {
+          "__type__": "cc.Vec2",
+          "x": 0,
+          "y": 0
+        }
+      }
+    }
+  }
+}
