@@ -1,97 +1,238 @@
-import SceneManager from "../units/SceneManager";
+import SceneManager from "../common/SceneManager";
+import MyAnimation from '../common/MyAnimation'
+import Toast from "../common/Toast";
+import ForgetPd from "./ForgetPd";
+import TimerStruct from "../common/TimerStruct";
+import Tool from "../units/Tool";
+//接口定义
 interface pdLogin {
     phone: string;
-    pd: string;
+    password: string;
 }
 interface verifyLogin {
     phone: string;
     verify: string;
 }
-export default class Login{
+interface verifyPhone {
+    phone: string;
+}
+/**
+ * 登录方法枚举
+ */
+enum E_LOGINMETHOD {
+    /**
+     * @description 密码登录
+     */
+    PASSWORD,
+     /**
+     * @description 手机验证码登录
+     */
+    PHONE_VERIFY
+}
+export default class Login extends MyAnimation{
     private node:cc.Node;
+
+    private t_timerVerfyCountDown:number;
+
+    private m_verifyCoutDown:TimerStruct;
     private m_pdView:cc.Node;
     private m_verifyView:cc.Node;
-    private m_loginMethod:number;
+    private m_loginMethod:E_LOGINMETHOD;
     private m_root:cc.Node;
     private m_chooseList:cc.Node[];
-    private m_choosePd:cc.Node;
-    private m_chooseVerify:cc.Node;
-    private m_chooseUserAgree:cc.Node;
     private m_popup:cc.Node;
     private m_popupMask:cc.Node;
     private m_popupUserAgreeview:cc.Node;
-    private m_button_quit:cc.Node;
-    private m_remember:cc.Node;
+    private m_toast:cc.Node;
+    private m_toastParent:cc.Node;
+    private m_toastMask:cc.Node;
+
+    private i_quit:cc.Node;
+    private i_remember:cc.Node;
+    private i_confirm:cc.Node;
+    private i_choosePd:cc.Node;
+    private i_chooseVerify:cc.Node;
+    private i_chooseUserAgree:cc.Node;
+    private i_getVerify:cc.Node;
+    private i_forgetPd:cc.Node;
+
     //密码登录
     private c_pdViewPhoneInput:cc.EditBox;
     private c_pdViewPdInput:cc.EditBox;
-    private _pdLogin:pdLogin;
-	get pdLogin(): pdLogin{
-        let loginInfo = {
+    private _pdLoginParam:pdLogin;
+	get pdLoginParam(): pdLogin{
+        let data = {
             phone:this.c_pdViewPhoneInput.string,
-            pd:this.c_pdViewPdInput.string,
+            password:this.c_pdViewPdInput.string,
         };
-		return loginInfo;
+		return data;
     }
     //验证码登录
     private c_verifyViewPhoneInput:cc.EditBox;
     private c_verifyViewVerfyInput:cc.EditBox;
-    private _verifyLogin:verifyLogin;
-    get verifyLogin(): verifyLogin{
-        let loginInfo = {
-            phone:this.c_pdViewPhoneInput.string,
-            verify:this.c_pdViewPdInput.string,
+    private _verifyLoginParam:verifyLogin;
+    get verifyLoginParam(): verifyLogin{
+        let data = {
+            phone:this.c_verifyViewPhoneInput.string,
+            verify:this.c_verifyViewVerfyInput.string,
         };
-		return loginInfo;
+		return data;
+    }
+    //手机号请求验证码
+    private _verifyPhoneParam:verifyPhone;
+    get verifyPhoneParam():verifyPhone{
+        let data = {
+            phone:this.c_verifyViewPhoneInput.string,
+        };
+        return data;
     }
 
+    private cl_forgetPd:ForgetPd;
+
     public constructor(Node:cc.Node){
+        super();
         this.node = Node;
+        this.m_loginMethod = 0;
         this.m_pdView = cc.find('login/view/password',this.node);
         this.m_verifyView = cc.find('login/view/verify',this.node);
-        this.c_verifyViewPhoneInput = cc.find('login/view/verify/input_phone/input',this.node).getComponent(cc.EditBox);
-        this.c_verifyViewVerfyInput = cc.find('login/view/verify/input_verify/input',this.node).getComponent(cc.EditBox);
-        this.c_pdViewPhoneInput= cc.find('login/view/password/input_phone/input',this.node).getComponent(cc.EditBox);
-        this.c_pdViewPdInput= cc.find('login/view/password/input_pd/input',this.node).getComponent(cc.EditBox);
         this.m_chooseList = cc.find('login/choose',this.node).children;
-        this.m_choosePd = cc.find('login/choose/pdlogin',this.node);
-        this.m_chooseVerify = cc.find('login/choose/velogin',this.node);
-        this.m_chooseUserAgree = cc.find('login/useragree/base',this.node);
         this.m_root = cc.find('login',this.node);
         this.m_popup = cc.find('popup',this.node);
         this.m_popupMask = cc.find('popup/mask',this.node);
         this.m_popupUserAgreeview = cc.find('popup/useragree',this.node);
-        this.m_button_quit = cc.find('login/button_quit',this.node),
-        this.m_remember = cc.find('login/view/password/remeberpd/base',this.node);
-        this.m_remember.parent.getChildByName('isagree').active = false;
-        this.m_chooseUserAgree.parent.getChildByName('isagree').active = false;
-        this.m_loginMethod = 0;
+        this.m_toastParent = cc.find('common',this.node);
+        this.m_toast = cc.find('common/toast',this.node);
+        this.m_toastMask = cc.find('common/mask',this.node);
+
+        this.i_quit = cc.find('login/button_quit',this.node),
+        this.i_choosePd = cc.find('login/choose/pdlogin',this.node);
+        this.i_chooseVerify = cc.find('login/choose/velogin',this.node);
+        this.i_chooseUserAgree = cc.find('login/useragree/base',this.node);
+        this.i_confirm = cc.find('login/button_confirm',this.node);
+        this.i_remember = cc.find('login/view/password/remeberpd/base',this.node);
+        this.i_getVerify = cc.find('login/view/verify/getverify',this.node);
+        this.i_forgetPd = cc.find('login/view/password/forgetpd',this.node);
+        this.i_remember.parent.getChildByName('isagree').active = false;
+        this.i_chooseUserAgree.parent.getChildByName('isagree').active = false;
+        
+        this.c_verifyViewPhoneInput = cc.find('login/view/verify/input_phone/input',this.node).getComponent(cc.EditBox);
+        this.c_verifyViewVerfyInput = cc.find('login/view/verify/input_verify/input',this.node).getComponent(cc.EditBox);
+        this.c_pdViewPhoneInput= cc.find('login/view/password/input_phone/input',this.node).getComponent(cc.EditBox);
+        this.c_pdViewPdInput= cc.find('login/view/password/input_pd/input',this.node).getComponent(cc.EditBox);
+
+        this.cl_forgetPd = new ForgetPd(this.node);
+    
         this.reset();
         this.hide();
+      
     }
     public requestPdLogin(){
         //网络请求从pdLogin拉取信息
+        if(this.pdLoginParam.phone.length == 0){
+            Toast.getInstance().show('手机号不能为空',this.m_toast);
+            return;
+        }else if(!Tool.getInstance().isPhoneNumber(this.pdLoginParam.phone)){
+            Toast.getInstance().show('请输入正确的手机号',this.m_toast);
+            return;
+        }else if(this.pdLoginParam.password.length < 6){
+            Toast.getInstance().show('密码长度限制6--16位',this.m_toast);
+            return;
+        }else if(!this.i_chooseUserAgree.parent.getChildByName('isagree').active){
+            Toast.getInstance().show('请先同意勾选用户协议',this.m_toast);
+            return;
+        }
+        cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
+        SceneManager.getInstance().loadScene('hall');
     }
     public requestVerifyLogin(){
         //网络请求从pdLogin拉取信息
+        if(this.verifyLoginParam.phone.length == 0){
+            Toast.getInstance().show('手机号不能为空',this.m_toast);
+            return;
+        }else if(!Tool.getInstance().isPhoneNumber(this.verifyLoginParam.phone)){
+            Toast.getInstance().show('请输入正确的手机号',this.m_toast);
+            return;
+        }else if(this.verifyLoginParam.verify.length !== 6){
+            Toast.getInstance().show('验证码长度应为6位',this.m_toast);
+            return;
+        }else if(!this.i_chooseUserAgree.parent.getChildByName('isagree').active){
+            Toast.getInstance().show('请先同意勾选用户协议',this.m_toast);
+            return;
+        }
+        SceneManager.getInstance().loadScene('hall');
+    }
+    public requestVerify():boolean{
+        //请求验证码
+        let coutdown:string = this.i_getVerify.getComponent(cc.Label).string
+        if(coutdown !== '获取验证码'){
+            return false;
+        }
+        this.m_verifyCoutDown = new TimerStruct(60);
+        let i = this.m_verifyCoutDown.coutDown;
+        this.i_getVerify.getComponent(cc.Label).string = i+'s';
+        this.t_timerVerfyCountDown = setInterval(()=>{
+            i--;
+            if(i == 0){
+                this.i_getVerify.getComponent(cc.Label).string = '获取验证码';
+                this.m_verifyCoutDown = null;
+                clearInterval(this.t_timerVerfyCountDown);
+                this.t_timerVerfyCountDown = null;
+            }else{
+                this.i_getVerify.getComponent(cc.Label).string = i+'s';
+            }
+        },1000);
+        return true;
+    }
+    public setVerifyCountDown(Time:number){
+        let i = Time;
+        this.i_getVerify.getComponent(cc.Label).string = i+'s';
+        if(this.t_timerVerfyCountDown){
+            clearInterval(this.t_timerVerfyCountDown);
+            this.t_timerVerfyCountDown = null;
+        }
+        this.t_timerVerfyCountDown = setInterval(()=>{
+            i--;
+            if(i == 0){
+                this.i_getVerify.getComponent(cc.Label).string = '获取验证码';
+                this.m_verifyCoutDown = null;
+                clearInterval(this.t_timerVerfyCountDown);
+                this.t_timerVerfyCountDown = null;
+            }else{
+                this.i_getVerify.getComponent(cc.Label).string = i+'s';
+            }
+        },1000);
+        return true;
     }
     public reset() {
+        let remberpd:pdLogin = JSON.parse(cc.sys.localStorage.getItem('remberpd'));
+        let userAgree:boolean = JSON.parse(cc.sys.localStorage.getItem('userAgree'));
+        this.i_chooseUserAgree.parent.getChildByName('isagree').active = userAgree;
+        if(remberpd){
+            this.c_pdViewPhoneInput.string = remberpd.phone;
+            this.c_pdViewPdInput.string  = remberpd.password;
+            this.i_remember.parent.getChildByName('isagree').active = true;
+        }else{
+            this.c_pdViewPhoneInput.string = '';
+            this.c_pdViewPdInput.string  = '';
+            this.i_remember.parent.getChildByName('isagree').active = false;
+        }
         this.c_verifyViewPhoneInput.string = '';
         this.c_verifyViewVerfyInput.string = '';
-        this.c_pdViewPhoneInput.string = '';
-        this.c_pdViewPdInput.string  = '';
     }
-    public switchLoginMethod(MethodID:number){
+    public switchLoginMethod(MethodID:E_LOGINMETHOD){
+        if(this.m_verifyCoutDown && this.m_verifyCoutDown.getSurPlus() > 0){
+            this.setVerifyCountDown(this.m_verifyCoutDown.getSurPlus());
+        }
         this.m_loginMethod = MethodID;
-        this.m_choosePd.parent.sortAllChildren();
+        this.i_choosePd.parent.sortAllChildren();
         if(MethodID == 0){
-            this.m_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
-            this.m_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
+            this.i_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
+            this.i_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
             this.m_pdView.active = true;
             this.m_verifyView.active = false;
         }else if(MethodID == 1){
-            this.m_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
-            this.m_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
+            this.i_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
+            this.i_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
             this.m_pdView.active = false;
             this.m_verifyView.active = true;
         }
@@ -101,17 +242,17 @@ export default class Login{
         this.c_pdViewPdInput.string  = '';
     }
     public show(){
-        this.m_root.active = true;
+        this.popupOpenScaleXY(this.m_root);
         this.m_chooseList.forEach((item,key)=>{
             item.on('touchend',()=>{
                 if(item.name == 'velogin'){
-                    this.m_chooseVerify.zIndex = 1;
-                    this.m_choosePd.zIndex = 0;
-                    this.switchLoginMethod(1);
+                    this.i_chooseVerify.zIndex = 1;
+                    this.i_choosePd.zIndex = 0;
+                    this.switchLoginMethod(E_LOGINMETHOD.PHONE_VERIFY);
                 }else{
-                    this.m_chooseVerify.zIndex = 0;
-                    this.m_choosePd.zIndex = 1;
-                    this.switchLoginMethod(0);
+                    this.i_chooseVerify.zIndex = 0;
+                    this.i_choosePd.zIndex = 1;
+                    this.switchLoginMethod(E_LOGINMETHOD.PASSWORD);
                 }
             })
         },this);
@@ -124,38 +265,68 @@ export default class Login{
         this.m_root.active = false;
     }
     public showUserAgree(){
-        this.m_chooseUserAgree.parent.getChildByName('label').off('touchend');
-        this.m_popup.active = true;
-        this.m_popupMask.active = true;
-        this.m_popupUserAgreeview.scaleY = 0;
-        cc.tween(this.m_popupUserAgreeview).to(0.2,{scaleY:1},{easing:'quadIn'}).call(()=>{
+        this.i_chooseUserAgree.parent.getChildByName('label').off('touchend');
+        this.popupOpenScaleY(this.m_popupUserAgreeview,this.m_popupMask,()=>{
             this.m_popupUserAgreeview.getChildByName('button_confirm').on('touchend',()=>{
                 this.hideUserAgree();
             },this);
-        }).start();
+        })
     }
     public hideUserAgree(){
-        this.m_chooseUserAgree.parent.getChildByName('label').on('touchend',()=>{
+        this.i_chooseUserAgree.parent.getChildByName('label').on('touchend',()=>{
             this.showUserAgree();
         },this);
-        cc.tween(this.m_popupUserAgreeview).to(0.2,{scaleY:0},{easing:'quadOut'}).call(()=>{
+        this.popupCloseScaleY(this.m_popupUserAgreeview,this.m_popupMask,()=>{
             this.m_popupUserAgreeview.getChildByName('button_confirm').off('touchend');
-            this.m_popup.active = false;
-            this.m_popupMask.active = false;
-        }).start();
+        })
     }
     public addEvent(){
-        this.m_chooseUserAgree.on('touchend',()=>{
-            this.m_chooseUserAgree.parent.getChildByName('isagree').active = !this.m_chooseUserAgree.parent.getChildByName('isagree').active;
+        this.i_chooseUserAgree.on('touchend',()=>{
+            this.i_chooseUserAgree.parent.getChildByName('isagree').active = !this.i_chooseUserAgree.parent.getChildByName('isagree').active;
+            if(this.i_chooseUserAgree.parent.getChildByName('isagree').active){
+                cc.sys.localStorage.setItem('userAgree',JSON.stringify(true));
+            }else{
+                cc.sys.localStorage.removeItem('userAgree');
+            }
         },this);
-        this.m_chooseUserAgree.parent.getChildByName('label').on('touchend',()=>{
+        this.i_chooseUserAgree.parent.getChildByName('label').on('touchend',()=>{
             this.showUserAgree();
         },this);
-        this.m_button_quit.on('touchend',()=>{
-            SceneManager.endgame();
+        this.i_remember.on('touchend',()=>{
+            this.i_remember.parent.getChildByName('isagree').active = !this.i_remember.parent.getChildByName('isagree').active;
+            if(this.i_remember.parent.getChildByName('isagree').active){
+                cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
+            }else{
+                cc.sys.localStorage.removeItem('remberpd');
+            }
         },this);
-        this.m_remember.on('touchend',()=>{
-            this.m_remember.parent.getChildByName('isagree').active = !this.m_remember.parent.getChildByName('isagree').active;
-        },this)
+        this.i_quit.on('touchend',()=>{
+            SceneManager.getInstance().endgame();
+        },this);
+        this.i_forgetPd.on('touchend',()=>{
+            this.cl_forgetPd.show();
+        },this);
+        this.i_confirm.on('touchend',()=>{
+            switch(this.m_loginMethod){
+                case E_LOGINMETHOD.PASSWORD:this.requestPdLogin();break;
+                case E_LOGINMETHOD.PHONE_VERIFY:this.requestVerifyLogin();break;
+            }
+        },this);
+        this.i_getVerify.on('touchend',()=>{
+            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.phone)){
+                Toast.getInstance().show('请输入正确的手机号',this.m_toast);
+                return false;
+            }
+            if(!this.requestVerify()){
+                Toast.getInstance().show('请在倒计时结束后获取验证码',this.m_toast);
+            }
+        },this);
+    }
+    public onDestroy(){
+        if(this.t_timerVerfyCountDown){
+            clearInterval(this.t_timerVerfyCountDown)
+            this.t_timerVerfyCountDown = null;
+        }
+        this.m_verifyCoutDown = null;  
     }
 }
