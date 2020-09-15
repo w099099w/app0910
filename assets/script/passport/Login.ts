@@ -4,6 +4,7 @@ import Toast from "../common/Toast";
 import ForgetPd from "./ForgetPd";
 import TimerStruct from "../common/TimerStruct";
 import Tool from "../units/Tool";
+import Regist from "./Regist";
 //接口定义
 interface pdLogin {
     phone: string;
@@ -55,6 +56,8 @@ export default class Login extends MyAnimation{
     private i_chooseUserAgree:cc.Node;
     private i_getVerify:cc.Node;
     private i_forgetPd:cc.Node;
+    private i_regist:cc.Node;
+    
 
     //密码登录
     private c_pdViewPhoneInput:cc.EditBox;
@@ -88,6 +91,7 @@ export default class Login extends MyAnimation{
     }
 
     private cl_forgetPd:ForgetPd;
+    private cl_regist:Regist;
 
     public constructor(Node:cc.Node){
         super();
@@ -112,6 +116,7 @@ export default class Login extends MyAnimation{
         this.i_remember = cc.find('login/view/password/remeberpd/base',this.node);
         this.i_getVerify = cc.find('login/view/verify/getverify',this.node);
         this.i_forgetPd = cc.find('login/view/password/forgetpd',this.node);
+        this.i_regist = cc.find('login/button_regist',this.node);
         this.i_remember.parent.getChildByName('isagree').active = false;
         this.i_chooseUserAgree.parent.getChildByName('isagree').active = false;
         
@@ -121,6 +126,7 @@ export default class Login extends MyAnimation{
         this.c_pdViewPdInput= cc.find('login/view/password/input_pd/input',this.node).getComponent(cc.EditBox);
 
         this.cl_forgetPd = new ForgetPd(this.node);
+        this.cl_regist = new Regist(this.node);
     
         this.reset();
         this.hide();
@@ -305,6 +311,9 @@ export default class Login extends MyAnimation{
         },this);
         this.i_forgetPd.on('touchend',()=>{
             this.cl_forgetPd.show();
+        },this);
+        this.i_regist.on('touchend',()=>{
+            this.cl_regist.show();
         },this);
         this.i_confirm.on('touchend',()=>{
             switch(this.m_loginMethod){

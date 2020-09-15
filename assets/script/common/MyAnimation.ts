@@ -13,12 +13,12 @@ export default class MyAnimation{
         if(Mask){
             Mask.active = true;
         }
-        cc.tween(Node).to(0.2,{scaleY:1.3,scaleX:1.3},{easing:'quadIn'}).to(0.1,{scaleY:1.0,scaleX:1.0},{easing:'quadIn'}).call(CallBack).start();
+        cc.tween(Node).to(0.15,{scaleY:1.2,scaleX:1.2},{easing:'quadIn'}).to(0.1,{scaleY:1.0,scaleX:1.0},{easing:'quadIn'}).call(CallBack).start();
     }
     protected popupCloseScaleXY(Node:cc.Node,Mask:cc.Node = null,CallBack:Function = null){
         Node.scaleY = Node.scaleX = 1;
         Node.active = true;
-        cc.tween(Node).to(0.1,{scaleY:1.3,scaleX:1.3},{easing:'quadOut'}).to(0.2,{scaleY:0,scaleX:0},{easing:'quadOut'}).call(CallBack).call(()=>{
+        cc.tween(Node).to(0.1,{scaleY:1.2,scaleX:1.2},{easing:'quadOut'}).to(0.15,{scaleY:0,scaleX:0},{easing:'quadOut'}).call(CallBack).call(()=>{
             if(Mask){
                 Mask.active = false;
             }

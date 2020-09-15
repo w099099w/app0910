@@ -21,6 +21,7 @@ export default class Passport extends cc.Component {
         cc.find('popup',this.node).active = false;
         cc.find('popup/mask',this.node).active = false;
         cc.find('popup/forgetpd',this.node).active = false;
+        cc.find('popup/regist',this.node).active = false;
         cc.find('popup/useragree',this.node).active = false;
 
         cc.find('common',this.node).active = true;
