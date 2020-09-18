@@ -8592,7 +8592,12 @@ declare namespace cc {
 		!#zh 需要保证当前场景中没有使用CHAR缓存的Label才可以清除，否则已渲染的文字没有重新绘制会不显示
 		!#en It can be cleared that need to ensure there is not use the CHAR cache in the current scene. Otherwise, the rendered text will not be displayed without repainting. 
 		*/
-		static clearCharCache(): void;	
+		static clearCharCache(): void;
+		/**
+		!#zh 立即更新Label的长度数据
+		!#en 
+		*/
+		_forceUpdateRenderData():void;	
 	}	
 	/** !#en Outline effect used to change the display, only for system fonts or TTF fonts
 	!#zh 描边效果组件,用于字体描边,只能用于系统字体 */
