@@ -67,9 +67,7 @@ export default class Notice extends MyAnimation{
             if(this.m_runFlag > this.m_cache.length-1){
                 this.m_runFlag = 0;
             }
-         
             str = this.m_cache[this.m_runFlag];
-            console.log(str);
         }else{
             this.m_runFlag = -1;
             str = this.m_cache.shift();

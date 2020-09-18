@@ -4490,6 +4490,7 @@ declare namespace cc {
 	/** !#en An object to boot the game.
 	!#zh 包含游戏主体信息并负责驱动游戏的游戏对象。 */
 	export class Game extends EventTarget {		
+		_renderContext();
 		/** !#en Event triggered when game hide to background.
 		Please note that this event is not 100% guaranteed to be fired on Web platform,
 		on native platforms, it corresponds to enter background event, os status bar or notification center may not trigger this event.
@@ -31688,6 +31689,8 @@ declare namespace sp.spine {
  * Homepage: https://github.com/haroel/creatorexDTS
  */
 declare namespace jsb{
+	export function copyTextToClipboard(str:string);
+	export function saveImageData(picData:Uint8Array,width:number,hight:number,filename:string);
     export module reflection{
         /**
          * https://docs.cocos.com/creator/manual/zh/advanced-topics/java-reflection.html

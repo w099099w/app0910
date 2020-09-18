@@ -3,11 +3,16 @@
     "cloud-function"
   ],
   "group-list": [
-    "default"
+    "default",
+    "capture"
   ],
   "collision-matrix": [
     [
       true
+    ],
+    [
+      false,
+      false
     ]
   ],
   "excluded-modules": [

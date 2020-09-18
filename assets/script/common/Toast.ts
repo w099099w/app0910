@@ -16,8 +16,8 @@ export default class Toast extends MyAnimation{
         }
         return Toast.m_instance;
     }
-    public show(str:string,root:cc.Node,isMask:boolean = false){
-        this.m_cache.push(new ToastStruct(str,root,root.getChildByName('mask')));
+    public show(str:string,root:cc.Node,isMask:boolean = true){
+        this.m_cache.push(new ToastStruct(str,root,isMask?root.getChildByName('mask'):null));
         this.run();
     }
     public setRootNode(Node:cc.Node){

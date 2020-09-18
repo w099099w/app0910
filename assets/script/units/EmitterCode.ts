@@ -28,24 +28,40 @@ export default class EmitterCode{
      */
     public static MODE_LEFTCLICKOPENDROOM:number = 5;
 
-    
+
+    /**
+     * @description NAV单击分享后刷新视图
+     */
+    public static MODE_NAVCLICKSHARE:number = 6;
+    /**
+     * @description NAV单击玩法后刷新视图
+     */
+    public static MODE_NAVCLICKPLAY:number = 7;
+      /**
+     * @description NAV单击战绩后刷新视图
+     */
+    public static MODE_NAVCLICKRECORD:number = 8;
+    /**
+     * @description NAV单击菜单后刷新视图
+     */
+    public static MODE_NAVCLICKMENU:number = 9;
 
 
      /**
      * @description CONTROLLER单击大联盟通知控制器
      */
     public static CTRL_HOMEDLMCLICK:number = 1000;
-
     /**
      * @description CONTROLLER单击俱乐部通知控制器
      */
     public static CTRL_HOMEJLBCLICK:number = 1001;
-
-        /**
+    /**
      * @description CONTROLLER单击创建房间通知控制器
      */
     public static CTRL_HOMECTMCLICK:number = 1002;
-        /**
+    
+    
+    /**
      * @description LEFT单击创建房间通知控制器
      */
     public static CTRL_LEFTCLICKJOINROOM:number = 1003;
@@ -53,4 +69,22 @@ export default class EmitterCode{
      * @description LEFT单击已开房间通知控制器
      */
     public static CTRL_LEFTCLICKOPENDROOM:number = 1004;
+    
+
+     /**
+     * @description NAV单击分享后刷新视图
+     */
+    public static CTRL_NAVCLICKSHARE:number = 1005;
+    /**
+     * @description NAV单击玩法后刷新视图
+     */
+    public static CTRL_NAVCLICKPLAY:number = 1006;
+      /**
+     * @description NAV单击战绩后刷新视图
+     */
+    public static CTRL_NAVCLICKRECORD:number = 1007;
+    /**
+     * @description NAV单击菜单后刷新视图
+     */
+    public static CTRL_NAVCLICKMENU:number = 1008;
 }
