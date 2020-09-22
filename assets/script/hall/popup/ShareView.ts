@@ -243,5 +243,8 @@ export default class ShareView extends MShareView {
     public start() {
 
     }
+    public onDestory(){
+        
+    }
 }
 

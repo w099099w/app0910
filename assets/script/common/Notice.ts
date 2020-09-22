@@ -11,6 +11,7 @@ export default class Notice extends MyAnimation{
     private isRun:boolean;
     private m_cache:string[];
     private m_debug:boolean;
+    private m_runTween:cc.Tween;
 
     private constructor(RootNode:cc.Node = null){
         super();
@@ -20,10 +21,14 @@ export default class Notice extends MyAnimation{
         this.m_moveSpeed = 10;
         this.m_runFlag = -1;
         this.m_cache = [];
-        this.hide();
         if(RootNode){
             this.setRootNode(RootNode);
+            this.m_root.active = false;
         }
+    }
+    public setDataArr(Data:string[]){
+        this.m_cache = Data;
+        this.show();
     }
     public setSpeed(Speed:number){
         this.m_moveSpeed = Speed;
@@ -92,9 +97,13 @@ export default class Notice extends MyAnimation{
         let LabelWidth:number = this.m_labelNode.width;
         let MoveLength:number = this.m_bgNode.width+LabelWidth+30;
         let StartPos = this.m_labelNode.x;
-        let RunTween:cc.Tween = cc.tween(this.m_labelNode).by((MoveLength/(this.m_moveSpeed*10)),{x:-MoveLength},{easing:'linear'}).call(()=>{
+        this.m_runTween = cc.tween(this.m_labelNode).by((MoveLength/(this.m_moveSpeed*10)),{x:-MoveLength},{easing:'linear'}).call(()=>{
             this.isRun = false;
             this.show();
         }).start();
+    }
+    public onDestroy(){
+        this.m_runTween.stop();
+        Notice.m_instance = null;
     }   
 }

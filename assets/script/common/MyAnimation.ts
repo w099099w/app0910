@@ -65,6 +65,29 @@ export default class MyAnimation{
             }).start();
         } 
     }
+    protected OpenScaleX(Node:cc.Node,Mask:cc.Node = null,CallBack:Function = null){
+        Node.parent.active = true;
+        if(Mask){
+            Mask.active = true;
+        }
+        Node.active = true;
+        Node.scaleX = 0;
+        cc.tween(Node).to(0.2,{scaleX:1},{easing:'quadIn'}).call(CallBack()).start();
+    }
+    protected CloseScaleX(Node:cc.Node,Mask:cc.Node = null,CallBack:Function = null){
+        Node.parent.active = true;
+        if(Mask){
+            Mask.active = true;
+        }
+        Node.active = true;
+        Node.scaleX = 1;
+        cc.tween(Node).to(0.2,{scaleX:0},{easing:'quadOut'}).call(CallBack()).call(()=>{
+            if(Mask){
+                Mask.active = false;
+            }
+            Node.active = false;
+        }).start();
+    }
     public movePos(ID:number,Node:cc.Node,MovePos:cc.Vec3,CallBack:Function){
         if(MyAnimation.m_tweenMap.get(ID)){
             MyAnimation.m_tweenMap.get(ID).stop();

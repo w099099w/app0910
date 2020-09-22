@@ -5,6 +5,7 @@ import ForgetPd from "./ForgetPd";
 import TimerStruct from "../common/TimerStruct";
 import Tool from "../units/Tool";
 import Regist from "./Regist";
+import UserConfig from "../units/UserConfig";
 //接口定义
 interface pdLogin {
     phone: string;
@@ -148,6 +149,7 @@ export default class Login extends MyAnimation{
             return;
         }
         cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
+        UserConfig.getInstance().setUserInfo({phone:this.pdLoginParam.phone});
         SceneManager.getInstance().loadScene('hall');
     }
     public requestVerifyLogin(){

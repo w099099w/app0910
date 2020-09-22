@@ -66,5 +66,8 @@ export default class Left extends MLeft{
     public start(){
         
     }
+    public onDestory(){
+        
+    }
 }
 

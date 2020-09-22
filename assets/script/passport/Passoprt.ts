@@ -1,8 +1,17 @@
 import MyAnimation from "../common/MyAnimation";
 import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
+import AudioManager from "../units/AudioManager";
+import UserConfig from "../units/UserConfig";
 import Loading from "./Loading";
 import Login from "./Login";
+
+enum BgmCode{
+    BGM_NONE,
+    BGM_PASSPORT,
+    BGM_HALL,
+}
+
 const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Passport extends cc.Component {
@@ -30,13 +39,21 @@ export default class Passport extends cc.Component {
     }
     onLoad(){
         this.resetView();
+        //初始化音频
+        UserConfig.getInstance();
         SceneManager.getInstance().setScene(cc.director.getScene());
         Toast.getInstance().setRootNode(cc.find('common/toast',this.node));
         this.cl_loading = new Loading(this.node,this.lauchingFinished.bind(this));
         this.cl_login = new Login(this.node);
     }
+    initAudio(){
+        AudioManager.getInstance().playBgmFromLocal(BgmCode.BGM_PASSPORT,true);
+        AudioManager.getInstance().setBgmVol();
+        AudioManager.getInstance().setEffVol();
+    }
     start () {
         if(SceneManager.getInstance().getIsFirstLoad()){
+            this.initAudio();
             this.cl_loading.Startlauching();
         }else{
             this.cl_loading.hide();

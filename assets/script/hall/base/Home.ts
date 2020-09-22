@@ -220,4 +220,7 @@ export default class Home extends MHome{
         this.runPartiCle(0, Tool.getInstance().genNonDuplicateID());
         this.runPartiCle(1, Tool.getInstance().genNonDuplicateID());
     }
+    public onDestory(){
+        
+    }
 }
