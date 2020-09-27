@@ -4,16 +4,6 @@ import AudioManager from "../../units/AudioManager";
 import Tool from "../../units/Tool";
 import UserConfig from "../../units/UserConfig";
 
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
-interface AUDIO{
-    openBgm:boolean;
-    openEff:boolean;
-    bgmVol:number;
-    effVol:number;
-}
 export class MAgent extends MyAnimation{
     private S_loginAgent:number;
     private S_agentUrl:string;
@@ -59,10 +49,10 @@ export default class AgentView extends MAgent{
         }
     } 
     public show(){
-        this.popupOpenScaleY(this.m_root,this.m_mask,this.addEvent.bind(this));
+        this.popupOpenScaleXY(this.m_root,this.m_mask,this.addEvent.bind(this));
     }
     public hide(){
-        this.popupCloseScaleY(this.m_root,this.m_mask,this.hideEvent.bind(this));
+        this.popupCloseScaleXY(this.m_root,this.m_mask,this.hideEvent.bind(this));
     }
     public hideEvent(){
         this.i_loginAgent.off('touchend');

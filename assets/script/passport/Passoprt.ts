@@ -6,12 +6,6 @@ import UserConfig from "../units/UserConfig";
 import Loading from "./Loading";
 import Login from "./Login";
 
-enum BgmCode{
-    BGM_NONE,
-    BGM_PASSPORT,
-    BGM_HALL,
-}
-
 const {ccclass, property} = cc._decorator;
 @ccclass
 export default class Passport extends cc.Component {
@@ -47,7 +41,7 @@ export default class Passport extends cc.Component {
         this.cl_login = new Login(this.node);
     }
     initAudio(){
-        AudioManager.getInstance().playBgmFromLocal(BgmCode.BGM_PASSPORT,true);
+        AudioManager.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT,true);
         AudioManager.getInstance().setBgmVol();
         AudioManager.getInstance().setEffVol();
     }

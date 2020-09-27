@@ -30,7 +30,7 @@ export default class Loading{
         SceneManager.getInstance().preloadScene((progress)=>{
             let pro:string = '0%';
             if(progress !== 100){
-                pro = progress.toString().slice(0, progress.toString().indexOf('.')) + "%";
+                pro = Math.ceil(progress) + "%";
             }else{
                 pro = '100%';
             }

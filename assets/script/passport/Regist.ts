@@ -2,16 +2,7 @@ import MyAnimation from "../common/MyAnimation";
 import TimerStruct from "../common/TimerStruct";
 import Toast from "../common/Toast";
 import Tool from "../units/Tool";
-interface verifyPhone {
-    phone: string;
-}
-interface regist{
-    invateCode:string,
-    phone:string;
-    verify:string;
-    newPd:string;
-    repeatPd:string;
-}
+
 export default class Regist extends MyAnimation{
     private node:cc.Node;
 
@@ -32,9 +23,9 @@ export default class Regist extends MyAnimation{
     private c_inputNewPd:cc.EditBox;
     private c_inputRepeatPd:cc.EditBox;
 
-    private _registParam:regist;
+    private _registParam:RegistRequest;
     get registParam(){
-        let data:regist = {
+        let data:RegistRequest = {
             invateCode:this.c_inputInvateCode.string,
             phone:this.c_inputPhone.string,
             verify:this.c_inputVerify.string,
@@ -45,8 +36,8 @@ export default class Regist extends MyAnimation{
     }
 
     //手机号请求验证码
-    private _verifyPhoneParam:verifyPhone;
-    get verifyPhoneParam():verifyPhone{
+    private _verifyPhoneParam:VerifyPhone;
+    get verifyPhoneParam():VerifyPhone{
         let data = {
             phone:this.c_inputPhone.string
         };

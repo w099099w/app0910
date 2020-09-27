@@ -2,11 +2,6 @@ import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
 import Tool from "../../units/Tool";
 
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
-
 export class MLeft extends MyAnimation{
     private S_joinRoomState:number;
     private S_opendRoomState:number;

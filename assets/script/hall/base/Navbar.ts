@@ -6,11 +6,7 @@ import PlayView from "../popup/PlayView";
 import MsgView from "../popup/MsgView";
 import SetView from "../popup/SetView";
 import AgentView from "../popup/AgentView";
-
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
+import RecordView from "../popup/RecordView";
 
 export class MNavbar extends MyAnimation{
     private S_shareState:number;
@@ -25,8 +21,8 @@ export class MNavbar extends MyAnimation{
     public constructor(){
        super();
        //一级导航条
-       this.S_recordState =  BUTTON_STATE.OFF;
-       this.S_palyState = this.S_shareState = this.S_menuState=BUTTON_STATE.ON;
+       //BUTTON_STATE.OFF;
+       this.S_recordState =  this.S_palyState = this.S_shareState = this.S_menuState=BUTTON_STATE.ON;
        //二级导航条
        this.S_messageState = this.S_setState = this.S_agentState = BUTTON_STATE.ON;
        this.S_feedBackState =  BUTTON_STATE.OFF; 
@@ -89,8 +85,9 @@ export default class Navbar extends MNavbar{
     private cl_MsgView:MsgView;
     private cl_SetView:SetView;
     private cl_AgentView:AgentView;
+    private cl_RecordView:RecordView
 
-    public constructor(Node:cc.Node,ShareView:ShareView,PlayView:PlayView,MsgView:MsgView,SetView:SetView,AgentView:AgentView){
+    public constructor(Node:cc.Node,ShareView:ShareView,PlayView:PlayView,MsgView:MsgView,SetView:SetView,AgentView:AgentView,RecordView:RecordView){
         super();
         this.node = Node;
         this.m_toast = cc.find('common/toast',this.node);
@@ -111,6 +108,7 @@ export default class Navbar extends MNavbar{
         this.cl_MsgView = MsgView;
         this.cl_SetView = SetView;
         this.cl_AgentView = AgentView;
+        this.cl_RecordView = RecordView;
         this.m_menuSecond.active = false;
         this.addevent();
     }
@@ -187,7 +185,7 @@ export default class Navbar extends MNavbar{
     public click_Record(){
         switch(this.getRecordButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:return;break;
+            case BUTTON_STATE.ON:{this.cl_RecordView.show()};break;
         }
     }
     public click_Menu(){

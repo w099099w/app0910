@@ -2,15 +2,7 @@ import MyAnimation from "../common/MyAnimation";
 import TimerStruct from "../common/TimerStruct";
 import Toast from "../common/Toast";
 import Tool from "../units/Tool";
-interface verifyPhone {
-    phone: string;
-}
-interface forgetPD{
-    phone:string;
-    verify:string;
-    newPd:string;
-    repeatPd:string;
-}
+
 export default class ForgetPd extends MyAnimation{
     private node:cc.Node;
 
@@ -30,9 +22,9 @@ export default class ForgetPd extends MyAnimation{
     private c_inputNewPd:cc.EditBox;
     private c_inputRepeatPd:cc.EditBox;
 
-    private _forgetPdParam:forgetPD;
+    private _forgetPdParam:ForgetPD;
     get forgetPdParam(){
-        let data:forgetPD = {
+        let data:ForgetPD = {
         phone:this.c_inputPhone.string,
         verify:this.c_inputVerify.string,
         newPd:this.c_inputNewPd.string,
@@ -42,8 +34,8 @@ export default class ForgetPd extends MyAnimation{
     }
 
     //手机号请求验证码
-    private _verifyPhoneParam:verifyPhone;
-    get verifyPhoneParam():verifyPhone{
+    private _verifyPhoneParam:VerifyPhone;
+    get verifyPhoneParam():VerifyPhone{
         let data = {
             phone:this.c_inputPhone.string
         };

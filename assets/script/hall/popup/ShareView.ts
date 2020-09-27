@@ -2,12 +2,6 @@ import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
 import Tool from "../../units/Tool";
 
-const className = "org/cocos2dx/javascript/AppActivity";
-
-enum BUTTON_STATE {
-    OFF,
-    ON
-}
 export class MShareView extends MyAnimation {
     private S_closeState: number;
     private S_saveImageState: number;
@@ -142,8 +136,8 @@ export default class ShareView extends MShareView {
     public createTex(){
         // 新建一个 RenderTexture，并且设置 camera 的 targetTexture 为新建的 RenderTexture，这样 camera 的内容将会渲染到新建的 RenderTexture 中。
         this.m_camera.active = true;
-        let texture = new cc.RenderTexture();
-        let gl = cc.game._renderContext;
+        let texture:cc.RenderTexture = new cc.RenderTexture();
+        let gl:any = cc.game._renderContext;
         // 如果截图内容中不包含 Mask 组件，可以不用传递第三个参数
         texture.initWithSize(807, 543, gl.STENCIL_INDEX8);
         this.c_camera.targetTexture = texture;

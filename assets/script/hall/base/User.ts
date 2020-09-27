@@ -1,40 +1,19 @@
 import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
-import AudioManager from "../../units/AudioManager";
 import Tool from "../../units/Tool";
 import UserConfig from "../../units/UserConfig";
+import MoneyFlowView from "../popup/MoneyFlowView";
+import RealNameView from "../popup/RealNameView";
+import ResetPdView from "../popup/ResetPdView";
 
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
-enum changeNameResult{
-    NAME_LENGTH_ERROR,
-    NAME_CHECK_ERROR,
-    SUCCESS,
-    FALILED
-}
-interface AUDIO{
-    openBgm:boolean;
-    openEff:boolean;
-    bgmVol:number;
-    effVol:number;
-}
-interface UserInfo{
-    gold:number,
-    phone:string,
-    avatar:string,
-    nickname:string,
-    id:string,
-    parentID:string,
-}
 export class MUser extends MyAnimation{
-    private S_hallAddGold:number;
-    private S_hallAvatarToUser:number;
-    private S_realName:number;
-    private S_changePD:number;
-    private S_moneyFlow:number;
-    private S_updataAvatar:number;
+    private S_hallAddGold:BUTTON_STATE;
+    private S_hallAvatarToUser:BUTTON_STATE;
+    private S_changeName:BUTTON_STATE;
+    private S_realName:BUTTON_STATE;
+    private S_changePD:BUTTON_STATE;
+    private S_moneyFlow:BUTTON_STATE;
+    private S_updataAvatar:BUTTON_STATE;
     protected changeNameState:string[];
 
     public constructor(){
@@ -45,14 +24,16 @@ export class MUser extends MyAnimation{
            '昵称修改成功!',
            '昵称修改失败'
        ]
-       this.S_hallAvatarToUser = this.S_updataAvatar = this.S_hallAddGold = BUTTON_STATE.ON;
-       this.S_realName = this.S_changePD = this.S_moneyFlow = BUTTON_STATE.OFF;
+       this.S_moneyFlow = this.S_realName = this.S_changeName = this.S_changePD = this.S_hallAvatarToUser = this.S_updataAvatar = this.S_hallAddGold = BUTTON_STATE.ON;
+       //BUTTON_STATE.OFF;
     }
 
     public getUserInfoButtonState(){
         return this.S_hallAvatarToUser;
     }
-
+    public getChangeNameButtonState(){
+        return this.S_changeName;
+    }
     public getHallAddGoldButtonState(){
         return this.S_hallAddGold;
     }
@@ -72,12 +53,14 @@ export class MUser extends MyAnimation{
     public getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
     }
-    protected changeName(Name:string):changeNameResult{
-        if(Name.length < 4 || Name.length > 12){
-            return changeNameResult.NAME_LENGTH_ERROR;
+    protected changeName(Name:ChangeName):CHANGE_NAME_RESULT{
+        if(Name.nickname.length < 4 || Name.nickname.length > 12){
+            return CHANGE_NAME_RESULT.NAME_LENGTH_ERROR;
+        }else if(!Tool.getInstance().isNickName(Name.nickname)){
+            return CHANGE_NAME_RESULT.NAME_CHECK_ERROR;
         }
-        UserConfig.getInstance().setUserInfo({nickname:Name})
-        return changeNameResult.SUCCESS;
+        UserConfig.getInstance().setUserInfo({nickname:Name.nickname})
+        return CHANGE_NAME_RESULT.SUCCESS;
     }
 }
 
@@ -105,7 +88,19 @@ export default class UserView extends MUser{
     private i_close:cc.Node;
     private i_editName:cc.Node;
 
-    public constructor(Node:cc.Node){
+    private cl_ResetPdView:ResetPdView;
+    private cl_RealNameView:RealNameView;
+    private cl_MoneyFlowView:MoneyFlowView;
+
+    private _changeNameParam:ChangeName;
+    get changeNameParam():ChangeName{
+        let data:ChangeName = {
+            nickname:this.m_inputName.getComponent(cc.EditBox).string,
+        }
+        return data;
+    }
+
+    public constructor(Node:cc.Node,ResetPdView:ResetPdView,RealNameView:RealNameView,MoneyFlowView:MoneyFlowView){
         super();
         this.node = Node;
         this.m_toast = cc.find('common/toast',this.node);
@@ -128,6 +123,9 @@ export default class UserView extends MUser{
         this.i_moneyflow = cc.find('popup/userinfo/button_moneyflow',this.node);
         this.i_close = cc.find('popup/userinfo/button_close',this.node);
         this.m_root.active = false;
+        this.cl_ResetPdView = ResetPdView;
+        this.cl_RealNameView = RealNameView;
+        this.cl_MoneyFlowView = MoneyFlowView;
         this.UpdateBaseInfo();
         this.addEvent();
     }
@@ -146,19 +144,19 @@ export default class UserView extends MUser{
     public click_Realname(){
         switch(this.getRealNameButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:return;break;
+            case BUTTON_STATE.ON:this.cl_RealNameView.show();break;
         }
     } 
     public click_ResetPD(){
         switch(this.getChangePDButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:return;break;
+            case BUTTON_STATE.ON:this.cl_ResetPdView.show();break;
         }
     } 
     public click_MoneyFlow(){
         switch(this.getMoneyFlowButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:return;break;
+            case BUTTON_STATE.ON:this.cl_MoneyFlowView.show();break;
         }
     } 
     public click_Avatar(){
@@ -166,6 +164,16 @@ export default class UserView extends MUser{
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
             case BUTTON_STATE.ON:{
                 Toast.getInstance().show('TIP 浏览器下无法上传头像,请使用APP上传!',this.m_toast)
+            }return;break;
+        }
+    }
+    public click_ChangeName(){
+        switch(this.getChangeNameButtonState()){
+            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+            case BUTTON_STATE.ON:{
+                let resultCode = this.changeName(this.changeNameParam);
+                Toast.getInstance().show(this.changeNameState[resultCode],this.m_toast);
+                this.UpdateBaseInfo();
             }return;break;
         }
     } 
@@ -194,6 +202,7 @@ export default class UserView extends MUser{
         Tool.getInstance().LoadImageRemote(this.i_avatarNode.getChildByName('avatar'),Url,new cc.Vec2(82,82));
         Tool.getInstance().LoadImageRemote(this.i_hallAvatarSpriteNode.getChildByName('avatar'),Url,new cc.Vec2(82,82));
     }
+    
     public UpdateBaseInfo(){
         let UserInfo:UserInfo = this.getUserInfo();
         this.m_hallgold.string = String(UserInfo.gold);
@@ -213,28 +222,13 @@ export default class UserView extends MUser{
         this.m_inputName.off('editing-did-ended');
     }
     public addUserInfoEvent(){
-        this.i_moneyflow.on('touchend',()=>{
-            this.click_MoneyFlow();
-        },this);
-        this.i_realName.on('touchend',()=>{
-            this.click_Realname();
-        },this);
-        this.i_resetPd.on('touchend',()=>{
-            this.click_ResetPD();
-        },this);
-        this.i_avatarNode.on('touchend',()=>{
-            this.click_Avatar();
-        },this);
-        this.i_close.on('touchend',()=>{
-            this.hide();
-        },this);
-        this.i_editName.on('touchend',()=>{
-            this.clearName();
-        },this)
-        this.m_inputName.on('editing-did-ended',()=>{
-            Toast.getInstance().show(this.changeNameState[this.changeName(this.m_inputName.getComponent(cc.EditBox).string)],this.m_toast);
-            this.UpdateBaseInfo();
-        })
+        this.i_moneyflow.on('touchend',this.click_MoneyFlow.bind(this));
+        this.i_realName.on('touchend',this.click_Realname.bind(this));
+        this.i_resetPd.on('touchend',this.click_ResetPD.bind(this));
+        this.i_avatarNode.on('touchend',this.click_Avatar.bind(this));
+        this.i_close.on('touchend',this.hide.bind(this));
+        this.i_editName.on('touchend',this.clearName.bind(this));
+        this.m_inputName.on('editing-did-ended',this.click_ChangeName.bind(this));
     }
     public addEvent(){
         this.i_hallAvatarSpriteNode.on('touchend',()=>{

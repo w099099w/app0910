@@ -1,29 +1,9 @@
-interface AUDIO{
-    openBgm:boolean;
-    openEff:boolean;
-    bgmVol:number;
-    effVol:number;
-}
-interface UserInfo{
-    gold:number,
-    phone:string,
-    avatar:string,
-    nickname:string,
-    id:string,
-    parentID:string,
-}
-enum BgmCode{
-    BGM_NONE,
-    BGM_PASSPORT,
-    BGM_HALL,
-}
-enum EffCode{
-   
-}
+
 export default class UserConfig{
     private BgmNameArr:string[];
     private EffNameArr:string[];
     private userinfo:UserInfo;
+    private realNameInfo:RealNameInfo;
     private AudioConfig:AUDIO;
     private static m_instance:UserConfig;
     private constructor(){
@@ -47,7 +27,12 @@ export default class UserConfig{
             avatar:'https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=3087570435,2147751204&fm=26&gp=0.jpg',
             id:'12138',
             nickname:'虹之间',
+            pd:'1233333333',
             parentID:'12137',
+        }
+        this.realNameInfo = {
+            realname:'',
+            idnumber:''
         }
     }
     public static getInstance():UserConfig{
@@ -60,10 +45,10 @@ export default class UserConfig{
     public getAudioConfig():AUDIO{
         return this.AudioConfig;
     }
-    public getBgmNameFronCode(BgmCode:BgmCode):string{
+    public getBgmNameFronCode(BgmCode:BGM_CODE):string{
         return this.BgmNameArr[BgmCode];
     }
-    public getEffNameFronCode(EffCode:EffCode):string{
+    public getEffNameFronCode(EffCode:EFF_CODE):string{
         return this.EffNameArr[EffCode];
     }
     public setBgmVolConfig(Vol:number){
@@ -110,5 +95,12 @@ export default class UserConfig{
     }
     public getUserInfo():UserInfo{
         return this.userinfo;
+    }
+    public getRealNameInfo():RealNameInfo{
+        return this.realNameInfo;
+    }
+    public setRealNameInfo(RealName:RealName){
+        this.realNameInfo.idnumber = RealName.idnumber;
+        this.realNameInfo.realname = RealName.realname;
     }
 }   

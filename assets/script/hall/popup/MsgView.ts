@@ -2,21 +2,8 @@ import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
 import Tool from "../../units/Tool";
 
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
-
-interface msgInfo{
-    tittle:string;
-    content:string;
-}
-interface foreachMsgInfo{
-    (Tittle:string,contentUrl:string,Index:number):any;
-}
-
 export class MMsg extends MyAnimation{
-    private m_cache:msgInfo[];
+    private m_cache:MsgInfo[];
 
     public constructor(){
        super();
@@ -26,13 +13,13 @@ export class MMsg extends MyAnimation{
     public getMsgNum(){
         return this.m_cache.length;
     }
-    public getMsgInfoFromIndex(Index:number):msgInfo{
+    public getMsgInfoFromIndex(Index:number):MsgInfo{
         if(Index > this.m_cache.length - 1){
             return null;
         }
         return this.m_cache[Index];
     }
-    public getForeach(foreachMsgInfo:foreachMsgInfo){
+    public getForeach(foreachMsgInfo:ForeachMsgInfo){
         this.m_cache.forEach((item,key)=>{
             foreachMsgInfo(item.tittle,item.content,key);
         })
@@ -98,12 +85,12 @@ export default class MsgView extends MMsg{
     }
     public show(){
         this.m_chooseRoot.active = this.m_scrollviewRoot.active = !(this.m_noneData.active = this.getMsgNum() === 0?true:false);
-        this.popupOpenScaleY(this.m_root,this.m_mask);
+        this.popupOpenScaleXY(this.m_root,this.m_mask);
         this.UpdateView(this.getMsgNum() == 0?-1:0);
         this.addEvent();
     }
     public hide(){
-        this.popupCloseScaleY(this.m_root,this.m_mask,()=>{
+        this.popupCloseScaleXY(this.m_root,this.m_mask,()=>{
             this.hideEvent();
             this.m_curentKey = -1;
             this.m_viewLabel.getComponent(cc.Label).string = '';

@@ -4,15 +4,6 @@ import Toast from "../../common/Toast";
 import EmitterCode from "../../units/EmitterCode";
 import Tool from "../../units/Tool";
 
-enum E_PARTICLEID {
-    particleOne,
-    particleTwo,
-}
-enum BUTTON_STATE {
-    OFF,
-    ON
-}
-
 export class ParticleStruct {
     public id: number;
     public node: cc.Node;

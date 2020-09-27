@@ -88,7 +88,7 @@ export default class MyAnimation{
             Node.active = false;
         }).start();
     }
-    public movePos(ID:number,Node:cc.Node,MovePos:cc.Vec3,CallBack:Function){
+    public movePos(ID:number,Node:cc.Node,MovePos:cc.Vec3,CallBack:Function = null){
         if(MyAnimation.m_tweenMap.get(ID)){
             MyAnimation.m_tweenMap.get(ID).stop();
         }
@@ -110,5 +110,19 @@ export default class MyAnimation{
     }
     public noticeMove(){
         
+    }
+    public StartRecordSgDetailRotation(ButtonNode:cc.Node,DetailNode,IsOpen:boolean,CallBack:Function = null){
+        if(IsOpen){
+            cc.tween(ButtonNode).to(0.2,{angle:90,color:new cc.Color(251,249,190)},{easing:'quadIn'}).call(CallBack).start();
+            cc.tween(DetailNode).to(0.2,{scaleY:0,color:new cc.Color(251,249,190)},{easing:'quadIn'}).call(CallBack).call(()=>{
+                DetailNode.active = false;
+                DetailNode.scaleY = 1;
+            }).start();
+        }else{
+            DetailNode.active = true;
+            DetailNode.scaleY = 0;
+            cc.tween(ButtonNode).to(0.2,{angle:0,color:new cc.Color(4,255,187)},{easing:'quadOut'}).call(CallBack).start();
+            cc.tween(DetailNode).to(0.2,{scaleY:1},{easing:'quadOut'}).call(CallBack).start();
+        }
     }
 }

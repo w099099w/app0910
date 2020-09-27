@@ -1,20 +1,12 @@
 import UserConfig from "./UserConfig";
 
-enum BgmCode {
-    BGM_NONE,
-    BGM_PASSPORT,
-    BGM_HALL,
-}
-enum EffCode {
-
-}
 export default class AudioManager {
     private static m_instance: AudioManager;
-    private static m_bgmCode: BgmCode;
+    private static m_bgmCode: BGM_CODE;
     public static getInstance() {
         if (!AudioManager.m_instance) {
             AudioManager.m_instance = new AudioManager();
-            AudioManager.m_bgmCode = BgmCode.BGM_NONE;
+            AudioManager.m_bgmCode = BGM_CODE.BGM_NONE;
         }
         return AudioManager.m_instance;
     }
@@ -44,7 +36,7 @@ export default class AudioManager {
     * @param {cc.Enum} srccode 音频文件枚举
     * @param {boolean} isLook 是否循环播放
     */
-    public playBgmFromLocal(srccode: BgmCode, isLook = false) {
+    public playBgmFromLocal(srccode: BGM_CODE, isLook = false) {
         cc.audioEngine.stopMusic();
         AudioManager.m_bgmCode = srccode;
         cc.resources.load(UserConfig.getInstance().getBgmNameFronCode(srccode), cc.AudioClip, function (err, clip:cc.AudioClip) {
@@ -57,7 +49,7 @@ export default class AudioManager {
     * @param {cc.Enum} srccode 音频文件枚举
     * @param {boolean} isLook 是否循环播放
     */
-    public playEffectFromLocal(srccode: EffCode, isLook = false) {
+    public playEffectFromLocal(srccode: EFF_CODE, isLook = false) {
         cc.resources.load(UserConfig.getInstance().getEffNameFronCode(srccode), cc.AudioClip, function (err, clip:cc.AudioClip) {
             cc.audioEngine.setEffectsVolume(UserConfig.getInstance().getAudioConfig().effVol);
             return cc.audioEngine.playEffect(clip, isLook);
@@ -79,7 +71,7 @@ export default class AudioManager {
     }
     public stopBgm() {
         if (this.isMusicPlaying()) {
-            AudioManager.m_bgmCode = BgmCode.BGM_NONE;
+            AudioManager.m_bgmCode = BGM_CODE.BGM_NONE;
             cc.audioEngine.stopMusic();
         }
     }

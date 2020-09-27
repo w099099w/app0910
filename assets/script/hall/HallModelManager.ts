@@ -8,11 +8,10 @@ import SetView from "./popup/SetView";
 import AgentView from "./popup/AgentView";
 import MyAnimation from "../common/MyAnimation";
 import UserView from "./base/User";
-
-
-interface HallPrefabArr{
-    PopupLeftButton:cc.Prefab;
-}
+import ResetPdView from "./popup/ResetPdView"
+import RealNameView from "./popup/RealNameView";
+import MoneyFlowView from "./popup/MoneyFlowView";
+import RecordView from "./popup/RecordView";
 
 export default class HallModelManager{
     private node:cc.Node;
@@ -25,6 +24,10 @@ export default class HallModelManager{
     private cl_MsgView:MsgView;
     private cl_SetView:SetView;
     private cl_AgentView:AgentView;
+    private cl_ResetPdView:ResetPdView;
+    private cl_RealNameView:RealNameView;
+    public cl_MoneyFlowView:MoneyFlowView;
+    public cl_RecordView:RecordView;
     private cl_UserView:UserView;
     private static m_instance:HallModelManager;
     private constructor(Node:cc.Node = null,PrefabArr:HallPrefabArr = null){
@@ -56,10 +59,14 @@ export default class HallModelManager{
         //预制体视图
         if(this.m_PrefabArr){
             this.cl_PlayView = new PlayView(this.node,this.m_PrefabArr.PopupLeftButton);
-            this.cl_MsgView = new MsgView(this.node,this.m_PrefabArr.PopupLeftButton)
+            this.cl_MsgView = new MsgView(this.node,this.m_PrefabArr.PopupLeftButton);
+            this.cl_RecordView = new RecordView(this.node,this.m_PrefabArr.otherL);
         }
-        this.cl_Navbar = new Navbar(this.node,this.cl_ShareView,this.cl_PlayView,this.cl_MsgView,this.cl_SetView,this.cl_AgentView);
-        this.cl_UserView = new UserView(this.node);
+        this.cl_Navbar = new Navbar(this.node,this.cl_ShareView,this.cl_PlayView,this.cl_MsgView,this.cl_SetView,this.cl_AgentView,this.cl_RecordView);
+        this.cl_ResetPdView = new ResetPdView(this.node);
+        this.cl_RealNameView = new RealNameView(this.node);
+        this.cl_MoneyFlowView = new MoneyFlowView(this.node);
+        this.cl_UserView = new UserView(this.node,this.cl_ResetPdView,this.cl_RealNameView,this.cl_MoneyFlowView); 
     }
     /**
      * @description 所有该场景使用的Mode执行start
@@ -72,7 +79,11 @@ export default class HallModelManager{
         this.cl_MsgView.start();
         this.cl_AgentView.start();
         this.cl_SetView.start();
+        this.cl_RecordView.start();
         this.cl_Navbar.start();
+        this.cl_ResetPdView.start();
+        this.cl_RealNameView.start();
+        this.cl_MoneyFlowView.start();
         this.cl_UserView.start();
     }
     public onDestroy(){
@@ -85,7 +96,11 @@ export default class HallModelManager{
         this.cl_MsgView.onDestory();
         this.cl_AgentView.onDestory();
         this.cl_SetView.onDestory();
+        this.cl_RecordView.onDestory();
         this.cl_Navbar.onDestory();
+        this.cl_ResetPdView.onDestory();
+        this.cl_RealNameView.onDestory();
+        this.cl_MoneyFlowView.onDestory();
         this.cl_UserView.onDestory();
     }
 }

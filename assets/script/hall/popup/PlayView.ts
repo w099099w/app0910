@@ -2,21 +2,8 @@ import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
 import Tool from "../../units/Tool";
 
-enum BUTTON_STATE{
-    OFF,
-    ON
-}
-
-interface playInfo{
-    tittle:string;
-    contentUrl:string;
-}
-interface foreachPlayInfo{
-    (Tittle:string,contentUrl:string,Index:number):any;
-}
-
 export class MPlay extends MyAnimation{
-    private m_cache:playInfo[];
+    private m_cache:PlayInfo[];
 
     public constructor(){
        super();
@@ -26,13 +13,13 @@ export class MPlay extends MyAnimation{
     public getPlayNum(){
         return this.m_cache.length;
     }
-    public getPlayInfoFromIndex(Index:number):playInfo{
+    public getPlayInfoFromIndex(Index:number):PlayInfo{
         if(Index > this.m_cache.length - 1){
             return null;
         }
         return this.m_cache[Index];
     }
-    public getForeach(foreachPlayInfo:foreachPlayInfo){
+    public getForeach(foreachPlayInfo:ForeachPlayInfo){
         this.m_cache.forEach((item,key)=>{
             foreachPlayInfo(item.tittle,item.contentUrl,key);
         })
@@ -99,12 +86,12 @@ export default class PlayView extends MPlay{
     }
     public show(){
         this.m_chooseRoot.active = this.m_scrollviewRoot.active = !(this.m_noneData.active = this.getPlayNum() === 0?true:false);
-        this.popupOpenScaleY(this.m_root,this.m_mask);
+        this.popupOpenScaleXY(this.m_root,this.m_mask);
         this.UpdateView(this.getPlayNum() == 0?-1:0);
         this.addEvent();
     }
     public hide(){
-        this.popupCloseScaleY(this.m_root,this.m_mask,()=>{
+        this.popupCloseScaleXY(this.m_root,this.m_mask,()=>{
             this.hideEvent();
             this.m_curentKey = -1;
             this.m_viewSprite.getComponent(cc.Sprite).spriteFrame = null;

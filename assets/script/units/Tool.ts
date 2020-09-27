@@ -23,6 +23,14 @@ export default class Tool{
         }
         return Tool.m_instance;
     }
+    public isIdCardNumber(str:string):boolean{
+        let reg = /^[1-9]\d{5}(18|19|20|(3\d))\d{2}((0[1-9])|(1[0-2]))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
+        return reg.test(str);
+    }
+    public isNickName(str:string):boolean{
+        let reg = /^[A-Za-z0-9-\u4e00-\u9fa5\_]*$/g;
+        return reg.test(str);
+    }
     public isPhoneNumber(tel):boolean{
         let reg =/^0?1[3|4|5|6|7|8|9][0-9]\d{8}$/;
         return reg.test(tel);
@@ -58,13 +66,18 @@ export default class Tool{
     /**
      * @description 获取当前时间字符串
      */
-    public getCurentTime()
+    public getCurentTime(Time:number = null)
     {
       if(!CC_DEBUG){
         return "0000-00-00 00:00:00";
       }
       function add0(m){return m<10?'0'+m:m };
-      let time = new Date();
+      let time:Date = null;
+      if(Time){
+        time = new Date(Time);
+      }else{
+        time = new Date();
+      }
       let y = time.getFullYear();
       let m = time.getMonth()+1;
       let d = time.getDate();

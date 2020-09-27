@@ -6,31 +6,7 @@ import TimerStruct from "../common/TimerStruct";
 import Tool from "../units/Tool";
 import Regist from "./Regist";
 import UserConfig from "../units/UserConfig";
-//接口定义
-interface pdLogin {
-    phone: string;
-    password: string;
-}
-interface verifyLogin {
-    phone: string;
-    verify: string;
-}
-interface verifyPhone {
-    phone: string;
-}
-/**
- * 登录方法枚举
- */
-enum E_LOGINMETHOD {
-    /**
-     * @description 密码登录
-     */
-    PASSWORD,
-     /**
-     * @description 手机验证码登录
-     */
-    PHONE_VERIFY
-}
+
 export default class Login extends MyAnimation{
     private node:cc.Node;
 
@@ -39,7 +15,7 @@ export default class Login extends MyAnimation{
     private m_verifyCoutDown:TimerStruct;
     private m_pdView:cc.Node;
     private m_verifyView:cc.Node;
-    private m_loginMethod:E_LOGINMETHOD;
+    private m_loginMethod:LOGIN_METHOD;
     private m_root:cc.Node;
     private m_chooseList:cc.Node[];
     private m_popup:cc.Node;
@@ -63,8 +39,8 @@ export default class Login extends MyAnimation{
     //密码登录
     private c_pdViewPhoneInput:cc.EditBox;
     private c_pdViewPdInput:cc.EditBox;
-    private _pdLoginParam:pdLogin;
-	get pdLoginParam(): pdLogin{
+    private _pdLoginParam:PdLogin;
+	get pdLoginParam(): PdLogin{
         let data = {
             phone:this.c_pdViewPhoneInput.string,
             password:this.c_pdViewPdInput.string,
@@ -74,8 +50,8 @@ export default class Login extends MyAnimation{
     //验证码登录
     private c_verifyViewPhoneInput:cc.EditBox;
     private c_verifyViewVerfyInput:cc.EditBox;
-    private _verifyLoginParam:verifyLogin;
-    get verifyLoginParam(): verifyLogin{
+    private _verifyLoginParam:VerifyLogin;
+    get verifyLoginParam(): VerifyLogin{
         let data = {
             phone:this.c_verifyViewPhoneInput.string,
             verify:this.c_verifyViewVerfyInput.string,
@@ -83,8 +59,8 @@ export default class Login extends MyAnimation{
 		return data;
     }
     //手机号请求验证码
-    private _verifyPhoneParam:verifyPhone;
-    get verifyPhoneParam():verifyPhone{
+    private _verifyPhoneParam:VerifyPhone;
+    get verifyPhoneParam():VerifyPhone{
         let data = {
             phone:this.c_verifyViewPhoneInput.string,
         };
@@ -212,7 +188,7 @@ export default class Login extends MyAnimation{
         return true;
     }
     public reset() {
-        let remberpd:pdLogin = JSON.parse(cc.sys.localStorage.getItem('remberpd'));
+        let remberpd:PdLogin = JSON.parse(cc.sys.localStorage.getItem('remberpd'));
         let userAgree:boolean = JSON.parse(cc.sys.localStorage.getItem('userAgree'));
         this.i_chooseUserAgree.parent.getChildByName('isagree').active = userAgree;
         if(remberpd){
@@ -227,7 +203,7 @@ export default class Login extends MyAnimation{
         this.c_verifyViewPhoneInput.string = '';
         this.c_verifyViewVerfyInput.string = '';
     }
-    public switchLoginMethod(MethodID:E_LOGINMETHOD){
+    public switchLoginMethod(MethodID:LOGIN_METHOD){
         if(this.m_verifyCoutDown && this.m_verifyCoutDown.getSurPlus() > 0){
             this.setVerifyCountDown(this.m_verifyCoutDown.getSurPlus());
         }
@@ -256,11 +232,11 @@ export default class Login extends MyAnimation{
                 if(item.name == 'velogin'){
                     this.i_chooseVerify.zIndex = 1;
                     this.i_choosePd.zIndex = 0;
-                    this.switchLoginMethod(E_LOGINMETHOD.PHONE_VERIFY);
+                    this.switchLoginMethod(LOGIN_METHOD.PHONE_VERIFY);
                 }else{
                     this.i_chooseVerify.zIndex = 0;
                     this.i_choosePd.zIndex = 1;
-                    this.switchLoginMethod(E_LOGINMETHOD.PASSWORD);
+                    this.switchLoginMethod(LOGIN_METHOD.PASSWORD);
                 }
             })
         },this);
@@ -319,8 +295,8 @@ export default class Login extends MyAnimation{
         },this);
         this.i_confirm.on('touchend',()=>{
             switch(this.m_loginMethod){
-                case E_LOGINMETHOD.PASSWORD:this.requestPdLogin();break;
-                case E_LOGINMETHOD.PHONE_VERIFY:this.requestVerifyLogin();break;
+                case LOGIN_METHOD.PASSWORD:this.requestPdLogin();break;
+                case LOGIN_METHOD.PHONE_VERIFY:this.requestVerifyLogin();break;
             }
         },this);
         this.i_getVerify.on('touchend',()=>{
