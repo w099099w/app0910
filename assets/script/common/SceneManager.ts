@@ -3,14 +3,17 @@ const {ccclass, property} = cc._decorator;
 @ccclass
 export default class SceneManager{
     private m_isFirstLogin:boolean;
-    private  m_sceneNameArr:string[]; 
+    private  m_sceneNameArr:string[];
+    private loadIndex:number; 
     protected  static m_instance: SceneManager;
     protected   m_curScene:cc.Scene;
     private constructor(){
         this.m_isFirstLogin = true;
+        this.loadIndex = 1;//不含passport
         this.m_sceneNameArr = [
             'passport',
-            'hall'
+            'hall',
+            'room'
         ];
     }
     public static getInstance():SceneManager{
@@ -20,22 +23,36 @@ export default class SceneManager{
         }
         return SceneManager.m_instance;
     }
-    public preloadScene(callBackProgress:Function = null,loadFinish:Function = null){
+    public preloadScene(callBackProgress:Function = null,loadSceneError:Function = null){
         this.m_isFirstLogin = false;
-        this.m_sceneNameArr.forEach((sceneName,key)=>{
-            if(sceneName !== 'passport'){
-                cc.director.preloadScene(sceneName,(completedCount,totalCount,item)=>{
-                    let progress:number = (100/(this.m_sceneNameArr.length-1))*(key-1)+(completedCount/totalCount)*100;
-                    if(callBackProgress){
-                        callBackProgress(progress);
-                    }
-                },(error)=>{
-                    if(loadFinish){
-                        loadFinish(error);
-                    }
-                })
+        this.preloadSceneForeach(callBackProgress,loadSceneError);
+    }
+
+    private preloadSceneForeach(callBackProgress:Function = null,loadSceneError:Function = null){
+        let singelSceneAdd = 100/(this.m_sceneNameArr.length-1);
+        let curentAdd = singelSceneAdd*(this.loadIndex-1);
+        let lastNum:number = 0;
+        cc.director.preloadScene(this.m_sceneNameArr[this.loadIndex],(completedCount,totalCount,item)=>{
+            let progress:number = curentAdd+(completedCount/totalCount)*singelSceneAdd;
+            if(progress < lastNum){
+                progress = lastNum;
             }
-        });
+            lastNum = progress;
+            if(callBackProgress){
+                callBackProgress(progress);
+            }
+            if(completedCount === totalCount){
+                if(this.loadIndex === this.m_sceneNameArr.length - 1){
+                    return;
+                }
+                this.loadIndex += 1;
+                this.preloadSceneForeach(callBackProgress,loadSceneError);
+            }
+        },(error)=>{
+            if(loadSceneError){
+                loadSceneError(error);
+            }
+        })
     }
     public setScene(Scene:cc.Scene){
         this.m_curScene = Scene;

@@ -141,6 +141,7 @@ export default class MoneyFlowView extends MMoneyFlow{
        this.m_scrollview.on('scroll-to-bottom',this.scrollToButtom.bind(this));
     }
     public renderMoneyFlowFunction(Item:cc.Node,Index:number){
+        console.log(Index);
         let data:MoneyFlowInfo = this.getMoneyFlowInfoFromIndex(Index);
         
         Item.getChildByName('orderid').getComponent(cc.Label).string = data.orderid;

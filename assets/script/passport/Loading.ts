@@ -46,7 +46,7 @@ export default class Loading{
                         }
                     }).start();
                     this.t_timerLoading = null;
-                },2000);
+                },1000);
             }
         });
         //shader常量

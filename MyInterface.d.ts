@@ -136,6 +136,10 @@ declare interface UserInfo{
     id:string,
     parentID:string,
 }
+declare interface RommListNum{
+    numItems:number;
+    activeDown:boolean;
+}
 declare interface HallPrefabArr{
     PopupLeftButton:cc.Prefab;
     otherL:cc.Prefab,

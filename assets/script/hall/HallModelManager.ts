@@ -96,7 +96,7 @@ export default class HallModelManager{
         this.cl_MsgView.onDestory();
         this.cl_AgentView.onDestory();
         this.cl_SetView.onDestory();
-        this.cl_RecordView.onDestory();
+        this.cl_RecordView.onDestroy();
         this.cl_Navbar.onDestory();
         this.cl_ResetPdView.onDestory();
         this.cl_RealNameView.onDestory();

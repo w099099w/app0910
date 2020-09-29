@@ -167,7 +167,7 @@ export default class RecordView extends MRecord{
     public RenderPopupFunction(Item:cc.Node,Index:number){
         this.p_renderData.RenderPopup(Item,Index,this.getDataFromIndex(Index));
     }
-    public onDestory(){
-       
+    public onDestroy(){
+       //this.c_list.onDestroy();
     }
 }

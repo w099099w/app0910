@@ -1,5 +1,6 @@
 import Emitter from "../../common/Emitter";
 import MyAnimation from "../../common/MyAnimation";
+import SceneManager from "../../common/SceneManager";
 import Toast from "../../common/Toast";
 import EmitterCode from "../../units/EmitterCode";
 import Tool from "../../units/Tool";
@@ -24,7 +25,8 @@ export class MHome extends MyAnimation {
 
     public constructor() {
         super();
-        this.S_dlmState = this.S_jlbState = this.S_ctmState = BUTTON_STATE.OFF;
+        this.S_jlbState = this.S_ctmState = BUTTON_STATE.OFF;
+        this.S_dlmState = BUTTON_STATE.ON;
         this.a_particleOnePos = [
             new cc.Vec2(-190, 0),
             new cc.Vec2(0, 190),
@@ -176,7 +178,7 @@ export default class Home extends MHome{
     public click_DLM() {
         switch (this.getDLMButtonState()) {
             case BUTTON_STATE.OFF: Toast.getInstance().show('连接服务器失败!', this.m_toast); break;
-            case BUTTON_STATE.ON: return; break;
+            case BUTTON_STATE.ON: {SceneManager.getInstance().loadScene('room')}; break;
         }
     }
     public click_JLB() {

@@ -88,13 +88,13 @@ export default class MyAnimation{
             Node.active = false;
         }).start();
     }
-    public movePos(ID:number,Node:cc.Node,MovePos:cc.Vec3,CallBack:Function = null){
+    protected movePos(ID:number,Node:cc.Node,MovePos:cc.Vec3,CallBack:Function = null){
         if(MyAnimation.m_tweenMap.get(ID)){
             MyAnimation.m_tweenMap.get(ID).stop();
         }
         MyAnimation.m_tweenMap.set(ID,cc.tween(Node).to(2,{x:MovePos.x,y:MovePos.y}).call(CallBack).call(()=>{MyAnimation.m_tweenMap.delete(ID)}).start()); 
     }
-    public  stopMovePos(ID:number){
+    protected  stopMovePos(ID:number){
         if(MyAnimation.m_tweenMap.get(ID)){
             MyAnimation.m_tweenMap.get(ID).stop();
         }
@@ -108,10 +108,10 @@ export default class MyAnimation{
             tween.stop();
         })
     }
-    public noticeMove(){
+    protected noticeMove(){
         
     }
-    public StartRecordSgDetailRotation(ButtonNode:cc.Node,DetailNode,IsOpen:boolean,CallBack:Function = null){
+    protected StartRecordSgDetailRotation(ButtonNode:cc.Node,DetailNode,IsOpen:boolean,CallBack:Function = null){
         if(IsOpen){
             cc.tween(ButtonNode).to(0.2,{angle:90,color:new cc.Color(251,249,190)},{easing:'quadIn'}).call(CallBack).start();
             cc.tween(DetailNode).to(0.2,{scaleY:0,color:new cc.Color(251,249,190)},{easing:'quadIn'}).call(CallBack).call(()=>{
@@ -123,6 +123,15 @@ export default class MyAnimation{
             DetailNode.scaleY = 0;
             cc.tween(ButtonNode).to(0.2,{angle:0,color:new cc.Color(4,255,187)},{easing:'quadOut'}).call(CallBack).start();
             cc.tween(DetailNode).to(0.2,{scaleY:1},{easing:'quadOut'}).call(CallBack).start();
+        }
+    }
+    protected ButtonIsChooseMove(ButtonNode:cc.Node,IsOpen:boolean,CallBack:Function = null){
+        if(IsOpen){
+            ButtonNode.getComponent('switchsp').setSpriteFrame(1);
+            cc.tween(ButtonNode).to(0.1,{x:-5},{easing:'quadIn'}).call(CallBack).start();
+        }else{
+            ButtonNode.getComponent('switchsp').setSpriteFrame(0);
+            cc.tween(ButtonNode).to(0.1,{x:-30},{easing:'quadOut'}).call(CallBack).start();
         }
     }
 }
