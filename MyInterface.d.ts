@@ -51,6 +51,12 @@ declare enum PAY_TYPE{
     SYSTEMSUB,
     BETBACK
 }
+declare enum ROOM_CLICK_POS{
+    UPTABLE,
+    DOWNTABLE,
+    UPRULE,
+    DOWNRULE,
+}
 
 //网络接口
 declare interface VerifyPhone {
@@ -151,4 +157,14 @@ declare interface ForeachPlayInfo{
 
 declare interface ForeachMsgInfo{
     (Tittle:string,contentUrl:string,Index:number):any;
+}
+declare interface RoomTableClick{
+    id:number,
+    pos:number
+}
+declare interface SanGongRuleInfo{
+    min:number,
+    max:number,
+    gamenum:number,
+    rule:string
 }

@@ -55,3 +55,9 @@ const PAY_TYPE = cc.Enum({
     SYSTEMSUB:6,
     BETBACK:7
 });
+const ROOM_CLICK_POS = cc.Enum({
+    UPTABLE:0,
+    DOWNTABLE:1,
+    UPRULE:2,
+    DOWNRULE:3,
+})

@@ -44,7 +44,6 @@ export default class SanGongData extends ScrollViewRenderData {
             this.c_list._delSingleItem(item)
         })
         this.m_itemLayout.removeAllChildren();
-        this.c_list.PrefabIndex = 0;
     }
     public RenderMain(Item:cc.Node,Index:number,Data:any){
         console.log('渲染低')

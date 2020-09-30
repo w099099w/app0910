@@ -72,13 +72,13 @@ export default class HallModelManager{
      * @description 所有该场景使用的Mode执行start
      */
     public start(){
+        this.cl_SetView.start();
         this.cl_Home.start();
         this.cl_Left.start();
         this.cl_ShareView.start();
         this.cl_PlayView.start();
         this.cl_MsgView.start();
         this.cl_AgentView.start();
-        this.cl_SetView.start();
         this.cl_RecordView.start();
         this.cl_Navbar.start();
         this.cl_ResetPdView.start();

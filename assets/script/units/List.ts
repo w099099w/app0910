@@ -174,6 +174,16 @@ export default class List extends cc.Component {
     private selectedEvent: cc.Component.EventHandler = null//new cc.Component.EventHandler();
     //当前选择id
     private _selectedId: number = -1;
+    private _addRommRuleID:RoomTableClick = null;
+    set addRommRuleID(val:RoomTableClick){
+        let t: any = this;
+        let item: any;
+        item = t.getItemByListId(val.id);
+        if (t.selectedEvent) {
+            cc.Component.EventHandler.emitEvents([t.selectedEvent], item, val.id % this._actualNumItems, t._lastSelectedId == null ? null : (t._lastSelectedId % this._actualNumItems),val);
+        }
+    }
+
     private _lastSelectedId: number;
     private multSelected: number[];
     set selectedId(val: number) {

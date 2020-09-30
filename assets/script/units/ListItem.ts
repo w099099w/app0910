@@ -88,6 +88,44 @@ export default class ListItem extends cc.Component {
         }  
         return this._btnCom;
     }
+
+
+
+    //Room按钮组件
+    private _btnUpCom: any;
+    get btnUpCom() {
+        if (!this._btnUpCom){
+            this._btnUpCom = this.node.getChildByName('up').getComponent(cc.Button);
+        }  
+        return this._btnUpCom;
+    }
+    //按钮组件
+    private _btnDownCom: any;
+    get btnDownCom() {
+        if (!this._btnDownCom){
+            this._btnDownCom = this.node.getChildByName('down').getComponent(cc.Button);
+        }  
+        return this._btnDownCom;
+    }
+    //按钮组件
+    private _btmCom_UpTableRule: any;
+    get btmCom_UpTableRule() {
+        if (!this._btmCom_UpTableRule){
+            this._btmCom_UpTableRule = cc.find('up/detail',this.node).getComponent(cc.Button);
+        }  
+        return this._btmCom_UpTableRule;
+    }
+    //按钮组件
+    private _btmCom_DownTableRule: any;
+    get btmCom_DownTableRule() {
+        if (!this._btmCom_DownTableRule){
+            this._btmCom_DownTableRule = cc.find('down/detail',this.node).getComponent(cc.Button);
+        }  
+        return this._btmCom_DownTableRule;
+    }
+
+
+
     //依赖的List组件
     public list: List;
     //是否已经注册过事件
@@ -111,14 +149,36 @@ export default class ListItem extends cc.Component {
     }
 
     _registerEvent() {
-        if (!this._eventReg) {
-            if (this.btnCom && this.list.selectedMode > 0) {
-                this.btnCom.clickEvents.unshift(this.createEvt(this, 'onClickThis'));
-            }
-            if (this.adaptiveSize) {
-                this.node.on(cc.Node.EventType.SIZE_CHANGED, this._onSizeChange, this);
-            }
-            this._eventReg = true;
+        if(this.node.name === 'table'){
+            console.log('add')
+            if (!this._eventReg) {
+                if (this.btnUpCom && this.list.selectedMode > 0) {
+                    this.btnUpCom.clickEvents.unshift(this.createEvt(this, 'onClickUp'));
+                }
+                if (this.btnDownCom && this.list.selectedMode > 0) {
+                    this.btnDownCom.clickEvents.unshift(this.createEvt(this, 'onClickDown'));
+                }
+                if (this.btmCom_DownTableRule && this.list.selectedMode > 0) {
+                    this.btmCom_DownTableRule.clickEvents.unshift(this.createEvt(this, 'onClickDownRule'));
+                }
+                if (this.btmCom_UpTableRule && this.list.selectedMode > 0) {
+                    this.btmCom_UpTableRule.clickEvents.unshift(this.createEvt(this, 'onClickUpRule'));
+                }
+                if (this.adaptiveSize) {
+                    this.node.on(cc.Node.EventType.SIZE_CHANGED, this._onSizeChange, this);
+                }
+                this._eventReg = true;
+            } 
+        }else{
+            if (!this._eventReg) {
+                if (this.btnCom && this.list.selectedMode > 0) {
+                    this.btnCom.clickEvents.unshift(this.createEvt(this, 'onClickThis'));
+                }
+                if (this.adaptiveSize) {
+                    this.node.on(cc.Node.EventType.SIZE_CHANGED, this._onSizeChange, this);
+                }
+                this._eventReg = true;
+            } 
         }
     }
 
@@ -195,6 +255,23 @@ export default class ListItem extends cc.Component {
 
     onClickThis() {
         this.list.selectedId = this.listId;
+    }
+    //room特殊
+    onClickUp() {
+        console.log('11111')
+        this.list.addRommRuleID = {id:this.listId,pos:ROOM_CLICK_POS.UPTABLE};
+    }
+    onClickDown() {
+        console.log('222222')
+        this.list.addRommRuleID = {id:this.listId,pos:ROOM_CLICK_POS.DOWNTABLE};
+    }
+    onClickUpRule() {
+        console.log('33333')
+        this.list.addRommRuleID = {id:this.listId,pos:ROOM_CLICK_POS.UPRULE};
+    }
+    onClickDownRule() {
+        console.log('44444')
+        this.list.addRommRuleID = {id:this.listId,pos:ROOM_CLICK_POS.DOWNRULE};
     }
 
 }

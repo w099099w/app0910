@@ -73,8 +73,10 @@ export default class SetView extends MSet{
         this.m_privateRoot = cc.find('popup/set/private',this.node);
         this.i_confirm = cc.find('popup/set/private/button_confirm',this.node);
         this.m_privateSpriteNode = cc.find('popup/set/private/scrollview/view/content/item',this.node);
-        this.m_root.active = this.m_privateRoot.active = false;
+        this.m_root.active = true;
+        this.m_privateRoot.active = false;
         this.setView();
+        this.m_root.active = false;
     }
     public click_PrivateRoom(){
         switch(this.getprivateButtonState()){
@@ -146,6 +148,7 @@ export default class SetView extends MSet{
         this.i_close.on('touchend',()=>{
             this.hide();
         },this);
+        this.setView();
     }
     public setPrivateView(){
         this.m_privateSpriteNode.getComponent(cc.Sprite).spriteFrame = null;

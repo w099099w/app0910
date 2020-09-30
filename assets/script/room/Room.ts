@@ -5,6 +5,7 @@ import RecordView from "../hall/popup/RecordView";
 import SetView from "../hall/popup/SetView";
 import GameView from "./GameView";
 import RoomView from "./RoomView";
+import RuleView from "./RuleView";
 import TopView from "./TopView";
 
 const {ccclass, property} = cc._decorator;
@@ -15,6 +16,7 @@ export default class RoomViewManager extends cc.Component {
     private cl_TopView:TopView;
     private cl_RecordView:RecordView;
     private cl_SetView:SetView;
+    private cl_RuleView:RuleView;
     @property(cc.Prefab)
     PopupButton:cc.Prefab = null;
     onLoad () {
@@ -24,18 +26,16 @@ export default class RoomViewManager extends cc.Component {
         this.cl_RecordView = new RecordView(this.node,this.PopupButton);
         this.cl_SetView = new SetView(this.node);
         this.cl_TopView = new TopView(this.node,this.cl_RecordView,this.cl_SetView);
-        this.cl_RoomView = new RoomView(this.node);
+        this.cl_RuleView = new RuleView(this.node);
+        this.cl_RoomView = new RoomView(this.node,this.cl_RuleView);
         this.cl_GameView = new GameView(this.node,this.cl_RoomView);
     }
     //scrollview渲染节点
     RenderRoom(Item:cc.Node,Index:number){
         this.cl_RoomView.RenderMainFunction(Item,Index);
     }
-    ClickTable(Item:cc.Node,Index:number){
-
-    }
-    ClickTableRule(Item:cc.Node,Index:number){
-        
+    ClickTable(Item:cc.Node,Index:number,LastId:number,ClickPos:RoomTableClick){
+        this.cl_RoomView.clickMainFunction(Item,Index,LastId,ClickPos);
     }
     //scrollview渲染节点
     RenderMainRecord(Item:cc.Node,Index:number){
@@ -55,9 +55,9 @@ export default class RoomViewManager extends cc.Component {
         SceneManager.getInstance().loadScene('hall');
     }
     start(){
+        this.cl_SetView.start();
         this.cl_GameView.start();
         this.cl_RecordView.start();
-        this.cl_SetView.start();
     }
     onDestroy(){
         MyAnimation.onDestory();

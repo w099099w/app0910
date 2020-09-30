@@ -1,15 +1,21 @@
 import MyAnimation from "../common/MyAnimation";
+import Toast from "../common/Toast";
 import List from "../units/List";
 import Tool from "../units/Tool";
+import RuleView from "./RuleView";
 
 export class MRoom extends MyAnimation {
     private m_cache = [];
     protected flushRoomViewFunction: Function;
+    private S_tableTogame:BUTTON_STATE;
+    private S_tableToRule:BUTTON_STATE;
     protected ti:number;
     protected tic:number;
     protected tie:number;
     protected constructor(){
         super();
+        this.S_tableToRule = BUTTON_STATE.ON;
+        this.S_tableTogame = BUTTON_STATE.OFF;
         this.Init();
     }
     protected ReSet(){
@@ -17,10 +23,17 @@ export class MRoom extends MyAnimation {
     }
     protected Init() {
         this.ti = setInterval(() => {
+            if(this.m_cache.length > 5){
+                return;
+            }
+            let minbet = Math.ceil(Math.random() * 100) * 100;
             let data = {
+                max:Tool.getInstance().randomAccess(minbet,100*100),
+                rule:Tool.getInstance().getRandomName(56),
+                gamenum:Tool.getInstance().randomAccess(400,6000),
                 player: [],
                 maxPlayer:Tool.getInstance().randomAccess(6,10),
-                bet: Math.ceil(Math.random() * 100) * 100,
+                bet: minbet,
                 tableNum: Tool.getInstance().randomNumber(5)
             }
             for(let i = 0; i < data.maxPlayer;++i){
@@ -66,8 +79,13 @@ export class MRoom extends MyAnimation {
         if (this.m_cache.length % 2 === 1) {
             data.activeDown = false;
         }
-        console.log(data)
         return data;
+    }
+    protected getTableButtonState():BUTTON_STATE{
+        return this.S_tableTogame;
+    }
+    protected getTableRuleButtonState():BUTTON_STATE{
+        return this.S_tableToRule;
     }
     protected OnWebsocketMessage() {
         this.flushRoomViewFunction();
@@ -82,7 +100,8 @@ export default class RoomView extends MRoom {
     private m_itemLayout: cc.Node;
     private c_list: List;
 
-    public constructor(Node: cc.Node) {
+    private cl_RuleView:RuleView;
+    public constructor(Node: cc.Node,RuleView:RuleView) {
         super();
         this.node = Node;
         this.flushRoomViewFunction = this.FlushRoomView;
@@ -90,6 +109,7 @@ export default class RoomView extends MRoom {
         this.m_root = cc.find('roomview', this.node);
         this.m_itemLayout = cc.find('roomview/view/content', this.node);
         this.c_list = cc.find('roomview', this.node).getComponent('List');
+        this.cl_RuleView = RuleView;
     }
     public show(GameID: number) {
         this.ReSet();
@@ -105,8 +125,39 @@ export default class RoomView extends MRoom {
         this.m_itemLayout.removeAllChildren();
         this.c_list.PrefabIndex = ChooseView;
     }
-    public clickMainFunction(Item: cc.Node, Index: number, LastId: number) {
-
+    public clickMainFunction(Item: cc.Node, Index: number, LastId: number,ClickPos:RoomTableClick) {
+        switch(ClickPos.pos){
+            case ROOM_CLICK_POS.UPTABLE:{
+                switch(this.getTableButtonState()){
+                    case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+                    case BUTTON_STATE.ON:return;break;
+                }
+            }break;
+            case ROOM_CLICK_POS.DOWNTABLE:{
+                switch(this.getTableButtonState()){
+                    case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+                    case BUTTON_STATE.ON:return;break;
+                }
+            }break;
+            case ROOM_CLICK_POS.UPRULE:{
+                switch(this.getTableRuleButtonState()){
+                    case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+                    case BUTTON_STATE.ON:{
+                        let data = this.getDataFromIndex(Index, false);
+                        this.cl_RuleView.show({min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
+                    }break;
+                }   
+            }break;
+            case ROOM_CLICK_POS.DOWNRULE:{
+                switch(this.getTableRuleButtonState()){
+                    case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+                    case BUTTON_STATE.ON:{
+                        let data = this.getDataFromIndex(Index, true);
+                        this.cl_RuleView.show({min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
+                    }break;
+                }
+            }break;
+        }
     }
     public RenderMainFunction(Item: cc.Node, Index: number) {
 
