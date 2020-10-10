@@ -1,4 +1,5 @@
 import MyAnimation from "../common/MyAnimation";
+import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import List from "../units/List";
 import Tool from "../units/Tool";
@@ -15,7 +16,7 @@ export class MRoom extends MyAnimation {
     protected constructor(){
         super();
         this.S_tableToRule = BUTTON_STATE.ON;
-        this.S_tableTogame = BUTTON_STATE.OFF;
+        this.S_tableTogame = BUTTON_STATE.ON;
         this.Init();
     }
     protected ReSet(){
@@ -130,13 +131,17 @@ export default class RoomView extends MRoom {
             case ROOM_CLICK_POS.UPTABLE:{
                 switch(this.getTableButtonState()){
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-                    case BUTTON_STATE.ON:return;break;
+                    case BUTTON_STATE.ON:{
+                        SceneManager.getInstance().loadScene('game_sg');
+                    }break;
                 }
             }break;
             case ROOM_CLICK_POS.DOWNTABLE:{
                 switch(this.getTableButtonState()){
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-                    case BUTTON_STATE.ON:return;break;
+                    case BUTTON_STATE.ON:{
+                        SceneManager.getInstance().loadScene('game_sg');
+                    }break;
                 }
             }break;
             case ROOM_CLICK_POS.UPRULE:{

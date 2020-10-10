@@ -10,7 +10,7 @@ export class MGame extends MyAnimation {
     private S_GameLongHu: BUTTON_STATE;
     protected constructor() {
         super();
-        this.S_GameSanGongBJH = this.S_GameTuiTongZi = this.S_GameCowCow = this.S_GameLongHu = BUTTON_STATE.ON;
+        this.S_GameSanGongBJH = this.S_GameTuiTongZi = this.S_GameCowCow = this.S_GameLongHu = BUTTON_STATE.OFF;
         this.S_GameSanGong = BUTTON_STATE.ON;
     }
     protected getGameSanGongState(): BUTTON_STATE {

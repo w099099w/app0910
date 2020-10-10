@@ -5,6 +5,7 @@ import AudioManager from "../units/AudioManager";
 import UserConfig from "../units/UserConfig";
 import Loading from "./Loading";
 import Login from "./Login";
+import Version from "./Version";
 
 const {ccclass, property} = cc._decorator;
 @ccclass
@@ -12,6 +13,7 @@ export default class Passport extends cc.Component {
     
     private cl_loading:Loading;
     private cl_login:Login;
+    private cl_version:Version;
     public lauchingFinished(){
         this.cl_login.show();
     }
@@ -48,7 +50,18 @@ export default class Passport extends cc.Component {
     start () {
         if(SceneManager.getInstance().getIsFirstLoad()){
             this.initAudio();
-            this.cl_loading.Startlauching();
+            this.cl_version.validate((code)=>{
+                switch(code){
+                    case 1:this.frame.common.dialog.push('错误',10, '本地更新文件查找失败,请重新下载安装本应用!',DIALOG.MB_YES,this.versionResult,{code:1});break;
+                    case 2:this.frame.common.dialog.push('提示',9, '远程更新文件下载失败,请稍后再试!',DIALOG.MB_YES,this.versionResult,{code:2});break;
+                    case 3:this.frame.common.dialog.push('提示',9, '读取本地更新文件失败,请重启应用后再试!',DIALOG.MB_YES,this.versionResult,{code:3});break;
+                    case 4:this.frame.common.dialog.push('提示',10, 'android版本包版本不是最新的,请下载最新安装包安装!',DIALOG.MB_YES,this.versionResult,{code:4});break;
+                    case 0:{
+                        this.cl_loading.Startlauching();
+                    }
+                }
+            })
+            
         }else{
             this.cl_loading.hide();
             this.lauchingFinished();

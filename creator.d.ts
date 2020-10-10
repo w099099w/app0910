@@ -31813,7 +31813,8 @@ declare namespace jsb{
 
         getState (): AssetsManager.State;
         getStoragePath (): string
-        getMaxConcurrentTask (): number;
+		getMaxConcurrentTask (): number;
+		setMaxConcurrentTask(val:number);
         // setMaxConcurrentTask (max: number): void;  // actually not supported
 
         checkUpdate (): void;

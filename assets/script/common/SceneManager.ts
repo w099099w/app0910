@@ -13,7 +13,8 @@ export default class SceneManager{
         this.m_sceneNameArr = [
             'passport',
             'hall',
-            'room'
+            'room',
+            'game_sg'
         ];
     }
     public static getInstance():SceneManager{
