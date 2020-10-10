@@ -6083,7 +6083,8 @@ declare namespace cc {
 	- _nativeAsset 的 getset 方法<br/>
 	- cc.Object._serialize<br/>
 	- cc.Object._deserialize<br/> */
-	export class Asset extends Object {		
+	export class Asset extends Object {	
+		_nativeAsset:string;	
 		/** `cc.Asset.url` is deprecated, please use {{#crossLink "Asset/nativeUrl:property"}}{{/crossLink}} instead */
 		url: string;		
 		/** !#en
@@ -6130,6 +6131,7 @@ declare namespace cc {
 		!#zh
 		使用该资源在场景中创建一个新节点。<br/>
 		如果这类资源没有相应的节点类型，该方法应该是空的。
+
 		@param callback callback 
 		*/
 		createNode(callback: (error: string, node: any) => void): void;		

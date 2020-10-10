@@ -24,12 +24,12 @@
   "design-resolution-height": 750,
   "fit-width": false,
   "fit-height": true,
-  "use-project-simulator-setting": false,
-  "simulator-orientation": false,
+  "use-project-simulator-setting": true,
+  "simulator-orientation": true,
   "use-customize-simulator": true,
   "simulator-resolution": {
-    "height": 640,
-    "width": 960
+    "height": 750,
+    "width": 1624
   },
   "clear-simulator-cache": true,
   "facebook": {
@@ -41,5 +41,6 @@
     "live": {
       "enable": false
     }
-  }
+  },
+  "last-module-event-record-time": 1602302596540
 }

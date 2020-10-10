@@ -26,6 +26,7 @@ export default class Loading{
         this.m_rootNode.active = false;
     }
     public Startlauching(){
+        cc.find('loading',this.node).active = true;
         this.m_loadingContent.string = '加载中...';
         SceneManager.getInstance().preloadScene((progress)=>{
             let pro:string = '0%';
@@ -49,32 +50,34 @@ export default class Loading{
                 },1000);
             }
         });
-        //shader常量
-        this.shader_flashLightUBO.lightAngle = 75;
-        this.shader_flashLightUBO.lightColor = cc.color(130,99,68);
-        this.shader_flashLightUBO.lightWidth = 0.1;
-        this.shader_flashLightUBO.enableGradient = true;
-        this.shader_flashLightUBO.cropAlpha = true;
-        this.shader_flashLightUBO.enableFog = false;
-        //扫光
-        let posx = 0;
-        this.t_timerMovex = setInterval(()=>{
-            //shader变量
-            this.shader_flashLightUBO.lightCenterPoint = cc.v2(posx+=0.02, 0.5);
-            //设置材质
-            let material: cc.Material = this.m_flashLightAppName.getComponent(cc.Sprite).getMaterial(0);
-            material.setProperty("lightColor", this.shader_flashLightUBO.lightColor);
-            material.setProperty("lightCenterPoint", this.shader_flashLightUBO.lightCenterPoint);
-            material.setProperty("lightAngle", this.shader_flashLightUBO.lightAngle);
-            material.setProperty("lightWidth", this.shader_flashLightUBO.lightWidth);
-            material.setProperty("enableGradient", this.shader_flashLightUBO.enableGradient);
-            material.setProperty("cropAlpha", this.shader_flashLightUBO.cropAlpha);
-            material.setProperty("enableFog", this.shader_flashLightUBO.enableFog);
-            this.m_flashLightAppName.getComponent(cc.Sprite).setMaterial(0, material);
-            if(posx > 1){
-                posx = 0;
-            }
-        },33);
+    }
+    public runShader(){
+         //shader常量
+         this.shader_flashLightUBO.lightAngle = 75;
+         this.shader_flashLightUBO.lightColor = cc.color(130,99,68);
+         this.shader_flashLightUBO.lightWidth = 0.1;
+         this.shader_flashLightUBO.enableGradient = true;
+         this.shader_flashLightUBO.cropAlpha = true;
+         this.shader_flashLightUBO.enableFog = false;
+         //扫光
+         let posx = 0;
+         this.t_timerMovex = setInterval(()=>{
+             //shader变量
+             this.shader_flashLightUBO.lightCenterPoint = cc.v2(posx+=0.02, 0.5);
+             //设置材质
+             let material: cc.Material = this.m_flashLightAppName.getComponent(cc.Sprite).getMaterial(0);
+             material.setProperty("lightColor", this.shader_flashLightUBO.lightColor);
+             material.setProperty("lightCenterPoint", this.shader_flashLightUBO.lightCenterPoint);
+             material.setProperty("lightAngle", this.shader_flashLightUBO.lightAngle);
+             material.setProperty("lightWidth", this.shader_flashLightUBO.lightWidth);
+             material.setProperty("enableGradient", this.shader_flashLightUBO.enableGradient);
+             material.setProperty("cropAlpha", this.shader_flashLightUBO.cropAlpha);
+             material.setProperty("enableFog", this.shader_flashLightUBO.enableFog);
+             this.m_flashLightAppName.getComponent(cc.Sprite).setMaterial(0, material);
+             if(posx > 1){
+                 posx = 0;
+             }
+         },33);
     }
     public onDestory(){
         if(this.t_timerMovex){

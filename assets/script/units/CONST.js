@@ -61,3 +61,9 @@ const ROOM_CLICK_POS = cc.Enum({
     UPRULE:2,
     DOWNRULE:3,
 })
+const DIALOG = cc.Enum({
+    MB_YES: 0,
+    MB_NO: 1,
+    MB_YESNO: 2,
+    MB_GET: 3,
+  });

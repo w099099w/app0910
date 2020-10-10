@@ -57,7 +57,11 @@ declare enum ROOM_CLICK_POS{
     UPRULE,
     DOWNRULE,
 }
-
+declare enum DIALOG{
+    MB_YES,
+    MB_NO,
+    MB_YESNO,
+}
 //网络接口
 declare interface VerifyPhone {
     phone: string;

@@ -22,16 +22,16 @@ export default class Version extends cc.Component {
     private verStr: cc.Label;
     private bar: cc.ProgressBar;
     private root:cc.Node;
-
+    private remoteVersion:string;
 
     public onLoad() {
         this.am = null;
         this.downloadUrl = null;
         this.root = cc.find('loading',this.node);
         this.stateStr = cc.find('loading/progress/state/content', this.node).getComponent(cc.Label);
-        this.detailStr = cc.find('loading/progress/state/content/detail', this.node).getComponent(cc.Label);
+        this.detailStr = cc.find('loading/progress/state/detail', this.node).getComponent(cc.Label);
         this.verStr = cc.find('loading/version/value', this.node).getComponent(cc.Label);
-        this.bar = cc.find('loading/progress/bar', this.node).getComponent(cc.ProgressBar);
+        this.bar = cc.find('loading/progress', this.node).getComponent(cc.ProgressBar);
         this.index = this.index2 = this.byte = 0;
     }
 
@@ -70,12 +70,17 @@ export default class Version extends cc.Component {
         this.speedtimer = null;
     }
 
-    public validate(callback) {
+    public validate(callback:Function) {
+        if(cc.sys.localStorage.getItem('hotUpdateVer')){
+            this.verStr.string = '版本号: '+cc.sys.localStorage.getItem('hotUpdateVer');
+        }else{
+            this.verStr.string = '版本号: '+JSON.parse(JSON.parse(this.manifest._nativeAsset).version).hotUpdate;
+        }
         if (!cc.sys.isNative || this.am) {
             this.stateStr.string = '状态: 非原生,系统将不进行更新!'
             this.timer = setTimeout(()=>{
                 this.hide();
-                callback(0);
+                callback(5);
             },2000);
             return true;
         }
@@ -125,9 +130,11 @@ export default class Version extends cc.Component {
         }
 
         if (cc.sys.os === cc.sys.OS_IOS) {
-            this.verStr.string = '版本号: \nsoftware' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
+            //this.verStr.string = '版本号: \nsoftware' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
+            this.verStr.string = '版本号: ' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
         } else {
-            this.verStr.string = '版本号: \nandroid: ' + JSON.parse(this.am.getLocalManifest().getVersion()).android + '\nsoftware: ' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
+            //this.verStr.string = '版本号: \nandroid: ' + JSON.parse(this.am.getLocalManifest().getVersion()).android + '\nsoftware: ' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
+            this.verStr.string = '版本号: ' + JSON.parse(this.am.getLocalManifest().getVersion()).hotUpdate;//显示当前版本号
         }
         if (!this.am.getLocalManifest() || !this.am.getLocalManifest().isLoaded()) {
             this.stateStr.string = '状态: 获取本地 manifest文件失败!';
@@ -140,7 +147,6 @@ export default class Version extends cc.Component {
                 this.am.checkUpdate(); //检查更新
             }
         }, 1000)
-
     }
 
     private checkCb(event) {
@@ -176,6 +182,7 @@ export default class Version extends cc.Component {
                 let version = this.am.getRemoteManifest().getVersion();
                 let newHotUpdate = JSON.parse(version).hotUpdate;
                 this.stateStr.string = '状态: 发现新版本' + newHotUpdate + '   准备更新文件...';
+                this.remoteVersion = newHotUpdate;
                 this.bar.progress = 0;//更新进度归0
                 setTimeout(() => {
                     if (SceneManager.getInstance().getSceneName() == 'passport') {
@@ -297,6 +304,7 @@ export default class Version extends cc.Component {
         }
 
         if (needRestart) {
+            cc.sys.localStorage.setItem('hotUpdateVer',this.remoteVersion);
             if (this.speedtimer) {
                 clearTimeout(this.speedtimer)
             }

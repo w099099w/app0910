@@ -163,7 +163,21 @@ export default class UserView extends MUser{
         switch(this.getAvatarButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
             case BUTTON_STATE.ON:{
-                Toast.getInstance().show('TIP 浏览器下无法上传头像,请使用APP上传!',this.m_toast)
+                Toast.getInstance().show('正在读取文件...',this.m_toast);
+                setTimeout(()=>{
+                    if(cc.sys.isNative){
+                        if(cc.sys.os === cc.sys.OS_ANDROID){
+                            let sigs = '()V';
+                            jsb.reflection.callStaticMethod(className, 'getImgData', sigs);
+                        }else if(cc.sys.os === cc.sys.OS_IOS){
+                            //jsb.reflection.callStaticMethod("AppController", "getImgData");
+                        }else if(cc.sys.os === cc.sys.OS_WINDOWS){
+                            Toast.getInstance().show('TIP 浏览器下无法上传头像,请使用APP上传!',this.m_toast); 
+                        }
+                    }else{
+                        Toast.getInstance().show('TIP 浏览器下无法上传头像,请使用APP上传!',this.m_toast); 
+                    }
+                },1000);
             }return;break;
         }
     }

@@ -1,0 +1,19 @@
+(function () {
+    const currentBuild = "1.0.0.0";//设置安装包版本
+    if (typeof window.jsb === 'object') {
+        var cacheVersion = localStorage.getItem('androidVersion');
+        var hotUpdateSearchPaths = localStorage.getItem('HotUpdateSearchPaths');
+        if(cacheVersion != currentBuild){
+            if (hotUpdateSearchPaths) {
+                let removeSearch = JSON.parse(hotUpdateSearchPaths)[0];//获取删除目录
+                jsb.fileUtils.removeDirectory(removeSearch);//清除缓存
+                hotUpdateSearchPaths = null;
+            }
+            localStorage.setItem('androidVersion',currentBuild);//修改为最新的版本
+            localStorage.removeItem('HotUpdateSearchPaths');
+        } 
+        if (hotUpdateSearchPaths) {
+            jsb.fileUtils.setSearchPaths(JSON.parse(hotUpdateSearchPaths));
+        }   
+    }
+})();

@@ -1,0 +1,1 @@
+window._CCSettings={platform:"android",groupList:["default","capture"],collisionMatrix:[[true],[false,false]],hasResourcesBundle:true,hasStartSceneBundle:false,remoteBundles:[],subpackages:[],launchScene:"db://assets/scene/passport.fire",orientation:"",server:"",jsList:["assets/script/units/CONST.js"]};

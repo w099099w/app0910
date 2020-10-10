@@ -5,7 +5,7 @@ import HallModelManager from "./HallModelManager";
 
 const {ccclass, property} = cc._decorator;
 @ccclass
-export default class HallViewManager extends cc.Component {
+export default class Hall extends cc.Component {
     private cl_ModelManager:HallModelManager;
     @property(cc.Prefab)
     popupLeftButton = null;
@@ -45,6 +45,9 @@ export default class HallViewManager extends cc.Component {
     }
     start(){
         this.cl_ModelManager.start();
+    }
+    Toast(val,w,h){
+        Toast.getInstance().show('文件路径'+val+'图像宽'+w+'图像高'+h,this.node.getChildByName('common/toast'));
     }
     onDestroy(){
         Notice.getInstance().onDestroy();
