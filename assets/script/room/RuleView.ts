@@ -1,9 +1,5 @@
 import MyAnimation from "../common/MyAnimation";
-import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
-import RecordView from "../hall/popup/RecordView";
-import SetView from "../hall/popup/SetView";
-import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 
 
@@ -14,7 +10,6 @@ export class MRule extends MyAnimation{
     protected getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
     }
-
 }
 
 
@@ -34,17 +29,17 @@ export default class RuleView extends MRule{
     public constructor(Node:cc.Node){
         super();
         this.node = Node;
-        this.m_toast = cc.find('common/toast',this.node);
-        this.m_mask = cc.find('popup/mask',this.node);
-        this.m_root = cc.find('popup/gamerule',this.node);
+        this.m_toast = cc.find('common/toast',this.node.parent);
+        this.m_mask = cc.find('mask',this.node);
+        this.m_root = cc.find('gamerule',this.node);
     
     
-        this.c_max = cc.find('popup/gamerule/maxbet/value',this.node).getComponent(cc.Label);
-        this.c_min = cc.find('popup/gamerule/minbet/value',this.node).getComponent(cc.Label);
-        this.c_rule = cc.find('popup/gamerule/rule/value',this.node).getComponent(cc.Label);
-        this.c_gamenum = cc.find('popup/gamerule/gamenum/value',this.node).getComponent(cc.Label);
+        this.c_max = cc.find('gamerule/maxbet/value',this.node).getComponent(cc.Label);
+        this.c_min = cc.find('gamerule/minbet/value',this.node).getComponent(cc.Label);
+        this.c_rule = cc.find('gamerule/rule/value',this.node).getComponent(cc.Label);
+        this.c_gamenum = cc.find('gamerule/gamenum/value',this.node).getComponent(cc.Label);
 
-        this.i_close = cc.find('popup/gamerule/button_close',this.node);
+        this.i_close = cc.find('gamerule/button_close',this.node);
         this.m_mask.active = false;
         this.m_root.active = false;
     }
@@ -53,6 +48,7 @@ export default class RuleView extends MRule{
             Toast.getInstance().show('数据错误!',this.m_toast)
             return;
         }
+        this.node.active = true;
         this.c_min.string = '底注: '+String(SanGongRuleInfo.min);
         this.c_max.string = '下注封顶: '+String(SanGongRuleInfo.max);
         this.c_rule.string = String(SanGongRuleInfo.rule);

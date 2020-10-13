@@ -2,7 +2,7 @@ import MyAnimation from "../common/MyAnimation";
 import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import RecordView from "../hall/popup/RecordView";
-import SetView from "../hall/popup/SetView";
+import SetView from "../common/SetView";
 import GameView from "./GameView";
 import RoomView from "./RoomView";
 import RuleView from "./RuleView";
@@ -26,7 +26,7 @@ export default class RoomViewManager extends cc.Component {
         this.cl_RecordView = new RecordView(this.node,this.PopupButton);
         this.cl_SetView = new SetView(this.node);
         this.cl_TopView = new TopView(this.node,this.cl_RecordView,this.cl_SetView);
-        this.cl_RuleView = new RuleView(this.node);
+        this.cl_RuleView = new RuleView(cc.find('popup',this.node));
         this.cl_RoomView = new RoomView(this.node,this.cl_RuleView);
         this.cl_GameView = new GameView(this.node,this.cl_RoomView);
     }

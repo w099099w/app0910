@@ -56,7 +56,6 @@ export class MMoneyFlow extends MyAnimation{
         };
         this.totalCount = 73;
         let forNum = RequestData.page*RequestData.limit > this.totalCount?this.totalCount%this.m_pageShowNum:this.m_pageShowNum;
-        console.log(RequestData.page,RequestData.limit,this.totalCount,forNum);
         for(let i = 0; i < forNum;i++){
             let as = Math.ceil(Math.random()*100000);
             let amounti = (Math.random()*10)>5?Math.ceil(Math.random()*(as/0.4)):-Math.ceil(Math.random()*(as/0.4));
@@ -115,6 +114,7 @@ export default class MoneyFlowView extends MMoneyFlow{
     }
     public show(){
         this.removeAllChild();
+        this.c_list.scrollTo(0);
         this.RequestMoneyFlowData(this.addItemNumber.bind(this));
         this.popupOpenScaleY(this.m_root,this.m_mask,this.addEvent.bind(this));
     }
@@ -141,9 +141,10 @@ export default class MoneyFlowView extends MMoneyFlow{
        this.m_scrollview.on('scroll-to-bottom',this.scrollToButtom.bind(this));
     }
     public renderMoneyFlowFunction(Item:cc.Node,Index:number){
-        console.log(Index);
         let data:MoneyFlowInfo = this.getMoneyFlowInfoFromIndex(Index);
-        
+        if(!data){
+            return;
+        }
         Item.getChildByName('orderid').getComponent(cc.Label).string = data.orderid;
         Item.getChildByName('before').getComponent(cc.Label).string = String(data.before);
         Item.getChildByName('amount').getComponent(cc.Label).string = String(data.amount);

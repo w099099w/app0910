@@ -4,7 +4,7 @@ import Navbar from "./base/Navbar";
 import ShareView from "./popup/ShareView";
 import PlayView from "./popup/PlayView";
 import MsgView from "./popup/MsgView";
-import SetView from "./popup/SetView";
+import SetView from "../common/SetView";
 import AgentView from "./popup/AgentView";
 import MyAnimation from "../common/MyAnimation";
 import UserView from "./base/User";

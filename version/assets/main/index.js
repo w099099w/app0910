@@ -114,6 +114,58 @@ cc._RF.pop();
 "../../common/MyAnimation": "MyAnimation",
 "../../common/Toast": "Toast"
 } ],
+AtlasLib: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "caba1gtnCpMbJkK7CzToDnW", "AtlasLib");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = function() {
+function t() {
+this.cache = [];
+}
+t.getInstance = function() {
+if (!t.m_instance) {
+t.m_instance = new t();
+return t.m_instance;
+}
+return t.m_instance;
+};
+t.prototype.cleanAtlas = function(t) {
+if (this.cache) if (this.cache[t]) {
+cc.resources.release(this.cache[t].path);
+delete this.cache[t];
+} else {
+for (var e in this.cache) cc.resources.release(this.cache[e].path);
+this.cache = [];
+}
+};
+t.prototype.loadAtlas = function(t, e, o) {
+void 0 === o && (o = null);
+if (t && e && "string" == typeof t && "string" == typeof e) if (this.cache && this.cache[t] && this.cache[t].path == e) o && o(null, this.cache[t].atlas); else {
+this.cache || (this.cache = []);
+cc.resources.load(e, cc.SpriteAtlas, function(i, n) {
+if (!i) {
+var c = {
+path: e,
+atlas: n
+};
+this.cache[t] = c;
+}
+o && o(i, n);
+}.bind(this));
+}
+};
+t.prototype.getSpriteFrame = function(t, e) {
+if (!this.cache[t]) return null;
+var o = this.cache[t].atlas.getSpriteFrame(e);
+return o instanceof cc.SpriteFrame ? o : null;
+};
+return t;
+}();
+o.default = i;
+cc._RF.pop();
+}, {} ],
 AudioManager: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "830f0/LN+lJD4LcVuhJMhN9", "AudioManager");
@@ -725,80 +777,6 @@ cc._RF.pop();
 "../common/Toast": "Toast",
 "../units/Tool": "Tool"
 } ],
-GameSangong: [ function(t, e, o) {
-"use strict";
-cc._RF.push(e, "a878eQghqFHPqLzCy76SeLi", "GameSangong");
-var i, n = this && this.__extends || (i = function(t, e) {
-return (i = Object.setPrototypeOf || {
-__proto__: []
-} instanceof Array && function(t, e) {
-t.__proto__ = e;
-} || function(t, e) {
-for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
-})(t, e);
-}, function(t, e) {
-i(t, e);
-function o() {
-this.constructor = t;
-}
-t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
-}), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
-};
-Object.defineProperty(o, "__esModule", {
-value: !0
-});
-var s = t("../common/SceneManager"), a = t("../common/Toast"), r = cc._decorator, l = r.ccclass, u = (r.property, 
-function(t) {
-n(e, t);
-function e() {
-return null !== t && t.apply(this, arguments) || this;
-}
-e.prototype.switch = function() {
-this.bgIndex += 1;
-this.bgIndex > 3 && (this.bgIndex = 0);
-this.switchBg();
-this.switchcard();
-};
-e.prototype.switchBg = function() {
-this.node.getComponent("switchsp").setSpriteFrame(this.bgIndex);
-};
-e.prototype.onLoad = function() {
-s.default.getInstance().setScene(cc.director.getScene());
-a.default.getInstance().setRootNode(cc.find("common/toast", this.node));
-this.bgIndex = 0;
-this.cdIndex = 0;
-};
-e.prototype.switchcard = function() {
-var t = this;
-this.cdIndex += 1;
-this.cdIndex > 3 && (this.cdIndex = 0);
-this.node.getChildByName("player").children.forEach(function(e, o) {
-0 == o ? e.getChildByName("cardList").children.forEach(function(e) {
-e.getComponent("switchsp").setSpriteFrame(t.bgIndex);
-e.width = 83;
-e.height = 111;
-}) : e.getChildByName("cardList").children.forEach(function(e) {
-e.getComponent("switchsp").setSpriteFrame(t.bgIndex);
-e.width = 57;
-e.height = 76;
-});
-}, this);
-};
-e.prototype.goRoom = function() {
-s.default.getInstance().loadScene("room");
-};
-e.prototype.start = function() {};
-return c([ l ], e);
-}(cc.Component));
-o.default = u;
-cc._RF.pop();
-}, {
-"../common/SceneManager": "SceneManager",
-"../common/Toast": "Toast"
-} ],
 GameView: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "ac7d6jLVB9AKaDE344uh+wn", "GameView");
@@ -1092,7 +1070,7 @@ cc._RF.push(e, "6d0f1fKw9FG8Imd0T2o0x11", "HallModelManager");
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var i = t("./base/Home"), n = t("./base/Left"), c = t("./base/Navbar"), s = t("./popup/ShareView"), a = t("./popup/PlayView"), r = t("./popup/MsgView"), l = t("./popup/SetView"), u = t("./popup/AgentView"), h = t("../common/MyAnimation"), p = t("./base/User"), d = t("./popup/ResetPdView"), m = t("./popup/RealNameView"), f = t("./popup/MoneyFlowView"), _ = t("./popup/RecordView"), g = function() {
+var i = t("./base/Home"), n = t("./base/Left"), c = t("./base/Navbar"), s = t("./popup/ShareView"), a = t("./popup/PlayView"), r = t("./popup/MsgView"), l = t("../common/SetView"), u = t("./popup/AgentView"), h = t("../common/MyAnimation"), p = t("./base/User"), d = t("./popup/ResetPdView"), f = t("./popup/RealNameView"), m = t("./popup/MoneyFlowView"), _ = t("./popup/RecordView"), g = function() {
 function t(t, e) {
 void 0 === t && (t = null);
 void 0 === e && (e = null);
@@ -1125,8 +1103,8 @@ this.cl_RecordView = new _.default(this.node, this.m_PrefabArr.otherL);
 }
 this.cl_Navbar = new c.default(this.node, this.cl_ShareView, this.cl_PlayView, this.cl_MsgView, this.cl_SetView, this.cl_AgentView, this.cl_RecordView);
 this.cl_ResetPdView = new d.default(this.node);
-this.cl_RealNameView = new m.default(this.node);
-this.cl_MoneyFlowView = new f.default(this.node);
+this.cl_RealNameView = new f.default(this.node);
+this.cl_MoneyFlowView = new m.default(this.node);
 this.cl_UserView = new p.default(this.node, this.cl_ResetPdView, this.cl_RealNameView, this.cl_MoneyFlowView);
 };
 t.prototype.start = function() {
@@ -1167,6 +1145,7 @@ o.default = g;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
+"../common/SetView": "SetView",
 "./base/Home": "Home",
 "./base/Left": "Left",
 "./base/Navbar": "Navbar",
@@ -1178,7 +1157,6 @@ cc._RF.pop();
 "./popup/RealNameView": "RealNameView",
 "./popup/RecordView": "RecordView",
 "./popup/ResetPdView": "ResetPdView",
-"./popup/SetView": "SetView",
 "./popup/ShareView": "ShareView"
 } ],
 Hall: [ function(t, e, o) {
@@ -1924,7 +1902,7 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s, a, r, l = cc._decorator, u = l.ccclass, h = l.property, p = l.disallowMultiple, d = l.menu, m = l.executionOrder, f = l.requireComponent, _ = t("./ListItem");
+var s, a, r, l = cc._decorator, u = l.ccclass, h = l.property, p = l.disallowMultiple, d = l.menu, f = l.executionOrder, m = l.requireComponent, _ = t("./ListItem");
 (function(t) {
 t[t.NODE = 1] = "NODE";
 t[t.PREFAB = 2] = "PREFAB";
@@ -2472,14 +2450,14 @@ return;
 }
 this.firstListId = this.displayData[0].id;
 this.displayItemNum = this.displayData.length;
-var m = this._lastDisplayData.length, f = this.displayItemNum != m;
-if (f) {
+var f = this._lastDisplayData.length, m = this.displayItemNum != f;
+if (m) {
 this.frameByFrameRenderNum > 0 && this._lastDisplayData.sort(function(t, e) {
 return t - e;
 });
-f = this.firstListId != this._lastDisplayData[0] || this.displayData[this.displayItemNum - 1].id != this._lastDisplayData[m - 1];
+m = this.firstListId != this._lastDisplayData[0] || this.displayData[this.displayItemNum - 1].id != this._lastDisplayData[f - 1];
 }
-if (this._forceUpdate || f) if (this.frameByFrameRenderNum > 0) if (this._numItems > 0) {
+if (this._forceUpdate || m) if (this.frameByFrameRenderNum > 0) if (this._numItems > 0) {
 this._updateDone ? this._updateCounter = 0 : this._doneAfterUpdate = !0;
 this._updateDone = !1;
 } else {
@@ -2999,15 +2977,15 @@ i._virtual ? i._createOrUpdateItem(u) : i._createOrUpdateItem2(o);
 if (i.selectedMode == r.SINGLE) a ? i._selectedId = -1 : i._selectedId - 1 >= 0 && i._selectedId--; else if (i.selectedMode == r.MULT && i.multSelected.length) {
 var h = i.multSelected.indexOf(t);
 h >= 0 && i.multSelected.splice(h, 1);
-for (var p = i.multSelected.length - 1; p >= 0; p--) (f = i.multSelected[p]) >= t && i.multSelected[p]--;
+for (var p = i.multSelected.length - 1; p >= 0; p--) (m = i.multSelected[p]) >= t && i.multSelected[p]--;
 }
 if (i._customSize) {
 i._customSize[t] && delete i._customSize[t];
-var d = {}, m = void 0;
-for (var f in i._customSize) {
-m = i._customSize[f];
-var _ = parseInt(f);
-d[_ - (_ >= t ? 1 : 0)] = m;
+var d = {}, f = void 0;
+for (var m in i._customSize) {
+f = i._customSize[m];
+var _ = parseInt(m);
+d[_ - (_ >= t ? 1 : 0)] = f;
 }
 i._customSize = d;
 }
@@ -3288,7 +3266,7 @@ return this.selectedMode > r.NONE;
 c([ h({
 serializable: !1
 }) ], e.prototype, "_numItems", void 0);
-return c([ u, p(), d("自定义组件/List"), f(cc.ScrollView), m(-5e3) ], e);
+return c([ u, p(), d("自定义组件/List"), m(cc.ScrollView), f(-5e3) ], e);
 }(cc.Component);
 o.default = g;
 cc._RF.pop();
@@ -3543,10 +3521,7 @@ this.i_chooseVerify.getChildByName("value").getComponent("switchsp").setSpriteFr
 this.m_pdView.active = !1;
 this.m_verifyView.active = !0;
 }
-this.c_verifyViewPhoneInput.string = "";
-this.c_verifyViewVerfyInput.string = "";
-this.c_pdViewPhoneInput.string = "";
-this.c_pdViewPdInput.string = "";
+this.reset();
 };
 e.prototype.show = function() {
 var t = this;
@@ -3651,6 +3626,58 @@ cc._RF.pop();
 "./ForgetPd": "ForgetPd",
 "./Regist": "Regist"
 } ],
+Main: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "a878eQghqFHPqLzCy76SeLi", "Main");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+}), c = this && this.__decorate || function(t, e, o, i) {
+var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
+return c > 3 && s && Object.defineProperty(e, o, s), s;
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("./SGView"), l = cc._decorator, u = l.ccclass, h = (l.property, 
+function(t) {
+n(e, t);
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+e.prototype.onLoad = function() {
+s.default.getInstance().setScene(cc.director.getScene());
+a.default.getInstance().setRootNode(cc.find("common/toast", this.node));
+this.cl_SGView = new r.default(this.node);
+};
+e.prototype.start = function() {
+this.cl_SGView.start();
+};
+e.prototype.onDestroy = function() {
+this.cl_SGView.onDestroy();
+this.cl_SGView = null;
+};
+return c([ u ], e);
+}(cc.Component));
+o.default = h;
+cc._RF.pop();
+}, {
+"../common/SceneManager": "SceneManager",
+"../common/Toast": "Toast",
+"./SGView": "SGView"
+} ],
 MoneyFlowView: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "eb69fdP1+RCyKA0bBr2qWm9", "MoneyFlowView");
@@ -3717,23 +3744,18 @@ e.m_cache.push(t);
 });
 };
 e.prototype.RequestMoneyFlowData = function(t) {
-var e = {
-page: this.curentPage + 1,
-limit: this.m_pageShowNum
-};
+var e = this.curentPage + 1, o = this.m_pageShowNum;
 this.totalCount = 73;
-var o = e.page * e.limit > this.totalCount ? this.totalCount % this.m_pageShowNum : this.m_pageShowNum;
-console.log(e.page, e.limit, this.totalCount, o);
-for (var i = 0; i < o; i++) {
-var n = Math.ceil(1e5 * Math.random()), c = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (n / .4)) : -Math.ceil(Math.random() * (n / .4)), a = n + c, r = {
-orderid: (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i)).toString(16) + (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i)).toString(16),
-before: n,
-amount: c,
-after: a,
+for (var i = e * o > this.totalCount ? this.totalCount % this.m_pageShowNum : this.m_pageShowNum, n = 0; n < i; n++) {
+var c = Math.ceil(1e5 * Math.random()), a = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (c / .4)) : -Math.ceil(Math.random() * (c / .4)), r = c + a, l = {
+orderid: (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n)).toString(16) + (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n)).toString(16),
+before: c,
+amount: a,
+after: r,
 type: Math.ceil(7 * Math.random()),
-date: s.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i))
+date: s.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n))
 };
-this.m_cache.push(r);
+this.m_cache.push(l);
 }
 this.curentPage += 1;
 t(this.m_cache.length);
@@ -3768,6 +3790,7 @@ this.c_list.numItems = 0;
 };
 e.prototype.show = function() {
 this.removeAllChild();
+this.c_list.scrollTo(0);
 this.RequestMoneyFlowData(this.addItemNumber.bind(this));
 this.popupOpenScaleY(this.m_root, this.m_mask, this.addEvent.bind(this));
 };
@@ -3791,8 +3814,8 @@ this.i_back.on("touchend", this.hide.bind(this));
 this.m_scrollview.on("scroll-to-bottom", this.scrollToButtom.bind(this));
 };
 e.prototype.renderMoneyFlowFunction = function(t, e) {
-console.log(e);
 var o = this.getMoneyFlowInfoFromIndex(e);
+if (o) {
 t.getChildByName("orderid").getComponent(cc.Label).string = o.orderid;
 t.getChildByName("before").getComponent(cc.Label).string = String(o.before);
 t.getChildByName("amount").getComponent(cc.Label).string = String(o.amount);
@@ -3800,6 +3823,7 @@ o.amount > 0 ? t.getChildByName("amount").color = new cc.Color(255, 0, 0) : o.am
 t.getChildByName("after").getComponent(cc.Label).string = String(o.after);
 t.getChildByName("type").getComponent(cc.Label).string = this.payTypeArr[o.type];
 t.getChildByName("date").getComponent(cc.Label).string = o.date;
+}
 };
 e.prototype.start = function() {
 this.m_mainRoot.active = !1;
@@ -4594,7 +4618,7 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), p = t("./Login"), d = t("./Version"), m = t("../common/Dialog"), f = cc._decorator, _ = f.ccclass, g = (f.property, 
+var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), p = t("./Login"), d = t("./Version"), f = t("../common/Dialog"), m = t("../common/AtlasLib"), _ = cc._decorator, g = _.ccclass, y = (_.property, 
 function(t) {
 n(e, t);
 function e() {
@@ -4622,7 +4646,7 @@ this.resetView();
 u.default.getInstance();
 a.default.getInstance().setScene(cc.director.getScene());
 r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
-m.default.getInstance().setRootNode(this.node);
+f.default.getInstance().setRootNode(this.node);
 this.cl_version = this.node.getComponent(d.default);
 this.cl_loading = new h.default(this.node, this.lauchingFinished.bind(this));
 this.cl_login = new p.default(this.node);
@@ -4641,36 +4665,37 @@ this.initAudio();
 this.cl_version.validate(function(e) {
 switch (e) {
 case 1:
-m.default.getInstance().push("提示", 1, "本地更新文件查找失败,请重新下载安装本应用!", DIALOG.MB_YES, t.versionResult.bind(t), {
+f.default.getInstance().push("提示", 1, "本地更新文件查找失败,请重新下载安装本应用!", DIALOG.MB_YES, t.versionResult.bind(t), {
 code: 1
 });
 break;
 
 case 2:
-m.default.getInstance().push("提示", 1, "远程更新文件下载失败,请稍后再试!", DIALOG.MB_YES, t.versionResult.bind(t), {
+f.default.getInstance().push("提示", 1, "远程更新文件下载失败,请稍后再试!", DIALOG.MB_YES, t.versionResult.bind(t), {
 code: 2
 });
 break;
 
 case 3:
-m.default.getInstance().push("提示", 1, "读取本地更新文件失败,请重启应用后再试!", DIALOG.MB_YES, t.versionResult.bind(t), {
+f.default.getInstance().push("提示", 1, "读取本地更新文件失败,请重启应用后再试!", DIALOG.MB_YES, t.versionResult.bind(t), {
 code: 3
 });
 break;
 
 case 4:
-m.default.getInstance().push("错误", 0, "android版本包版本不是最新的,请下载最新安装包安装!", DIALOG.MB_YES, t.versionResult.bind(t), {
+f.default.getInstance().push("错误", 0, "android版本包版本不是最新的,请下载最新安装包安装!", DIALOG.MB_YES, t.versionResult.bind(t), {
 code: 4
 });
 break;
 
 case 5:
-m.default.getInstance().push("警告", 2, "当前运行环境为非原生系统无法热更新,未更新的版本可能出现错误!", DIALOG.MB_YES, t.versionResult.bind(t), {
+f.default.getInstance().push("警告", 2, "当前运行环境为非原生系统无法热更新,未更新的版本可能出现错误!", DIALOG.MB_YES, t.versionResult.bind(t), {
 code: 5
 });
 break;
 
 case 0:
+m.default.getInstance().loadAtlas("card", "card/card");
 t.cl_loading.Startlauching();
 }
 });
@@ -4689,6 +4714,7 @@ cc.game.end();
 break;
 
 case 5:
+m.default.getInstance().loadAtlas("card", "card/card");
 this.cl_loading.Startlauching();
 }
 };
@@ -4697,11 +4723,12 @@ s.default.onDestory();
 this.cl_login.onDestroy();
 this.cl_loading.onDestory();
 };
-return c([ _ ], e);
+return c([ g ], e);
 }(cc.Component));
-o.default = g;
+o.default = y;
 cc._RF.pop();
 }, {
+"../common/AtlasLib": "AtlasLib",
 "../common/Dialog": "Dialog",
 "../common/MyAnimation": "MyAnimation",
 "../common/SceneManager": "SceneManager",
@@ -4859,6 +4886,50 @@ cc._RF.pop();
 }, {
 "../../common/MyAnimation": "MyAnimation",
 "../../units/Tool": "Tool"
+} ],
+Player: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "507b0vkhyhI66uJoG7pREgZ", "Player");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+});
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+o.MPlayer = void 0;
+var c = function(t) {
+n(e, t);
+function e() {
+return t.call(this) || this;
+}
+return e;
+}(t("../common/MyAnimation").default);
+o.MPlayer = c;
+var s = function(t) {
+n(e, t);
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+e.prototype.start = function() {};
+e.prototype.onDestroy = function() {};
+return e;
+}(c);
+o.default = s;
+cc._RF.pop();
+}, {
+"../common/MyAnimation": "MyAnimation"
 } ],
 RealNameView: [ function(t, e, o) {
 "use strict";
@@ -5112,6 +5183,7 @@ this.init();
 e.prototype.show = function() {
 this.m_mainNode.active = !0;
 this.removeAllChild(0);
+this.c_list.scrollTo(0);
 this.RequestMoneyFlowData(this.addItemNumber.bind(this));
 this.popupOpenScaleXY(this.m_root, this.m_mask, this.addEvent.bind(this));
 };
@@ -5448,7 +5520,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MRoom = void 0;
-var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../units/Tool"), l = function(t) {
+var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -5519,8 +5591,8 @@ this.flushRoomViewFunction();
 };
 return e;
 }(c.default);
-o.MRoom = l;
-var u = function(t) {
+o.MRoom = u;
+var h = function(t) {
 n(e, t);
 function e(e, o) {
 var i = t.call(this) || this;
@@ -5551,6 +5623,24 @@ this.c_list.PrefabIndex = t;
 e.prototype.clickMainFunction = function(t, e, o, i) {
 switch (i.pos) {
 case ROOM_CLICK_POS.UPTABLE:
+switch (this.getTableButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+var n = this.getDataFromIndex(e, !1);
+l.default.getInstance().setTableInfo({
+tablenum: n.tableNum,
+min: n.bet,
+max: n.max,
+gamenum: n.gamenum,
+rule: n.rule
+});
+s.default.getInstance().loadScene("game_sg");
+}
+break;
+
 case ROOM_CLICK_POS.DOWNTABLE:
 switch (this.getTableButtonState()) {
 case BUTTON_STATE.OFF:
@@ -5558,6 +5648,14 @@ a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
+n = this.getDataFromIndex(e, !0);
+l.default.getInstance().setTableInfo({
+tablenum: n.tableNum,
+min: n.bet,
+max: n.max,
+gamenum: n.gamenum,
+rule: n.rule
+});
 s.default.getInstance().loadScene("game_sg");
 }
 break;
@@ -5569,8 +5667,9 @@ a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-var n = this.getDataFromIndex(e, !1);
+n = this.getDataFromIndex(e, !1);
 this.cl_RuleView.show({
+tablenum: n.tableNum,
 min: n.bet,
 max: n.max,
 gamenum: n.gamenum,
@@ -5588,6 +5687,7 @@ break;
 case BUTTON_STATE.ON:
 n = this.getDataFromIndex(e, !0);
 this.cl_RuleView.show({
+tablenum: n.tableNum,
 min: n.bet,
 max: n.max,
 gamenum: n.gamenum,
@@ -5640,14 +5740,15 @@ this.tic && clearInterval(this.tic);
 };
 e.prototype.Start = function() {};
 return e;
-}(l);
-o.default = u;
+}(u);
+o.default = h;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
 "../common/SceneManager": "SceneManager",
 "../common/Toast": "Toast",
-"../units/Tool": "Tool"
+"../units/Tool": "Tool",
+"../units/UserConfig": "UserConfig"
 } ],
 Room: [ function(t, e, o) {
 "use strict";
@@ -5674,7 +5775,7 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../hall/popup/SetView"), h = t("./GameView"), p = t("./RoomView"), d = t("./RuleView"), m = t("./TopView"), f = cc._decorator, _ = f.ccclass, g = f.property, y = function(t) {
+var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../common/SetView"), h = t("./GameView"), p = t("./RoomView"), d = t("./RuleView"), f = t("./TopView"), m = cc._decorator, _ = m.ccclass, g = m.property, y = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -5686,8 +5787,8 @@ a.default.getInstance().setScene(cc.director.getScene());
 r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
 this.cl_RecordView = new l.default(this.node, this.PopupButton);
 this.cl_SetView = new u.default(this.node);
-this.cl_TopView = new m.default(this.node, this.cl_RecordView, this.cl_SetView);
-this.cl_RuleView = new d.default(this.node);
+this.cl_TopView = new f.default(this.node, this.cl_RecordView, this.cl_SetView);
+this.cl_RuleView = new d.default(cc.find("popup", this.node));
 this.cl_RoomView = new p.default(this.node, this.cl_RuleView);
 this.cl_GameView = new h.default(this.node, this.cl_RoomView);
 };
@@ -5731,9 +5832,9 @@ cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
 "../common/SceneManager": "SceneManager",
+"../common/SetView": "SetView",
 "../common/Toast": "Toast",
 "../hall/popup/RecordView": "RecordView",
-"../hall/popup/SetView": "SetView",
 "./GameView": "GameView",
 "./RoomView": "RoomView",
 "./RuleView": "RuleView",
@@ -5777,20 +5878,21 @@ n(e, t);
 function e(e) {
 var o = t.call(this) || this;
 o.node = e;
-o.m_toast = cc.find("common/toast", o.node);
-o.m_mask = cc.find("popup/mask", o.node);
-o.m_root = cc.find("popup/gamerule", o.node);
-o.c_max = cc.find("popup/gamerule/maxbet/value", o.node).getComponent(cc.Label);
-o.c_min = cc.find("popup/gamerule/minbet/value", o.node).getComponent(cc.Label);
-o.c_rule = cc.find("popup/gamerule/rule/value", o.node).getComponent(cc.Label);
-o.c_gamenum = cc.find("popup/gamerule/gamenum/value", o.node).getComponent(cc.Label);
-o.i_close = cc.find("popup/gamerule/button_close", o.node);
+o.m_toast = cc.find("common/toast", o.node.parent);
+o.m_mask = cc.find("mask", o.node);
+o.m_root = cc.find("gamerule", o.node);
+o.c_max = cc.find("gamerule/maxbet/value", o.node).getComponent(cc.Label);
+o.c_min = cc.find("gamerule/minbet/value", o.node).getComponent(cc.Label);
+o.c_rule = cc.find("gamerule/rule/value", o.node).getComponent(cc.Label);
+o.c_gamenum = cc.find("gamerule/gamenum/value", o.node).getComponent(cc.Label);
+o.i_close = cc.find("gamerule/button_close", o.node);
 o.m_mask.active = !1;
 o.m_root.active = !1;
 return o;
 }
 e.prototype.show = function(t) {
 if (t && t.min && t.max && t.rule) {
+this.node.active = !0;
 this.c_min.string = "底注: " + String(t.min);
 this.c_max.string = "下注封顶: " + String(t.max);
 this.c_rule.string = String(t.rule);
@@ -5817,6 +5919,333 @@ cc._RF.pop();
 "../common/MyAnimation": "MyAnimation",
 "../common/Toast": "Toast",
 "../units/UserConfig": "UserConfig"
+} ],
+SGSetView: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "040c4xoN7BIUJX9bzorSi8d", "SGSetView");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+});
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+o.MSet = void 0;
+var c = t("../common/AtlasLib"), s = t("../common/MyAnimation"), a = t("../units/AudioManager"), r = t("../units/UserConfig"), l = function(t) {
+n(e, t);
+function e() {
+return t.call(this) || this;
+}
+e.prototype.getSgSetViewConfig = function() {
+return r.default.getInstance().getSgSetViewConfig();
+};
+e.prototype.setSgSetViewConfig = function(t) {
+r.default.getInstance().setSgSetViewConfig(t);
+};
+e.prototype.getAudioConfig = function() {
+return r.default.getInstance().getAudioConfig();
+};
+return e;
+}(s.default);
+o.MSet = l;
+var u = function(t) {
+n(e, t);
+function e(e) {
+var o = t.call(this) || this;
+o.node = e;
+o.m_toast = cc.find("common/toast", o.node);
+o.m_mask = cc.find("popup/mask", o.node);
+o.m_root = cc.find("popup/set", o.node);
+o.m_playerList = cc.find("player", o.node).children;
+o.m_table = o.node.getComponent("switchsp");
+o.m_musicBarWidth = cc.find("popup/set/layout_music/progress/bar", o.node).width;
+o.m_effectBarWidth = cc.find("popup/set/layout_eff/progress/bar", o.node).width;
+o.m_topMusicBar = cc.find("popup/set/layout_music/progress/bar", o.node);
+o.m_topEffectBar = cc.find("popup/set/layout_eff/progress/bar", o.node);
+o.m_cardSelect = cc.find("popup/set/layout_card/isok", o.node);
+o.m_tableSelect = cc.find("popup/set/layout_table/isok", o.node);
+o.i_close = cc.find("popup/set/button_close", o.node);
+o.i_iconMusic = cc.find("popup/set/layout_music/icon_music", o.node);
+o.i_iconEffect = cc.find("popup/set/layout_eff/icon_eff", o.node);
+o.i_sliderMusic = cc.find("popup/set/layout_music/progress", o.node);
+o.i_sliderEffect = cc.find("popup/set/layout_eff/progress", o.node);
+o.i_cardSelect = cc.find("popup/set/layout_card", o.node).children;
+o.i_tableSelect = cc.find("popup/set/layout_table", o.node).children;
+o.m_root.active = !0;
+o.updateView();
+o.setChoose(o.getSgSetViewConfig());
+o.m_cardSelect.position = o.i_cardSelect[o.getSgSetViewConfig().cardid + 1].position;
+o.m_tableSelect.position = o.i_tableSelect[o.getSgSetViewConfig().tableid + 1].position;
+o.m_root.active = !1;
+return o;
+}
+e.prototype.setChoose = function(t) {
+var e = this;
+this.m_playerList.forEach(function(o) {
+o.getChildByName("cardList").children.forEach(function(e) {
+e.getComponent("switchsp").updateFrame(0, c.default.getInstance().getSpriteFrame("card", "base" + t.cardid));
+}, e);
+}, this);
+this.m_table.setSpriteFrame(t.tableid);
+};
+e.prototype.click_CardChoose = function(t, e) {
+var o = this.getSgSetViewConfig();
+this.m_cardSelect.position = t.position;
+this.m_cardSelect.active = !0;
+this.setSgSetViewConfig({
+cardid: e - 1,
+tableid: o.tableid
+});
+this.setChoose({
+cardid: e - 1,
+tableid: o.tableid
+});
+};
+e.prototype.click_TableChoose = function(t, e) {
+var o = this.getSgSetViewConfig();
+this.m_tableSelect.position = t.position;
+this.m_tableSelect.active = !0;
+this.setSgSetViewConfig({
+cardid: o.cardid,
+tableid: e - 1
+});
+this.setChoose({
+cardid: o.cardid,
+tableid: e - 1
+});
+};
+e.prototype.show = function() {
+this.popupOpenScaleXY(this.m_root, this.m_mask, this.addEvent.bind(this));
+};
+e.prototype.hide = function() {
+this.popupCloseScaleXY(this.m_root, this.m_mask, this.hideEvent.bind(this));
+};
+e.prototype.hideEvent = function() {
+this.i_sliderMusic.off("slide");
+this.i_sliderEffect.off("slide");
+this.i_iconMusic.off("touchend");
+this.i_iconEffect.off("touchend");
+this.i_close.off("touchend");
+};
+e.prototype.addEvent = function() {
+var t = this;
+this.i_sliderMusic.on("slide", function() {
+r.default.getInstance().setBgmVolConfig(t.i_sliderMusic.getComponent(cc.Slider).progress);
+t.updateView();
+});
+this.i_sliderEffect.on("slide", function() {
+r.default.getInstance().setEffVolConfig(t.i_sliderEffect.getComponent(cc.Slider).progress);
+t.updateView();
+});
+this.i_iconMusic.on("touchend", function() {
+r.default.getInstance().setBgmState(!r.default.getInstance().getAudioConfig().openBgm);
+a.default.getInstance().setBgmVol(r.default.getInstance().getAudioConfig().openBgm ? r.default.getInstance().getAudioConfig().bgmVol : 0);
+t.updateView();
+}, this);
+this.i_iconEffect.on("touchend", function() {
+r.default.getInstance().setEffState(!r.default.getInstance().getAudioConfig().openEff);
+a.default.getInstance().setEffVol(r.default.getInstance().getAudioConfig().openEff ? r.default.getInstance().getAudioConfig().effVol : 0);
+t.updateView();
+}, this);
+this.i_close.on("touchend", function() {
+t.hide();
+}, this);
+this.i_cardSelect.forEach(function(e, o) {
+"icon" !== e.name && "isok" !== e.name && e.on("touchend", function() {
+t.click_CardChoose(e, o);
+});
+}, this);
+this.i_tableSelect.forEach(function(e, o) {
+"icon" !== e.name && "isok" !== e.name && e.on("touchend", function() {
+t.click_TableChoose(e, o);
+});
+}, this);
+this.updateView();
+};
+e.prototype.updateView = function() {
+var t = this.getAudioConfig();
+this.i_iconMusic.getComponent("switchsp").setSpriteFrame(!1 === t.openBgm ? 0 : 1);
+this.i_iconEffect.getComponent("switchsp").setSpriteFrame(!1 === t.openEff ? 0 : 1);
+if (t.openBgm) {
+a.default.getInstance().setBgmVol();
+this.i_sliderMusic.getComponent(cc.Slider).progress = t.bgmVol;
+} else this.i_sliderMusic.getComponent(cc.Slider).progress = 0;
+if (t.openEff) {
+a.default.getInstance().setEffVol();
+this.i_sliderEffect.getComponent(cc.Slider).progress = t.effVol;
+} else this.i_sliderEffect.getComponent(cc.Slider).progress = 0;
+this.m_topMusicBar.width = this.i_sliderMusic.getComponent(cc.Slider).progress * this.m_musicBarWidth;
+this.m_topEffectBar.width = this.i_sliderEffect.getComponent(cc.Slider).progress * this.m_effectBarWidth;
+r.default.getInstance().saveMusicConfig();
+cc.sys.localStorage.setItem("music", JSON.stringify(t));
+};
+e.prototype.start = function() {};
+e.prototype.onDestory = function() {};
+return e;
+}(l);
+o.default = u;
+cc._RF.pop();
+}, {
+"../common/AtlasLib": "AtlasLib",
+"../common/MyAnimation": "MyAnimation",
+"../units/AudioManager": "AudioManager",
+"../units/UserConfig": "UserConfig"
+} ],
+SGView: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "c5a49+xxehMoYgjbaNtHuqS", "SGView");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+});
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+o.SanGong = void 0;
+var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../room/RuleView"), l = t("../units/UserConfig"), u = t("./SGSetView"), h = function(t) {
+n(e, t);
+function e() {
+var e = t.call(this) || this;
+e.S_Chat = e.S_BiaoQin = BUTTON_STATE.OFF;
+e.S_Set = e.S_Rule = e.S_BackToRoom = BUTTON_STATE.ON;
+return e;
+}
+e.prototype.getRuleButtonState = function() {
+return this.S_Rule;
+};
+e.prototype.getSetButtonState = function() {
+return this.S_Set;
+};
+e.prototype.getBackToRoomButtonState = function() {
+return this.S_BackToRoom;
+};
+e.prototype.getChatButtonState = function() {
+return this.S_Chat;
+};
+e.prototype.getBiaoQinButtonState = function() {
+return this.S_BiaoQin;
+};
+e.prototype.getTableInfo = function() {
+return l.default.getInstance().getTableInfo();
+};
+return e;
+}(c.default);
+o.SanGong = h;
+var p = function(t) {
+n(e, t);
+function e(e) {
+var o = t.call(this) || this;
+o.node = e;
+o.m_toast = cc.find("common/toast", o.node);
+o.i_rule = cc.find("mainbutton/button_rule", o.node);
+o.i_set = cc.find("mainbutton/button_set", o.node);
+o.i_backRomm = cc.find("mainbutton/button_back", o.node);
+o.i_chat = cc.find("mainbutton/button_chat", o.node);
+o.i_biaoQin = cc.find("mainbutton/button_bq", o.node);
+o.c_tableInfo = cc.find("tableInfo", o.node).getComponent(cc.Label);
+o.cl_RuleView = new r.default(cc.find("popup", o.node));
+o.cl_SGSetViw = new u.default(o.node);
+o.addEvent();
+return o;
+}
+e.prototype.setTableInfo = function() {
+var t = this.getTableInfo();
+this.c_tableInfo.string = "房号: " + t.tablenum + "\n底注: " + t.min + "\n封顶: " + t.max + "\n局数: " + t.gamenum;
+};
+e.prototype.ClickRule = function() {
+switch (this.getRuleButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+this.cl_RuleView.show(this.getTableInfo());
+}
+};
+e.prototype.ClickBackToRoom = function() {
+switch (this.getBackToRoomButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+s.default.getInstance().loadScene("room");
+}
+};
+e.prototype.ClickSet = function() {
+switch (this.getSetButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+this.cl_SGSetViw.show();
+}
+};
+e.prototype.ClickChat = function() {
+switch (this.getChatButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+return;
+}
+};
+e.prototype.ClickBiaoQin = function() {
+switch (this.getBiaoQinButtonState()) {
+case BUTTON_STATE.OFF:
+a.default.getInstance().show("暂未开放!", this.m_toast);
+break;
+
+case BUTTON_STATE.ON:
+return;
+}
+};
+e.prototype.addEvent = function() {
+this.i_rule.on("touchend", this.ClickRule.bind(this));
+this.i_set.on("touchend", this.ClickSet.bind(this));
+this.i_backRomm.on("touchend", this.ClickBackToRoom.bind(this));
+this.i_chat.on("touchend", this.ClickChat.bind(this));
+this.i_biaoQin.on("touchend", this.ClickBiaoQin.bind(this));
+};
+e.prototype.start = function() {
+this.setTableInfo();
+};
+e.prototype.onDestroy = function() {};
+return e;
+}(h);
+o.default = p;
+cc._RF.pop();
+}, {
+"../common/MyAnimation": "MyAnimation",
+"../common/SceneManager": "SceneManager",
+"../common/Toast": "Toast",
+"../room/RuleView": "RuleView",
+"../units/UserConfig": "UserConfig",
+"./SGSetView": "SGSetView"
 } ],
 SanGongData: [ function(t, e, o) {
 "use strict";
@@ -5853,11 +6282,12 @@ o.m_itemLayout = cc.find("second/root/scrollview/view/content", e);
 o.m_mainNode.active = !1;
 return o;
 }
-e.prototype.show = function() {
+e.prototype.show = function(t) {
 this.removeAllChild();
+this.c_list.scrollTo(0);
 this.m_mainNode.active = !0;
 this.popupOpenScaleY(this.m_root, this.m_mask, this.addEvent.bind(this));
-this.c_list.numItems = 10;
+this.c_list.numItems = t;
 };
 e.prototype.hide = function() {
 this.m_mainNode.active = !1;
@@ -5878,11 +6308,8 @@ t.c_list._delSingleItem(e);
 });
 this.m_itemLayout.removeAllChildren();
 };
-e.prototype.RenderMain = function() {
-console.log("渲染低");
-};
+e.prototype.RenderMain = function() {};
 e.prototype.RenderPopup = function(t, e) {
-console.log("渲染顶");
 cc.find("briefly/gamenum", t).getComponent(cc.Label).string = "第" + e + "局";
 };
 e.prototype.ClickMain = function() {
@@ -6028,7 +6455,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MSet = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/SceneManager"), a = t("../../common/Toast"), r = t("../../units/AudioManager"), l = t("../../units/Tool"), u = t("../../units/UserConfig"), h = function(t) {
+var c = t("./MyAnimation"), s = t("./SceneManager"), a = t("./Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = t("../units/AudioManager"), h = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -6072,7 +6499,7 @@ o.i_confirm = cc.find("popup/set/private/button_confirm", o.node);
 o.m_privateSpriteNode = cc.find("popup/set/private/scrollview/view/content/item", o.node);
 o.m_root.active = !0;
 o.m_privateRoot.active = !1;
-o.setView();
+o.updateView();
 o.m_root.active = !1;
 return o;
 }
@@ -6137,47 +6564,47 @@ this.i_quitLogin.on("touchend", function() {
 t.click_QuitLogin();
 }, this);
 this.i_sliderMusic.on("slide", function() {
-u.default.getInstance().setBgmVolConfig(t.i_sliderMusic.getComponent(cc.Slider).progress);
-t.setView();
+l.default.getInstance().setBgmVolConfig(t.i_sliderMusic.getComponent(cc.Slider).progress);
+t.updateView();
 });
 this.i_sliderEffect.on("slide", function() {
-u.default.getInstance().setEffVolConfig(t.i_sliderEffect.getComponent(cc.Slider).progress);
-t.setView();
+l.default.getInstance().setEffVolConfig(t.i_sliderEffect.getComponent(cc.Slider).progress);
+t.updateView();
 });
 this.i_iconMusic.on("touchend", function() {
-u.default.getInstance().setBgmState(!u.default.getInstance().getAudioConfig().openBgm);
-r.default.getInstance().setBgmVol(u.default.getInstance().getAudioConfig().openBgm ? u.default.getInstance().getAudioConfig().bgmVol : 0);
-t.setView();
+l.default.getInstance().setBgmState(!l.default.getInstance().getAudioConfig().openBgm);
+u.default.getInstance().setBgmVol(l.default.getInstance().getAudioConfig().openBgm ? l.default.getInstance().getAudioConfig().bgmVol : 0);
+t.updateView();
 }, this);
 this.i_iconEffect.on("touchend", function() {
-u.default.getInstance().setEffState(!u.default.getInstance().getAudioConfig().openEff);
-r.default.getInstance().setEffVol(u.default.getInstance().getAudioConfig().openEff ? u.default.getInstance().getAudioConfig().effVol : 0);
-t.setView();
+l.default.getInstance().setEffState(!l.default.getInstance().getAudioConfig().openEff);
+u.default.getInstance().setEffVol(l.default.getInstance().getAudioConfig().openEff ? l.default.getInstance().getAudioConfig().effVol : 0);
+t.updateView();
 }, this);
 this.i_close.on("touchend", function() {
 t.hide();
 }, this);
-this.setView();
+this.updateView();
 };
 e.prototype.setPrivateView = function() {
 this.m_privateSpriteNode.getComponent(cc.Sprite).spriteFrame = null;
-l.default.getInstance().LoadImageRemote(this.m_privateSpriteNode, this.getPrivateUrl());
+r.default.getInstance().LoadImageRemote(this.m_privateSpriteNode, this.getPrivateUrl());
 };
-e.prototype.setView = function() {
-var t = u.default.getInstance().getAudioConfig();
+e.prototype.updateView = function() {
+var t = l.default.getInstance().getAudioConfig();
 this.i_iconMusic.getComponent("switchsp").setSpriteFrame(!1 === t.openBgm ? 0 : 1);
 this.i_iconEffect.getComponent("switchsp").setSpriteFrame(!1 === t.openEff ? 0 : 1);
 if (t.openBgm) {
-r.default.getInstance().setBgmVol();
+u.default.getInstance().setBgmVol();
 this.i_sliderMusic.getComponent(cc.Slider).progress = t.bgmVol;
 } else this.i_sliderMusic.getComponent(cc.Slider).progress = 0;
 if (t.openEff) {
-r.default.getInstance().setEffVol();
+u.default.getInstance().setEffVol();
 this.i_sliderEffect.getComponent(cc.Slider).progress = t.effVol;
 } else this.i_sliderEffect.getComponent(cc.Slider).progress = 0;
 this.m_topMusicBar.width = this.i_sliderMusic.getComponent(cc.Slider).progress * this.m_musicBarWidth;
 this.m_topEffectBar.width = this.i_sliderEffect.getComponent(cc.Slider).progress * this.m_effectBarWidth;
-u.default.getInstance().saveMusicConfig();
+l.default.getInstance().saveMusicConfig();
 cc.sys.localStorage.setItem("music", JSON.stringify(t));
 };
 e.prototype.start = function() {};
@@ -6187,12 +6614,12 @@ return e;
 o.default = p;
 cc._RF.pop();
 }, {
-"../../common/MyAnimation": "MyAnimation",
-"../../common/SceneManager": "SceneManager",
-"../../common/Toast": "Toast",
-"../../units/AudioManager": "AudioManager",
-"../../units/Tool": "Tool",
-"../../units/UserConfig": "UserConfig"
+"../units/AudioManager": "AudioManager",
+"../units/Tool": "Tool",
+"../units/UserConfig": "UserConfig",
+"./MyAnimation": "MyAnimation",
+"./SceneManager": "SceneManager",
+"./Toast": "Toast"
 } ],
 ShareView: [ function(t, e, o) {
 "use strict";
@@ -6763,6 +7190,24 @@ return this.BgmNameArr[t];
 t.prototype.getEffNameFronCode = function(t) {
 return this.EffNameArr[t];
 };
+t.prototype.getUserInfo = function() {
+return this.userinfo;
+};
+t.prototype.getRealNameInfo = function() {
+return this.realNameInfo;
+};
+t.prototype.getTableInfo = function() {
+return this.TableInfo;
+};
+t.prototype.getSgSetViewConfig = function() {
+return cc.sys.localStorage.getItem("sgSetView") ? JSON.parse(cc.sys.localStorage.getItem("sgSetView")) : {
+tableid: 0,
+cardid: 0
+};
+};
+t.prototype.setSgSetViewConfig = function(t) {
+cc.sys.localStorage.setItem("sgSetView", JSON.stringify(t));
+};
 t.prototype.setBgmVolConfig = function(t) {
 t < 0 || t > 1 || (this.AudioConfig.bgmVol = t);
 };
@@ -6787,15 +7232,12 @@ e.id && (this.userinfo.id = e.id);
 e.parentID && (this.userinfo.parentID = e.parentID);
 e.nickname && (this.userinfo.nickname = e.nickname);
 };
-t.prototype.getUserInfo = function() {
-return this.userinfo;
-};
-t.prototype.getRealNameInfo = function() {
-return this.realNameInfo;
-};
 t.prototype.setRealNameInfo = function(t) {
 this.realNameInfo.idnumber = t.idnumber;
 this.realNameInfo.realname = t.realname;
+};
+t.prototype.setTableInfo = function(t) {
+this.TableInfo = t;
 };
 return t;
 }();
@@ -7102,6 +7544,7 @@ this.detailStr = cc.find("loading/progress/state/detail", this.node).getComponen
 this.verStr = cc.find("loading/version/value", this.node).getComponent(cc.Label);
 this.bar = cc.find("loading/progress", this.node).getComponent(cc.ProgressBar);
 this.index = this.index2 = this.byte = 0;
+this.flush = 0;
 };
 e.prototype.show = function() {
 this.bar.progress = 0;
@@ -7257,13 +7700,18 @@ if (!this.speedtimer) {
 this.detailStr.string = this.downSize + " / " + this.totalSize;
 this.speedtimer = setInterval(function() {
 var o = Math.ceil((t.getDownloadedBytes() - e.byte) / 1024);
-if (o >= 1024) {
+if (e.flush % 5 == 0) if (o >= 1024) {
 var i = (o /= 1024).toString().indexOf(".");
 o = Number(o.toString().slice(0, i + 3));
 e.detailStr.string = o + "MB/s  " + e.downSize + " / " + e.totalSize;
-} else e.detailStr.string = o + "KB/s  " + e.downSize + " / " + e.totalSize;
+} else e.detailStr.string = o + "KB/s  " + e.downSize + " / " + e.totalSize; else if (o >= 1024) {
+i = (o /= 1024).toString().indexOf(".");
+o = Number(o.toString().slice(0, i + 3));
+e.detailStr.string = 5 * o + "MB/s  " + e.downSize + " / " + e.totalSize;
+} else e.detailStr.string = 5 * o + "KB/s  " + e.downSize + " / " + e.totalSize;
 e.byte = t.getDownloadedBytes();
-}, 1e3);
+e.flush += 1;
+}, 200);
 }
 break;
 
@@ -7484,6 +7932,7 @@ return this._show;
 updateFrame: function(t, e) {
 if (t > this.cacheArr.length - 1 || !(e instanceof cc.SpriteFrame)) return !1;
 this.cacheArr[t] = e;
+this.getShowID() === t && this.setSpriteFrame(t);
 return !0;
 },
 pushFrame: function(t) {
@@ -7491,7 +7940,7 @@ if (t instanceof cc.SpriteFrame) {
 this.cacheArr.push(t);
 return this.spriteArr.length - 1;
 }
-return !1;
+return -1;
 },
 setSpriteFrame: function(t) {
 this.curSp = t;
@@ -7502,4 +7951,4 @@ return this.curSp;
 });
 cc._RF.pop();
 }, {} ]
-}, {}, [ "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "Notice", "Observer", "SceneManager", "ScrollViewRenderData", "TimerStruct", "Toast", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "SetView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "GameSangong", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "rectframe", "switchsp" ]);
+}, {}, [ "AtlasLib", "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "Notice", "Observer", "SceneManager", "ScrollViewRenderData", "SetView", "TimerStruct", "Toast", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "Main", "Player", "SGSetView", "SGView", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "rectframe", "switchsp" ]);

@@ -3,6 +3,7 @@ import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import List from "../units/List";
 import Tool from "../units/Tool";
+import UserConfig from "../units/UserConfig";
 import RuleView from "./RuleView";
 
 export class MRoom extends MyAnimation {
@@ -132,6 +133,8 @@ export default class RoomView extends MRoom {
                 switch(this.getTableButtonState()){
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
                     case BUTTON_STATE.ON:{
+                        let data = this.getDataFromIndex(Index, false);
+                        UserConfig.getInstance().setTableInfo({tablenum:data.tableNum,min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
                         SceneManager.getInstance().loadScene('game_sg');
                     }break;
                 }
@@ -140,6 +143,8 @@ export default class RoomView extends MRoom {
                 switch(this.getTableButtonState()){
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
                     case BUTTON_STATE.ON:{
+                        let data = this.getDataFromIndex(Index, true);
+                        UserConfig.getInstance().setTableInfo({tablenum:data.tableNum,min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
                         SceneManager.getInstance().loadScene('game_sg');
                     }break;
                 }
@@ -149,7 +154,7 @@ export default class RoomView extends MRoom {
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
                     case BUTTON_STATE.ON:{
                         let data = this.getDataFromIndex(Index, false);
-                        this.cl_RuleView.show({min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
+                        this.cl_RuleView.show({tablenum:data.tableNum,min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
                     }break;
                 }   
             }break;
@@ -158,7 +163,7 @@ export default class RoomView extends MRoom {
                     case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
                     case BUTTON_STATE.ON:{
                         let data = this.getDataFromIndex(Index, true);
-                        this.cl_RuleView.show({min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
+                        this.cl_RuleView.show({tablenum:data.tableNum,min:data.bet,max:data.max,gamenum:data.gamenum,rule:data.rule});
                     }break;
                 }
             }break;

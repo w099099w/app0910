@@ -21,8 +21,8 @@ export default class SanGongData extends ScrollViewRenderData {
         this.m_mainNode.active = false;
     }//外部主节点渲染
     public show(Number:number){
-        Number = 10;
         this.removeAllChild();
+        this.c_list.scrollTo(0);
         this.m_mainNode.active = true;
         this.popupOpenScaleY(this.m_root,this.m_mask,this.addEvent.bind(this));
         this.c_list.numItems = Number;
@@ -46,10 +46,10 @@ export default class SanGongData extends ScrollViewRenderData {
         this.m_itemLayout.removeAllChildren();
     }
     public RenderMain(Item:cc.Node,Index:number,Data:any){
-        console.log('渲染低')
+        //需判定data是否为空
     }
     public RenderPopup(Item:cc.Node,Index:number,Data:any){
-        console.log('渲染顶')
+         //需判定data是否为空
         cc.find('briefly/gamenum',Item).getComponent(cc.Label).string = '第'+Index+'局';
     }
     public ClickMain(Item:cc.Node,Index:number,LastId:number,Data:any){

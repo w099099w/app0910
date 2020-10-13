@@ -6,6 +6,7 @@ export default class UserConfig{
     private realNameInfo:RealNameInfo;
     private AudioConfig:AUDIO;
     private static m_instance:UserConfig;
+    private TableInfo:SanGongRuleInfo;
     private constructor(){
         if(cc.sys.localStorage.getItem('rememberAudio')){
             this.AudioConfig = JSON.parse(cc.sys.localStorage.getItem('rememberAudio'));
@@ -51,6 +52,25 @@ export default class UserConfig{
     public getEffNameFronCode(EffCode:EFF_CODE):string{
         return this.EffNameArr[EffCode];
     }
+    public getUserInfo():UserInfo{
+        return this.userinfo;
+    }
+    public getRealNameInfo():RealNameInfo{
+        return this.realNameInfo;
+    }
+    public getTableInfo():SanGongRuleInfo{
+        return this.TableInfo;
+    }
+    public getSgSetViewConfig():SgSetView{
+        if(cc.sys.localStorage.getItem('sgSetView')){
+            return JSON.parse(cc.sys.localStorage.getItem('sgSetView'));
+        }else{
+            return {tableid:0,cardid:0};
+        }
+    }
+    public setSgSetViewConfig(SgSetView:SgSetView){
+        cc.sys.localStorage.setItem('sgSetView',JSON.stringify(SgSetView));
+    }
     public setBgmVolConfig(Vol:number){
         if(Vol < 0 || Vol > 1){
             return;
@@ -93,14 +113,11 @@ export default class UserConfig{
             this.userinfo.nickname = userinfo.nickname;
         }
     }
-    public getUserInfo():UserInfo{
-        return this.userinfo;
-    }
-    public getRealNameInfo():RealNameInfo{
-        return this.realNameInfo;
-    }
     public setRealNameInfo(RealName:RealName){
         this.realNameInfo.idnumber = RealName.idnumber;
         this.realNameInfo.realname = RealName.realname;
+    }
+    public setTableInfo(val:SanGongRuleInfo){
+        this.TableInfo = val;
     }
 }   

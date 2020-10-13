@@ -55,11 +55,14 @@ cc.Class({
             return false;
         }
         this.cacheArr[key] = spriteFrame;
+        if(this.getShowID() === key){
+            this.setSpriteFrame(key);
+        }
         return true;
     },
     pushFrame(spriteFrame){
         if(!(spriteFrame instanceof cc.SpriteFrame)){
-            return false;
+            return -1;
         }else{
             this.cacheArr.push(spriteFrame);
             return this.spriteArr.length-1;

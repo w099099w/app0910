@@ -220,10 +220,7 @@ export default class Login extends MyAnimation{
             this.m_pdView.active = false;
             this.m_verifyView.active = true;
         }
-        this.c_verifyViewPhoneInput.string = '';
-        this.c_verifyViewVerfyInput.string = '';
-        this.c_pdViewPhoneInput.string = '';
-        this.c_pdViewPdInput.string  = '';
+        this.reset();
     }
     public show(){
         this.popupOpenScaleXY(this.m_root);

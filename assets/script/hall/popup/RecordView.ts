@@ -124,6 +124,7 @@ export default class RecordView extends MRecord{
     public show(){
         this.m_mainNode.active = true;
         this.removeAllChild(0);
+        this.c_list.scrollTo(0);
         this.RequestMoneyFlowData(this.addItemNumber.bind(this));
         this.popupOpenScaleXY(this.m_root,this.m_mask,this.addEvent.bind(this));
     }

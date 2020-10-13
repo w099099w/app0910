@@ -23,6 +23,7 @@ export default class Version extends cc.Component {
     private bar: cc.ProgressBar;
     private root:cc.Node;
     private remoteVersion:string;
+    private flush:number;
 
     public onLoad() {
         this.am = null;
@@ -33,6 +34,7 @@ export default class Version extends cc.Component {
         this.verStr = cc.find('loading/version/value', this.node).getComponent(cc.Label);
         this.bar = cc.find('loading/progress', this.node).getComponent(cc.ProgressBar);
         this.index = this.index2 = this.byte = 0;
+        this.flush = 0;
     }
 
     public show() {
@@ -71,6 +73,7 @@ export default class Version extends cc.Component {
     }
 
     public validate(callback:Function) {
+        this.stateStr.string = '状态: 非原生,系统将不进行更新!'
         if(cc.sys.localStorage.getItem('hotUpdateVer')){
             this.verStr.string = '版本号: '+cc.sys.localStorage.getItem('hotUpdateVer');
         }else{
@@ -253,16 +256,28 @@ export default class Version extends cc.Component {
                     this.detailStr.string = this.downSize + ' / ' + this.totalSize;
                     this.speedtimer = setInterval(() => {
                         let speed: number = Math.ceil((event.getDownloadedBytes() - this.byte) / 1024);
-                        if (speed >= 1024) {
-                            speed = speed / 1024
-                            let index3 = speed.toString().indexOf('.');
-                            speed = Number(speed.toString().slice(0, index3 + 3))
-                            this.detailStr.string = speed + 'MB/s  ' + this.downSize + ' / ' + this.totalSize;
-                        } else {
-                            this.detailStr.string = speed + 'KB/s  ' + this.downSize + ' / ' + this.totalSize;
+                        if(this.flush%5 === 0){
+                            if (speed >= 1024) {
+                                speed = speed / 1024
+                                let index3 = speed.toString().indexOf('.');
+                                speed = Number(speed.toString().slice(0, index3 + 3))
+                                this.detailStr.string = speed + 'MB/s  ' + this.downSize + ' / ' + this.totalSize;
+                            } else {
+                                this.detailStr.string = speed + 'KB/s  ' + this.downSize + ' / ' + this.totalSize;
+                            }
+                        }else{
+                            if (speed >= 1024) {
+                                speed = speed / 1024
+                                let index3 = speed.toString().indexOf('.');
+                                speed = Number(speed.toString().slice(0, index3 + 3))
+                                this.detailStr.string = (speed*5) + 'MB/s  ' + this.downSize + ' / ' + this.totalSize;
+                            } else {
+                                this.detailStr.string = (speed*5) + 'KB/s  ' + this.downSize + ' / ' + this.totalSize;
+                            }
                         }
                         this.byte = event.getDownloadedBytes();
-                    }, 1000)
+                        this.flush+=1;
+                    }, 200)
                 }
                 break;
             case jsb.EventAssetsManager.ERROR_DOWNLOAD_MANIFEST:
