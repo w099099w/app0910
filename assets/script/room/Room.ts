@@ -8,8 +8,9 @@ import RoomView from "./RoomView";
 import RuleView from "./RuleView";
 import TopView from "./TopView";
 
-const {ccclass, property} = cc._decorator;
+const {ccclass,menu, property} = cc._decorator;
 @ccclass
+@menu('场景主脚本/Room')
 export default class RoomViewManager extends cc.Component {
     private cl_GameView:GameView;
     private cl_RoomView:RoomView;

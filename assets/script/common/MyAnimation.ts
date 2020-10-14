@@ -1,3 +1,5 @@
+import AudioManager from "../units/AudioManager";
+import SceneManager from "./SceneManager";
 
 export default class MyAnimation{
     private static m_toastCurTween:cc.Tween;
@@ -133,5 +135,34 @@ export default class MyAnimation{
             ButtonNode.getComponent('switchsp').setSpriteFrame(0);
             cc.tween(ButtonNode).to(0.1,{x:-30},{easing:'quadOut'}).call(CallBack).start();
         }
+    }
+    protected RunAnimtation(Node:cc.Node,SendPos:cc.Vec3,ReciviePos){
+        Node.active = true;
+        let animation = Node.getComponent(cc.Animation);
+        //注册回调//渐隐
+        animation.on('finished',()=>{
+            cc.tween(Node).to(0.5,{opacity:0},{easing:'quadOut'}).call(()=>{
+                if(cc.isValid(Node,true)){
+                    Node.destroy();
+                }
+            }).start();
+        });
+        //修改动画位置
+        animation.defaultClip.curveData.props.position[0].value = [SendPos.x,SendPos.y,SendPos.z];
+        animation.defaultClip.curveData.props.position[1].value = [ReciviePos.x,ReciviePos.y,ReciviePos.z];
+        animation.play();
+        setTimeout(()=>{
+            if(SceneManager.getInstance().getSceneName() == 'game_sg'){
+                let effCode:EFF_CODE;
+                switch (Node.name){
+                    case 'chicken':effCode = EFF_CODE.EFF_BQANIM_CHICKEN;break;
+                    case 'tomato':effCode = EFF_CODE.EFF_BQANIM_TOMATO;break;
+                    case 'flower':effCode = EFF_CODE.EFF_BQANIM_FLOWER;break;
+                    case 'boom':effCode = EFF_CODE.EFF_BQANIM_BOOM;break;
+                    case 'water':effCode = EFF_CODE.EFF_BQANIM_WATER;break;
+                }
+                AudioManager.getInstance().playEffectFromLocal(effCode,false);
+            }
+        },800)
     }
 }

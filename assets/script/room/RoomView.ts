@@ -46,7 +46,7 @@ export class MRoom extends MyAnimation {
             }
             this.m_cache.push(data);
             this.OnWebsocketMessage();
-        }, 5000);
+        }, 2000);
         this.tic = setTimeout(() => {
             this.tie = setInterval(() => {
                 let id = Math.ceil(Math.random() * (this.m_cache.length - 1));
@@ -62,7 +62,7 @@ export class MRoom extends MyAnimation {
                 this.OnWebsocketMessage();
             }, 2000);
             this.tic = null;
-        }, 5000);
+        }, 2000);
 
     }
     protected getDataFromIndex(Index: number, IsDown: boolean) {

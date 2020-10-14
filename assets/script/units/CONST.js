@@ -25,7 +25,13 @@ const BGM_CODE = cc.Enum({
     BGM_HALL:2,
 })
 const EFF_CODE = cc.Enum({
-   
+   EFF_BQANIM_CHICKEN:0,
+   EFF_BQANIM_TOMATO:1,
+   EFF_BQANIM_FLOWER:2,
+   EFF_BQANIM_BOOM:3,
+   EFF_BQANIM_WATER:4,
+   EFF_SG_SENDCARD:5,
+   EFF_SG_NEWGAME:6,
 });
 const LOGIN_METHOD = cc.Enum({
     PASSWORD:0,

@@ -2,6 +2,7 @@ import SceneManager from '../common/SceneManager'
 import FlashLightUBO from '../common/FlashLightUBO'
 
 export default class Loading{
+    private m_Tween:cc.Tween;
     private node:cc.Node;
     private t_timerMovex:number;
     private t_timerLoading:number;
@@ -10,6 +11,7 @@ export default class Loading{
     private m_loadingContent:cc.Label;
     private m_loadingDetail:cc.Label;
     private m_rootNode:cc.Node;
+    private m_star:cc.Node;
     private shader_flashLightUBO: FlashLightUBO = new FlashLightUBO();
     private f_lauchingFinishCallBack:Function;
     public constructor(Node:cc.Node,lauchingFinishCallBack:Function){
@@ -18,6 +20,7 @@ export default class Loading{
         this.m_loadingBar = cc.find('loading/progress',this.node).getComponent(cc.ProgressBar);
         this.m_loadingDetail = cc.find('loading/progress/state/detail',this.node).getComponent(cc.Label);
         this.m_loadingContent = cc.find('loading/progress/state/content',this.node).getComponent(cc.Label);
+        this.m_star = cc.find('logo/star',this.node);
         this.m_rootNode = cc.find('loading',this.node);
         this.f_lauchingFinishCallBack = lauchingFinishCallBack;
         this.m_rootNode.active = true;
@@ -55,7 +58,7 @@ export default class Loading{
          //shader常量
          this.shader_flashLightUBO.lightAngle = 75;
          this.shader_flashLightUBO.lightColor = cc.color(130,99,68);
-         this.shader_flashLightUBO.lightWidth = 0.1;
+         this.shader_flashLightUBO.lightWidth = 0.05;
          this.shader_flashLightUBO.enableGradient = true;
          this.shader_flashLightUBO.cropAlpha = true;
          this.shader_flashLightUBO.enableFog = false;
@@ -78,6 +81,7 @@ export default class Loading{
                  posx = 0;
              }
          },33);
+         //this.m_Tween = cc.tween(this.m_star).repeatForever(cc.tween().to(1,{opacity:0},{easing:'quadOut'}).to(1,{opacity:255},{easing:'quadIn'})).start();
     }
     public onDestory(){
         if(this.t_timerMovex){
@@ -88,6 +92,7 @@ export default class Loading{
             clearTimeout(this.t_timerLoading);
             this.t_timerLoading = null;
         }
+        //this.m_Tween.stop();
     }
     // update (dt) {}
 }

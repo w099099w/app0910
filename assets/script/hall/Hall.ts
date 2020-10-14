@@ -3,14 +3,13 @@ import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import HallModelManager from "./HallModelManager";
 
-const {ccclass, property} = cc._decorator;
+const {ccclass, menu,property} = cc._decorator;
 @ccclass
+@menu('场景主脚本/Hall')
 export default class Hall extends cc.Component {
     private cl_ModelManager:HallModelManager;
     @property(cc.Prefab)
     popupLeftButton = null;
-    @property(cc.Prefab)
-    other = null;
     private m_hallPrefabArr:HallPrefabArr;
     onLoad () {
         //设置场景
@@ -19,9 +18,8 @@ export default class Hall extends cc.Component {
         Notice.getInstance().setRootNode(cc.find('top/notice',this.node));
         Notice.getInstance().debug();
         //初始化结构
-        this.m_hallPrefabArr = {PopupLeftButton:null,otherL:null};
+        this.m_hallPrefabArr = {PopupLeftButton:null};
         this.m_hallPrefabArr.PopupLeftButton = this.popupLeftButton;
-        this.m_hallPrefabArr.otherL = this.other
         this.cl_ModelManager = HallModelManager.getInstance(this.node,this.m_hallPrefabArr);
         //初始化所有模块
         this.cl_ModelManager.init();

@@ -50,10 +50,12 @@ export default class AudioManager {
     * @param {boolean} isLook 是否循环播放
     */
     public playEffectFromLocal(srccode: EFF_CODE, isLook = false) {
-        cc.resources.load(UserConfig.getInstance().getEffNameFronCode(srccode), cc.AudioClip, function (err, clip:cc.AudioClip) {
-            cc.audioEngine.setEffectsVolume(UserConfig.getInstance().getAudioConfig().effVol);
-            return cc.audioEngine.playEffect(clip, isLook);
-        });
+        if (UserConfig.getInstance().getAudioConfig().openEff) {
+            cc.resources.load(UserConfig.getInstance().getEffNameFronCode(srccode), cc.AudioClip, function (err, clip:cc.AudioClip) {
+                cc.audioEngine.setEffectsVolume(UserConfig.getInstance().getAudioConfig().effVol);
+                return cc.audioEngine.playEffect(clip, isLook);
+            });
+        }
     }
     /**
     * @description: 是否在播放背景音乐

@@ -195,7 +195,7 @@
       "array": [
         0,
         0,
-        322.1559307202459,
+        324.7539624196028,
         0,
         0,
         0,
@@ -51528,10 +51528,7 @@
     "popupLeftButton": {
       "__uuid__": "b45bc46c-fba5-4536-9eb7-a871fd57f855"
     },
-    "other": {
-      "__uuid__": "c29e79c2-8ea3-4425-87b2-ffe286178f92"
-    },
-    "_id": "d6k7xh73tHB7n94LCw81LG"
+    "_id": "47gckN519DILAauf350aXr"
   },
   {
     "__type__": "cc.SafeArea",

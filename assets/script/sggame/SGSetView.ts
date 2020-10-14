@@ -2,6 +2,7 @@ import AtlasLib from "../common/AtlasLib";
 import MyAnimation from "../common/MyAnimation";
 import AudioManager from "../units/AudioManager";
 import UserConfig from "../units/UserConfig";
+import CardLib from "./CardLib";
 
 export class MSet extends MyAnimation{
 
@@ -42,6 +43,8 @@ export default class SGSetView extends MSet{
     private i_sliderEffect:cc.Node;
     private i_cardSelect:cc.Node[];
     private i_tableSelect:cc.Node[];
+
+    private cl_cardLib:CardLib;
     
 
     public constructor(Node:cc.Node){
@@ -67,6 +70,8 @@ export default class SGSetView extends MSet{
         this.i_sliderEffect = cc.find('popup/set/layout_eff/progress',this.node);
         this.i_cardSelect = cc.find('popup/set/layout_card',this.node).children;
         this.i_tableSelect = cc.find('popup/set/layout_table',this.node).children;
+
+        this.cl_cardLib = cc.find('state/cardLib',this.node).getComponent(CardLib);
         
         this.m_root.active = true;
         this.updateView();
@@ -78,11 +83,16 @@ export default class SGSetView extends MSet{
     private setChoose(val:SgSetView){
         this.m_playerList.forEach((item,key)=>{
             item.getChildByName('cardList').children.forEach((citem)=>{
+                let width:number = citem.width;
+                let height:number = citem.height;
                 let SwitchSp:SwitchSp = citem.getComponent('switchsp');
                 SwitchSp.updateFrame(0,AtlasLib.getInstance().getSpriteFrame('card','base'+val.cardid));
+                citem.width = width;
+                citem.height = height;
             },this);
         },this);
         this.m_table.setSpriteFrame(val.tableid);
+        this.cl_cardLib.setCardBase(0,AtlasLib.getInstance().getSpriteFrame('card','base'+val.cardid));
     }
     private click_CardChoose(item:cc.Node,key:number){
        let Savedata:SgSetView = this.getSgSetViewConfig();

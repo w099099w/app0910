@@ -63,6 +63,21 @@ export default class Tool {
             }
         });
     }
+    public forMat(Value:number,Magnification:number):string{
+        if(Magnification > 1000 && Magnification % 10 !== 0 && Magnification !== 1000 &&
+            Magnification !== 10000 && Magnification !== 100000000){
+            cc.error('倍率值不正确请使用1000,10000,100000000');
+        }
+        if(Value < Magnification){
+            return String(Value);
+        }else if(Magnification == 1000){
+            return Math.floor(Value/Magnification * 100.00) / 100+'K';
+        }else if(Magnification == 10000){
+            return Math.floor(Value/Magnification * 100.00) / 100+'万';
+        }else if(Magnification == 100000000){
+            return Math.floor(Value/Magnification * 100.00) / 100+'亿';
+        }   
+    }
     /**
      * @description 获取当前时间字符串
      */

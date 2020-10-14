@@ -60,7 +60,7 @@ export default class HallModelManager{
         if(this.m_PrefabArr){
             this.cl_PlayView = new PlayView(this.node,this.m_PrefabArr.PopupLeftButton);
             this.cl_MsgView = new MsgView(this.node,this.m_PrefabArr.PopupLeftButton);
-            this.cl_RecordView = new RecordView(this.node,this.m_PrefabArr.otherL);
+            this.cl_RecordView = new RecordView(this.node,this.m_PrefabArr.PopupLeftButton);
         }
         this.cl_Navbar = new Navbar(this.node,this.cl_ShareView,this.cl_PlayView,this.cl_MsgView,this.cl_SetView,this.cl_AgentView,this.cl_RecordView);
         this.cl_ResetPdView = new ResetPdView(this.node);

@@ -9,8 +9,9 @@ import Version from "./Version";
 import Dialog from "../common/Dialog";
 import AtlasLib from "../common/AtlasLib";
 
-const { ccclass, property } = cc._decorator;
+const { ccclass, menu,property } = cc._decorator;
 @ccclass
+@menu('场景主脚本/Passport')
 export default class Passport extends cc.Component {
 
     private cl_loading: Loading;

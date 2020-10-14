@@ -7,7 +7,7 @@ cc.macro.ENABLE_WEBGL_ANTIALIAS = true;
 @disallowMultiple()   
 @executeInEditMode() 
 @requireComponent(cc.Mask)
-@menu('渲染组件/矩形圆角遮罩')
+@menu('公共/矩形圆角遮罩')
 export default class TheRectMask extends cc.Component {
 
     /** 圆角半径 */

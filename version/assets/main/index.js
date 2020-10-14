@@ -291,6 +291,7 @@ e.bar = null;
 e.min = null;
 e.max = null;
 e.bet = null;
+e.i_confirm = null;
 return e;
 }
 Object.defineProperty(e.prototype, "minValue", {
@@ -332,13 +333,22 @@ configurable: !0
 e.prototype.onLoad = function() {
 this.barWidth = this.bar.width;
 };
-e.prototype.start = function() {
-this.show(500, 2500, 1e3);
-};
-e.prototype.show = function(t, e, o) {
+e.prototype.start = function() {};
+e.prototype.show = function(t, e, o, i) {
 void 0 === o && (o = null);
+void 0 === i && (i = null);
+this.i_confirm.active = !0;
+this.callBackFunction = i;
+this.node.active = !0;
 this.setBetNumber(t, e, o);
 this.addEvent();
+};
+e.prototype.hide = function() {
+if (this.i_confirm.active && this.callBackFunction) {
+this.betValue = this.minValue;
+this.callBackFunction();
+}
+this.node.active = !1;
 };
 e.prototype.setBetNumber = function(t, e, o) {
 void 0 === o && (o = null);
@@ -355,17 +365,254 @@ var t = this;
 this.slider.on("slide", function() {
 t.setView();
 });
+this.i_confirm.on("touchend", function() {
+t.i_confirm.active = !1;
+t.callBackFunction();
+t.hide();
+}, this);
 };
 c([ r(cc.Node) ], e.prototype, "slider", void 0);
 c([ r(cc.Node) ], e.prototype, "bar", void 0);
 c([ r(cc.Label) ], e.prototype, "min", void 0);
 c([ r(cc.Label) ], e.prototype, "max", void 0);
 c([ r(cc.Label) ], e.prototype, "bet", void 0);
+c([ r(cc.Node) ], e.prototype, "i_confirm", void 0);
 return c([ a ], e);
 }(cc.Component);
 o.default = l;
 cc._RF.pop();
 }, {} ],
+CardLib: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "6dea3ZDMydBVKkDtHtXQq/9", "CardLib");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+}), c = this && this.__decorate || function(t, e, o, i) {
+var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
+return c > 3 && s && Object.defineProperty(e, o, s), s;
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var s = t("../common/AtlasLib"), a = t("../common/NodePool"), r = t("../units/AudioManager"), l = t("../units/UserConfig"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
+n(e, t);
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e.cardPrefab = null;
+return e;
+}
+e.prototype.onLoad = function() {
+this.Tween = [];
+this.children = [];
+a.default.getInstance().createrNodePool("card", this.cardPrefab, 54);
+};
+e.prototype.setCardBase = function(t, e) {
+if (this.children) for (var o = 0; o < this.children.length; ++o) {
+var i = this.children[o].width, n = this.children[o].height;
+this.children[o].getComponent("switchsp").updateFrame(t, e);
+this.children[o].width = i;
+this.children[o].height = n;
+}
+};
+e.prototype.shuffleCard = function(t, e, o) {
+var i = this;
+void 0 === o && (o = null);
+var n = l.default.getInstance().getSgSetViewConfig().cardid, c = t.length * e;
+for (var r in this.Tween) if (this.Tween[r]) {
+this.Tween[r].stop();
+this.Tween[r] = null;
+}
+for (var u = 0; u < this.node.children.length; ++u) {
+a.default.getInstance().destroyNode("card", this.node.children[u]);
+this.children[u] = null;
+}
+for (u = 0; u < c; ++u) {
+var h = a.default.getInstance().getNodeFromPool("card");
+this.children[u] = h;
+this.node.addChild(h);
+h.getComponent("switchsp").updateFrame(0, s.default.getInstance().getSpriteFrame("card", "base" + n));
+h.width = 83;
+h.height = 111;
+}
+var p = new cc.Vec3(0, 0, 0), d = new cc.Vec3(-80, 0, 0), f = new cc.Vec3(80, 0, 0), m = this.node.children.length;
+this.node.children.forEach(function(n, s) {
+s > Math.floor(c / 2) ? i.Tween[s] = cc.tween(n).delay(.2 * s).to(.3, {
+position: d
+}).to(.3, {
+position: f
+}).to(.3, {
+position: p
+}).call(function() {
+i.Tween[s] = null;
+0 == --m && i.SendCardToPlayer(t, e, o);
+}).start() : i.Tween[s] = cc.tween(n).delay(.2 * s).to(.3, {
+position: f
+}).to(.3, {
+position: d
+}).to(.3, {
+position: p
+}).call(function() {
+i.Tween[s] = null;
+0 == --m && i.SendCardToPlayer(t, e, o);
+}).start();
+}, this);
+};
+e.prototype.SendCardToPlayer = function(t, e, o) {
+for (var i = this, n = t.length * e, c = function(c) {
+var a, l = t[c], u = l.convertToWorldSpaceAR(l.getChildByName("cardList").position), h = s.node.convertToNodeSpaceAR(u);
+a = "player1" === l.name ? new cc.Vec2(83, 111) : new cc.Vec2(57, 76);
+for (var p = function(t) {
+var u = s.children[c * e + t];
+u ? s.Tween[t] = cc.tween(u).delay(.5 + .5 * c + .1 * t).call(function() {
+r.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_SENDCARD, !1);
+}).to(.1, {
+position: new cc.Vec3(h.x + 27 * t, h.y, h.z),
+width: a.x,
+height: a.y
+}).call(function() {
+i.Tween[t] = null;
+0 == --n && o && o();
+u.y = 0;
+u.parent = l.getChildByName("cardList");
+}).start() : cc.error("节点错误", u, c * e + t);
+}, d = 0; d < e; ++d) p(d);
+}, s = this, a = 0; a < t.length; ++a) c(a);
+};
+e.prototype.StopShuffleCard = function() {
+for (var t in this.Tween) if (this.Tween[t]) {
+this.Tween[t].stop();
+this.Tween[t] = null;
+}
+for (var e = 0; e < this.node.children.length; ++e) {
+a.default.getInstance().destroyNode("card", this.node.children[e]);
+this.children[e] = null;
+}
+};
+e.prototype.onDestroy = function() {};
+c([ d(cc.Prefab) ], e.prototype, "cardPrefab", void 0);
+return c([ h, p("三公/牌库") ], e);
+}(cc.Component);
+o.default = f;
+cc._RF.pop();
+}, {
+"../common/AtlasLib": "AtlasLib",
+"../common/NodePool": "NodePool",
+"../units/AudioManager": "AudioManager",
+"../units/UserConfig": "UserConfig"
+} ],
+CountDown: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "1cc1b0pppdKUr1kDhb66fik", "CountDown");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+}), c = this && this.__decorate || function(t, e, o, i) {
+var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
+return c > 3 && s && Object.defineProperty(e, o, s), s;
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var s = t("./TimerStruct"), a = cc._decorator, r = a.ccclass, l = (a.property, a.menu), u = a.disallowMultiple, h = a.executeInEditMode;
+cc.macro.ENABLE_WEBGL_ANTIALIAS = !0;
+var p = function(t) {
+n(e, t);
+function e() {
+return null !== t && t.apply(this, arguments) || this;
+}
+e.prototype.onLoad = function() {
+this.countDownFinish = !0;
+};
+Object.defineProperty(e.prototype, "countDownFinish", {
+get: function() {
+return this._countDownFinish;
+},
+set: function(t) {
+this.node.parent.getChildByName("icon").getComponent(cc.Button).interactable = t;
+this._countDownFinish = t;
+},
+enumerable: !1,
+configurable: !0
+});
+e.prototype.show = function(t, e) {
+var o = this;
+void 0 === e && (e = null);
+this.m_timeDown = new s.default(t / 1e3);
+var i = Math.floor(t / 50), n = null === e ? i : e;
+null === e && (this.m_allcount = i);
+this.fillRange = 1;
+this.countDownFinish = !1;
+this.m_timer = setInterval(function() {
+i -= 1;
+o.fillRange = 1 * i / n;
+if (0 == i) {
+o.fillRange = 0;
+clearInterval(o.m_timer);
+o.m_timer = null;
+o.m_timeDown = null;
+o.m_allcount = null;
+o.countDownFinish = !0;
+}
+}, 50);
+};
+e.prototype.start = function() {
+this.fillRange = 0;
+};
+e.prototype.activeOn = function() {
+if (this.m_timeDown) if (this.m_timeDown.getSurPlusMilliSecond() > 0) {
+this.countDownFinish = !1;
+this.show(this.m_timeDown.getSurPlusMilliSecond(), this.m_allcount);
+} else {
+this.m_timeDown = null;
+this.fillRange = 0;
+this.countDownFinish = !0;
+}
+};
+e.prototype.activeOff = function() {
+if (this.m_timer) {
+clearInterval(this.m_timer);
+this.m_timer = null;
+}
+};
+e.prototype.onDestroy = function() {
+if (this.m_timer) {
+clearInterval(this.m_timer);
+this.m_timer = null;
+this.m_allcount = null;
+}
+};
+return c([ r(), u(), h(), l("公共/倒计时冷却") ], e);
+}(cc.Sprite);
+o.default = p;
+cc._RF.pop();
+}, {
+"./TimerStruct": "TimerStruct"
+} ],
 Dialog: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "99a25Efc79ICJtfIAmw9jps", "Dialog");
@@ -1099,7 +1346,7 @@ this.cl_AgentView = new u.default(this.node);
 if (this.m_PrefabArr) {
 this.cl_PlayView = new a.default(this.node, this.m_PrefabArr.PopupLeftButton);
 this.cl_MsgView = new r.default(this.node, this.m_PrefabArr.PopupLeftButton);
-this.cl_RecordView = new _.default(this.node, this.m_PrefabArr.otherL);
+this.cl_RecordView = new _.default(this.node, this.m_PrefabArr.PopupLeftButton);
 }
 this.cl_Navbar = new c.default(this.node, this.cl_ShareView, this.cl_PlayView, this.cl_MsgView, this.cl_SetView, this.cl_AgentView, this.cl_RecordView);
 this.cl_ResetPdView = new d.default(this.node);
@@ -1184,12 +1431,11 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/Notice"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("./HallModelManager"), u = cc._decorator, h = u.ccclass, p = u.property, d = function(t) {
+var s = t("../common/Notice"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("./HallModelManager"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
 e.popupLeftButton = null;
-e.other = null;
 return e;
 }
 e.prototype.onLoad = function() {
@@ -1198,11 +1444,9 @@ r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
 s.default.getInstance().setRootNode(cc.find("top/notice", this.node));
 s.default.getInstance().debug();
 this.m_hallPrefabArr = {
-PopupLeftButton: null,
-otherL: null
+PopupLeftButton: null
 };
 this.m_hallPrefabArr.PopupLeftButton = this.popupLeftButton;
-this.m_hallPrefabArr.otherL = this.other;
 this.cl_ModelManager = l.default.getInstance(this.node, this.m_hallPrefabArr);
 this.cl_ModelManager.init();
 };
@@ -1231,11 +1475,10 @@ e.prototype.onDestroy = function() {
 s.default.getInstance().onDestroy();
 this.cl_ModelManager.onDestroy();
 };
-c([ p(cc.Prefab) ], e.prototype, "popupLeftButton", void 0);
-c([ p(cc.Prefab) ], e.prototype, "other", void 0);
-return c([ h ], e);
+c([ d(cc.Prefab) ], e.prototype, "popupLeftButton", void 0);
+return c([ h, p("场景主脚本/Hall") ], e);
 }(cc.Component);
-o.default = d;
+o.default = f;
 cc._RF.pop();
 }, {
 "../common/Notice": "Notice",
@@ -3287,6 +3530,7 @@ this.m_flashLightAppName = cc.find("logo/appname", this.node);
 this.m_loadingBar = cc.find("loading/progress", this.node).getComponent(cc.ProgressBar);
 this.m_loadingDetail = cc.find("loading/progress/state/detail", this.node).getComponent(cc.Label);
 this.m_loadingContent = cc.find("loading/progress/state/content", this.node).getComponent(cc.Label);
+this.m_star = cc.find("logo/star", this.node);
 this.m_rootNode = cc.find("loading", this.node);
 this.f_lauchingFinishCallBack = e;
 this.m_rootNode.active = !0;
@@ -3323,7 +3567,7 @@ t.prototype.runShader = function() {
 var t = this;
 this.shader_flashLightUBO.lightAngle = 75;
 this.shader_flashLightUBO.lightColor = cc.color(130, 99, 68);
-this.shader_flashLightUBO.lightWidth = .1;
+this.shader_flashLightUBO.lightWidth = .05;
 this.shader_flashLightUBO.enableGradient = !0;
 this.shader_flashLightUBO.cropAlpha = !0;
 this.shader_flashLightUBO.enableFog = !1;
@@ -3626,9 +3870,9 @@ cc._RF.pop();
 "./ForgetPd": "ForgetPd",
 "./Regist": "Regist"
 } ],
-Main: [ function(t, e, o) {
+MainSg: [ function(t, e, o) {
 "use strict";
-cc._RF.push(e, "a878eQghqFHPqLzCy76SeLi", "Main");
+cc._RF.push(e, "a878eQghqFHPqLzCy76SeLi", "MainSg");
 var i, n = this && this.__extends || (i = function(t, e) {
 return (i = Object.setPrototypeOf || {
 __proto__: []
@@ -3651,31 +3895,52 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("./SGView"), l = cc._decorator, u = l.ccclass, h = (l.property, 
-function(t) {
+var s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("./Player"), l = t("./SGView"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
 n(e, t);
 function e() {
-return null !== t && t.apply(this, arguments) || this;
+var e = null !== t && t.apply(this, arguments) || this;
+e.tomato = null;
+e.flower = null;
+e.boom = null;
+e.water = null;
+e.hand = null;
+return e;
 }
 e.prototype.onLoad = function() {
 s.default.getInstance().setScene(cc.director.getScene());
 a.default.getInstance().setRootNode(cc.find("common/toast", this.node));
-this.cl_SGView = new r.default(this.node);
+this.AnimPrefab = {
+tomato: this.tomato,
+flower: this.flower,
+boom: this.boom,
+water: this.water,
+hand: this.hand
+};
+this.cl_SGView = new l.default(this.node);
+this.cl_Player = new r.default(this.node, this.AnimPrefab);
 };
 e.prototype.start = function() {
 this.cl_SGView.start();
+this.cl_Player.start();
 };
 e.prototype.onDestroy = function() {
+this.cl_Player.onDestroy();
 this.cl_SGView.onDestroy();
 this.cl_SGView = null;
 };
-return c([ u ], e);
-}(cc.Component));
-o.default = h;
+c([ d(cc.Prefab) ], e.prototype, "tomato", void 0);
+c([ d(cc.Prefab) ], e.prototype, "flower", void 0);
+c([ d(cc.Prefab) ], e.prototype, "boom", void 0);
+c([ d(cc.Prefab) ], e.prototype, "water", void 0);
+c([ d(cc.Prefab) ], e.prototype, "hand", void 0);
+return c([ h, p("场景主脚本/MainSg") ], e);
+}(cc.Component);
+o.default = f;
 cc._RF.pop();
 }, {
 "../common/SceneManager": "SceneManager",
 "../common/Toast": "Toast",
+"./Player": "Player",
 "./SGView": "SGView"
 } ],
 MoneyFlowView: [ function(t, e, o) {
@@ -3985,7 +4250,7 @@ cc._RF.push(e, "035acCR2uhGM5XkRFSaMM0U", "MyAnimation");
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var i = function() {
+var i = t("../units/AudioManager"), n = t("./SceneManager"), c = function() {
 function t() {}
 t.prototype.popupOpenScaleXY = function(t, e, o) {
 void 0 === e && (e = null);
@@ -4187,12 +4452,57 @@ easing: "quadOut"
 }).call(o).start();
 }
 };
+t.prototype.RunAnimtation = function(t, e, o) {
+t.active = !0;
+var c = t.getComponent(cc.Animation);
+c.on("finished", function() {
+cc.tween(t).to(.5, {
+opacity: 0
+}, {
+easing: "quadOut"
+}).call(function() {
+cc.isValid(t, !0) && t.destroy();
+}).start();
+});
+c.defaultClip.curveData.props.position[0].value = [ e.x, e.y, e.z ];
+c.defaultClip.curveData.props.position[1].value = [ o.x, o.y, o.z ];
+c.play();
+setTimeout(function() {
+if ("game_sg" == n.default.getInstance().getSceneName()) {
+var e = void 0;
+switch (t.name) {
+case "chicken":
+e = EFF_CODE.EFF_BQANIM_CHICKEN;
+break;
+
+case "tomato":
+e = EFF_CODE.EFF_BQANIM_TOMATO;
+break;
+
+case "flower":
+e = EFF_CODE.EFF_BQANIM_FLOWER;
+break;
+
+case "boom":
+e = EFF_CODE.EFF_BQANIM_BOOM;
+break;
+
+case "water":
+e = EFF_CODE.EFF_BQANIM_WATER;
+}
+i.default.getInstance().playEffectFromLocal(e, !1);
+}
+}, 800);
+};
 t.m_tweenMap = new Map();
 return t;
 }();
-o.default = i;
+o.default = c;
 cc._RF.pop();
-}, {} ],
+}, {
+"../units/AudioManager": "AudioManager",
+"./SceneManager": "SceneManager"
+} ],
 Navbar: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "595f9hnl9dJ47AshZLzqsMK", "Navbar");
@@ -4433,6 +4743,65 @@ cc._RF.pop();
 "../../common/MyAnimation": "MyAnimation",
 "../../common/Toast": "Toast"
 } ],
+NodePool: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "e699dErF9tHFaX8M1zoFVK7", "NodePool");
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var i = function() {
+function t() {
+this.nodePool = [];
+}
+t.getInstance = function() {
+if (!t.m_instance) {
+t.m_instance = new t();
+return t.m_instance;
+}
+return t.m_instance;
+};
+t.prototype.cleanPool = function(t) {
+void 0 === t && (t = null);
+if (this.nodePool) if (t) {
+if (this.nodePool[t]) {
+this.nodePool[t].prefab = null;
+this.nodePool[t].pool.clear();
+delete this.nodePool[t];
+return;
+}
+} else {
+for (var e in this.nodePool) this.nodePool[e].pool.clear();
+this.nodePool = [];
+}
+};
+t.prototype.createrNodePool = function(t, e, o) {
+if (t && e && o && (!this.nodePool || !this.nodePool[t])) {
+this.nodePool || (this.nodePool = []);
+var i = {
+prefab: e,
+pool: new cc.NodePool()
+};
+this.nodePool[t] = i;
+for (var n = 0; n < o; ++n) {
+var c = cc.instantiate(e);
+this.nodePool[t].pool.put(c);
+}
+}
+};
+t.prototype.getNodeFromPool = function(t) {
+return this.nodePool[t] ? this.nodePool[t].pool.size() > 0 ? this.nodePool[t].pool.get() : cc.instantiate(this.nodePool[t].prefab) : null;
+};
+t.prototype.destroyNode = function(t, e) {
+this.nodePool[t] ? this.nodePool[t].pool.put(e) : e.destory();
+};
+t.prototype.onDestroy = function() {
+this.cleanPool();
+};
+return t;
+}();
+o.default = i;
+cc._RF.pop();
+}, {} ],
 Notice: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "36147TY17hJ04yPwYA+1Lmt", "Notice");
@@ -4618,7 +4987,7 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), p = t("./Login"), d = t("./Version"), f = t("../common/Dialog"), m = t("../common/AtlasLib"), _ = cc._decorator, g = _.ccclass, y = (_.property, 
+var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), p = t("./Login"), d = t("./Version"), f = t("../common/Dialog"), m = t("../common/AtlasLib"), _ = cc._decorator, g = _.ccclass, y = _.menu, v = (_.property, 
 function(t) {
 n(e, t);
 function e() {
@@ -4723,9 +5092,9 @@ s.default.onDestory();
 this.cl_login.onDestroy();
 this.cl_loading.onDestory();
 };
-return c([ g ], e);
+return c([ g, y("场景主脚本/Passport") ], e);
 }(cc.Component));
-o.default = y;
+o.default = v;
 cc._RF.pop();
 }, {
 "../common/AtlasLib": "AtlasLib",
@@ -4887,6 +5256,126 @@ cc._RF.pop();
 "../../common/MyAnimation": "MyAnimation",
 "../../units/Tool": "Tool"
 } ],
+PlayerInfo: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "10c86NkrD5BVovywQ8ru1B2", "PlayerInfo");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+});
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+o.MPlayerInfo = void 0;
+var c = t("../common/CountDown"), s = t("../common/MyAnimation"), a = t("../units/Tool"), r = t("../units/UserConfig"), l = function(t) {
+n(e, t);
+function e() {
+return t.call(this) || this;
+}
+e.prototype.HttpReauest = function(t) {
+this.sendAnimation(t);
+};
+e.prototype.getMyInfo = function() {
+return r.default.getInstance().getUserInfo();
+};
+e.prototype.sendAnimation = function() {};
+return e;
+}(s.default);
+o.MPlayerInfo = l;
+var u = function(t) {
+n(e, t);
+function e(e, o) {
+var i = t.call(this) || this;
+i.node = e;
+i.m_animList = cc.find("playerinfo/layout/animation", i.node).children;
+i.m_layoutInfo = cc.find("playerinfo/layout/info", i.node);
+i.m_layoutAnim = cc.find("playerinfo/layout/animation", i.node);
+i.m_root = cc.find("playerinfo", i.node);
+i.m_mask = cc.find("mask", i.node);
+i.i_close = cc.find("playerinfo/button_close", i.node);
+i.c_nickname = cc.find("playerinfo/layout/info/nickname", i.node).getComponent(cc.Label);
+i.c_avatar = cc.find("playerinfo/layout/info/avatar/mask/avatar", i.node);
+i.c_id = cc.find("playerinfo/layout/info/id", i.node).getComponent(cc.Label);
+i.c_balance = cc.find("playerinfo/layout/info/balance", i.node).getComponent(cc.Label);
+i.m_root.active = !1;
+i.cl_Player = o;
+return i;
+}
+e.prototype.show = function(t) {
+if (t) {
+this.m_receiver = t;
+this.m_layoutInfo.active = !0;
+this.m_layoutAnim.active = this.m_receiver.id !== this.getMyInfo().id;
+this.c_balance.string = "余额: " + String(this.m_receiver.gold);
+this.c_id.string = "玩家ID: " + String(this.m_receiver.id);
+this.c_nickname.string = "昵称: " + String(this.m_receiver.nickname);
+a.default.getInstance().LoadImageRemote(this.c_avatar, this.m_receiver.avatar, new cc.Vec2(128, 128));
+this.node.active = !0;
+this.popupOpenScaleXY(this.m_root, this.m_mask, this.addEvent.bind(this));
+this.m_animList.forEach(function(t) {
+t.getChildByName("mask").getComponent(c.default).activeOn();
+});
+}
+};
+e.prototype.hide = function() {
+this.popupCloseScaleXY(this.m_root, this.m_mask, this.hideEvent.bind(this));
+this.m_animList.forEach(function(t) {
+t.getChildByName("mask").getComponent(c.default).activeOff();
+});
+this.m_receiver = null;
+};
+e.prototype.addEvent = function() {
+var t = this;
+this.i_close.on("touchend", this.hide.bind(this));
+this.m_animList.forEach(function(e, o) {
+e.getChildByName("icon").on("touchend", function() {
+if (e.getChildByName("mask").getComponent(c.default).countDownFinish) {
+t.cl_Player.sendAnimation({
+sendid: String(t.getMyInfo().id),
+receive: t.m_receiver.id,
+animationid: o
+});
+t.allAnimHide(1e4);
+t.hide();
+}
+});
+}, this);
+};
+e.prototype.allAnimHide = function(t) {
+this.m_animList.forEach(function(e) {
+e.getChildByName("mask").getComponent(c.default).show(t);
+});
+};
+e.prototype.hideEvent = function() {
+this.i_close.off("touchend");
+this.m_animList.forEach(function(t) {
+t.getChildByName("icon").off("touchend");
+}, this);
+};
+e.prototype.sendAnimation = function(t) {
+this.cl_Player.sendAnimation(t);
+};
+return e;
+}(l);
+o.default = u;
+cc._RF.pop();
+}, {
+"../common/CountDown": "CountDown",
+"../common/MyAnimation": "MyAnimation",
+"../units/Tool": "Tool",
+"../units/UserConfig": "UserConfig"
+} ],
 Player: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "507b0vkhyhI66uJoG7pREgZ", "Player");
@@ -4909,27 +5398,214 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MPlayer = void 0;
-var c = function(t) {
+var c = t("../common/MyAnimation"), s = t("../units/AudioManager"), a = t("../units/Tool"), r = t("../units/UserConfig"), l = t("./BetManager"), u = t("./CardLib"), h = t("./PlayerInfo"), p = function(t) {
 n(e, t);
 function e() {
-return t.call(this) || this;
+var e = t.call(this) || this;
+e.m_cache = [];
+var o = e.getMyInfo();
+e.m_cache.push({
+charid: 0,
+id: o.id,
+bet: 0,
+gold: o.gold,
+avatar: o.avatar,
+nickname: o.nickname,
+gender: 0
+});
+e.m_playrNum = a.default.getInstance().randomAccess(4, 10);
+e.timer = setInterval(function() {
+if (e.m_cache.length != e.m_playrNum) {
+e.m_cache.push({
+charid: e.m_cache.length,
+id: a.default.getInstance().randomNumber(5),
+bet: 0,
+gold: a.default.getInstance().randomAccess(4e3, 2e5),
+avatar: o.avatar,
+nickname: a.default.getInstance().getRandomName(3),
+gender: 0
+});
+e.updateView();
+} else {
+clearInterval(e.timer);
+e.Startbet();
 }
+}, 2e3);
 return e;
-}(t("../common/MyAnimation").default);
-o.MPlayer = c;
-var s = function(t) {
-n(e, t);
-function e() {
-return null !== t && t.apply(this, arguments) || this;
 }
+e.prototype.getMyInfo = function() {
+return r.default.getInstance().getUserInfo();
+};
+e.prototype.WebsocketData = function() {
+this.updateView();
+};
+e.prototype.getUserInfoFromIndex = function(t) {
+return this.m_cache && this.m_cache[t] ? this.m_cache[t] : null;
+};
+e.prototype.getSetDownIsFinish = function() {
+return this.m_cache.length === this.m_playrNum;
+};
+e.prototype.getplayrNum = function() {
+return this.m_cache.length;
+};
+e.prototype.getUsesIndexFromUserID = function(t) {
+if (this.m_cache) for (var e = 0; e < this.m_cache.length; ++e) if (this.m_cache[e].id === t) return e;
+return null;
+};
+e.prototype.Startbet = function() {};
+e.prototype.updateView = function() {};
+e.prototype.getTableInfo = function() {
+return r.default.getInstance().getTableInfo();
+};
+return e;
+}(c.default);
+o.MPlayer = p;
+var d = function(t) {
+n(e, t);
+function e(e, o) {
+var i = t.call(this) || this;
+i.node = e;
+i.m_playerList = cc.find("player", i.node).children;
+i.cl_cardLib = cc.find("state/cardLib", i.node).getComponent(u.default);
+i.cl_playerInfo = new h.default(cc.find("popup", i.node), i);
+i.m_prefab_anim = o;
+i.c_state = cc.find("state/gamestate/value", i.node).getComponent(cc.Label);
+i.cl_betManager = cc.find("bet", i.node).getComponent(l.default);
+i.c_goldBase = cc.find("state/goldbase", i.node).getComponent(cc.Label);
+i.cl_betManager.hide();
+i.resetView();
+i.updateView();
+i.addEvent();
+return i;
+}
+e.prototype.sendAnimation = function(t) {
+var e;
+switch (t.animationid) {
+case 0:
+e = this.m_prefab_anim.hand;
+break;
+
+case 1:
+e = this.m_prefab_anim.tomato;
+break;
+
+case 2:
+e = this.m_prefab_anim.flower;
+break;
+
+case 3:
+e = this.m_prefab_anim.boom;
+break;
+
+case 4:
+e = this.m_prefab_anim.water;
+}
+var o = cc.instantiate(e);
+o.parent = this.m_playerList[0].parent;
+var i = this.getPosFromUserid(this.getUsesIndexFromUserID(t.receive)), n = this.getPosFromUserid(this.getUsesIndexFromUserID(t.sendid));
+this.RunAnimtation(o, n, i);
+};
+e.prototype.getPosFromUserid = function(t) {
+var e = this.m_playerList[t].parent, o = this.m_playerList[t].getChildByName("avatar"), i = o.parent.convertToWorldSpaceAR(o.position);
+return e.convertToNodeSpaceAR(i);
+};
+e.prototype.resetView = function() {
+this.c_goldBase.string = "池底:0";
+this.c_state.string = "等待玩家中...";
+this.m_playerList.forEach(function(t) {
+if ("player" === t.name.substr(0, 6)) {
+var e = cc.find("avatar/name", t).getComponent(cc.Label), o = cc.find("avatar/gold", t).getComponent(cc.Label), i = cc.find("bet/value", t).getComponent(cc.Label), n = cc.find("avatar/avatar/image", t), c = cc.find("cardList", t), s = cc.find("type", t), a = cc.find("addgold", t);
+e.string = "";
+n.getComponent(cc.Sprite).spriteFrame = null;
+o.string = String(0);
+i.string = String(0);
+c.removeAllChildren();
+c.active = !0;
+s.active = !1;
+a.active = !1;
+i.node.parent.active = !0;
+}
+});
+};
+e.prototype.Startbet = function() {
+s.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_NEWGAME, !1);
+this.BetCountDown(20);
+this.m_playerList[0].getChildByName("bet").active = !1;
+this.m_playerList[0].getChildByName("cardList").active = !1;
+this.cl_betManager.show(this.getTableInfo().min, this.getTableInfo().max, this.getTableInfo().min + Math.floor((this.getTableInfo().max - this.getTableInfo().min) / 2), this.getBetValue.bind(this));
+};
+e.prototype.getBetValue = function() {
+this.c_goldBase.string = "池底:" + String(this.cl_betManager.betValue);
+this.m_playerList[0].getChildByName("bet").active = !0;
+this.m_playerList[0].getChildByName("bet").getChildByName("value").getComponent(cc.Label).string = String(this.cl_betManager.betValue);
+this.m_playerList[0].getChildByName("cardList").active = !0;
+};
+e.prototype.shuffleCard = function() {
+this.cl_betManager.hide();
+this.c_state.string = "洗牌中...";
+for (var t = [], e = 0; e < this.getplayrNum(); ++e) t.push(this.m_playerList[e]);
+this.cl_cardLib.shuffleCard(t, 3);
+};
+e.prototype.BetCountDown = function(t) {
+var e = this;
+this.c_state.string = "下注倒计时 " + t + " 秒";
+this.timer = setInterval(function() {
+e.c_state.string = "下注倒计时 " + t + " 秒";
+if (0 === t) {
+clearInterval(e.timer);
+e.timer = null;
+e.shuffleCard();
+}
+t--;
+}, 1e3);
+};
+e.prototype.updateView = function() {
+var t = this;
+this.m_playerList.forEach(function(e, o) {
+if ("player" === e.name.substr(0, 6)) {
+var i = t.getUserInfoFromIndex(o);
+if (i) {
+var n = cc.find("avatar/name", e).getComponent(cc.Label), c = cc.find("avatar/gold", e).getComponent(cc.Label), s = cc.find("bet/value", e).getComponent(cc.Label), r = cc.find("avatar/avatar/image", e);
+n.string = i.nickname;
+c.string = a.default.getInstance().forMat(i.gold, 1e4);
+s.string = String(i.bet);
+a.default.getInstance().LoadImageRemote(r, i.avatar, new cc.Vec2(65, 65));
+e.active = !0;
+} else e.active = !1;
+}
+});
+};
+e.prototype.SendCard = function() {};
+e.prototype.addEvent = function() {
+var t = this;
+this.m_playerList.forEach(function(e, o) {
+e.getChildByName("avatar").on("touchend", function() {
+t.cl_playerInfo.show(t.getUserInfoFromIndex(o));
+}, t);
+});
+};
+e.prototype.onMessage = function(t) {
+this.WebsocketData(t);
+};
 e.prototype.start = function() {};
-e.prototype.onDestroy = function() {};
+e.prototype.onDestroy = function() {
+if (this.timer) {
+clearInterval(this.timer);
+this.timer = null;
+}
+};
 return e;
-}(c);
-o.default = s;
+}(p);
+o.default = d;
 cc._RF.pop();
 }, {
-"../common/MyAnimation": "MyAnimation"
+"../common/MyAnimation": "MyAnimation",
+"../units/AudioManager": "AudioManager",
+"../units/Tool": "Tool",
+"../units/UserConfig": "UserConfig",
+"./BetManager": "BetManager",
+"./CardLib": "CardLib",
+"./PlayerInfo": "PlayerInfo"
 } ],
 RealNameView: [ function(t, e, o) {
 "use strict";
@@ -5552,7 +6228,7 @@ active: !0
 t.m_cache.push(o);
 t.OnWebsocketMessage();
 }
-}, 5e3);
+}, 2e3);
 this.tic = setTimeout(function() {
 t.tie = setInterval(function() {
 var e = Math.ceil(Math.random() * (t.m_cache.length - 1));
@@ -5566,7 +6242,7 @@ t.m_cache[e].player[o].active = !0;
 t.OnWebsocketMessage();
 }, 2e3);
 t.tic = null;
-}, 5e3);
+}, 2e3);
 };
 e.prototype.getDataFromIndex = function(t, e) {
 return e ? this.m_cache[2 * t + 1] : this.m_cache[2 * t];
@@ -5775,7 +6451,7 @@ return c > 3 && s && Object.defineProperty(e, o, s), s;
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../common/SetView"), h = t("./GameView"), p = t("./RoomView"), d = t("./RuleView"), f = t("./TopView"), m = cc._decorator, _ = m.ccclass, g = m.property, y = function(t) {
+var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../common/SetView"), h = t("./GameView"), p = t("./RoomView"), d = t("./RuleView"), f = t("./TopView"), m = cc._decorator, _ = m.ccclass, g = m.menu, y = m.property, v = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -5824,10 +6500,10 @@ this.cl_RoomView.OnDestroy();
 this.cl_GameView.onDestroy();
 this.cl_RecordView.onDestroy();
 };
-c([ g(cc.Prefab) ], e.prototype, "PopupButton", void 0);
-return c([ _ ], e);
+c([ y(cc.Prefab) ], e.prototype, "PopupButton", void 0);
+return c([ _, g("场景主脚本/Room") ], e);
 }(cc.Component);
-o.default = y;
+o.default = v;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
@@ -5942,7 +6618,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MSet = void 0;
-var c = t("../common/AtlasLib"), s = t("../common/MyAnimation"), a = t("../units/AudioManager"), r = t("../units/UserConfig"), l = function(t) {
+var c = t("../common/AtlasLib"), s = t("../common/MyAnimation"), a = t("../units/AudioManager"), r = t("../units/UserConfig"), l = t("./CardLib"), u = function(t) {
 n(e, t);
 function e() {
 return t.call(this) || this;
@@ -5958,8 +6634,8 @@ return r.default.getInstance().getAudioConfig();
 };
 return e;
 }(s.default);
-o.MSet = l;
-var u = function(t) {
+o.MSet = u;
+var h = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -5982,6 +6658,7 @@ o.i_sliderMusic = cc.find("popup/set/layout_music/progress", o.node);
 o.i_sliderEffect = cc.find("popup/set/layout_eff/progress", o.node);
 o.i_cardSelect = cc.find("popup/set/layout_card", o.node).children;
 o.i_tableSelect = cc.find("popup/set/layout_table", o.node).children;
+o.cl_cardLib = cc.find("state/cardLib", o.node).getComponent(l.default);
 o.m_root.active = !0;
 o.updateView();
 o.setChoose(o.getSgSetViewConfig());
@@ -5994,10 +6671,14 @@ e.prototype.setChoose = function(t) {
 var e = this;
 this.m_playerList.forEach(function(o) {
 o.getChildByName("cardList").children.forEach(function(e) {
+var o = e.width, i = e.height;
 e.getComponent("switchsp").updateFrame(0, c.default.getInstance().getSpriteFrame("card", "base" + t.cardid));
+e.width = o;
+e.height = i;
 }, e);
 }, this);
 this.m_table.setSpriteFrame(t.tableid);
+this.cl_cardLib.setCardBase(0, c.default.getInstance().getSpriteFrame("card", "base" + t.cardid));
 };
 e.prototype.click_CardChoose = function(t, e) {
 var o = this.getSgSetViewConfig();
@@ -6093,14 +6774,15 @@ cc.sys.localStorage.setItem("music", JSON.stringify(t));
 e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
-}(l);
-o.default = u;
+}(u);
+o.default = h;
 cc._RF.pop();
 }, {
 "../common/AtlasLib": "AtlasLib",
 "../common/MyAnimation": "MyAnimation",
 "../units/AudioManager": "AudioManager",
-"../units/UserConfig": "UserConfig"
+"../units/UserConfig": "UserConfig",
+"./CardLib": "CardLib"
 } ],
 SGView: [ function(t, e, o) {
 "use strict";
@@ -6841,8 +7523,13 @@ this.coutDown = t;
 this.timeStamp = Date.now();
 }
 t.prototype.getSurPlus = function() {
-var t = Date.now() - (this.timeStamp + 1e3 * this.coutDown);
+var t = this.timeStamp + 1e3 * this.coutDown - Date.now();
+console.log(t > 1e3 ? Math.floor(t / 1e3) : 0);
 return t > 1e3 ? Math.floor(t / 1e3) : 0;
+};
+t.prototype.getSurPlusMilliSecond = function() {
+var t = this.timeStamp + Math.floor(1e3 * this.coutDown) - Date.now();
+return t > 0 ? t : 0;
 };
 return t;
 }();
@@ -6969,6 +7656,10 @@ t.height = o.y;
 }
 }
 });
+};
+t.prototype.forMat = function(t, e) {
+e > 1e3 && e % 10 != 0 && 1e3 !== e && 1e4 !== e && 1e8 !== e && cc.error("倍率值不正确请使用1000,10000,100000000");
+return t < e ? String(t) : 1e3 == e ? Math.floor(t / e * 100) / 100 + "K" : 1e4 == e ? Math.floor(t / e * 100) / 100 + "万" : 1e8 == e ? Math.floor(t / e * 100) / 100 + "亿" : void 0;
 };
 t.prototype.getCurentTime = function(t) {
 void 0 === t && (t = null);
@@ -7160,6 +7851,7 @@ bgmVol: 1,
 effVol: 1
 };
 this.BgmNameArr = [ "", "bgm/hzj" ];
+this.EffNameArr = [ "eff/animbq/chicken", "eff/animbq/tomato", "eff/animbq/flower", "eff/animbq/boom", "eff/animbq/water", "eff/card/send_card", "eff/newgame" ];
 this.userinfo = {
 gold: 0,
 phone: "13345671231",
@@ -7563,6 +8255,7 @@ return 1;
 };
 e.prototype.validate = function(t) {
 var e = this;
+this.stateStr.string = "状态: 非原生,系统将不进行更新!";
 cc.sys.localStorage.getItem("hotUpdateVer") ? this.verStr.string = "版本号: " + cc.sys.localStorage.getItem("hotUpdateVer") : this.verStr.string = "版本号: " + JSON.parse(JSON.parse(this.manifest._nativeAsset).version).hotUpdate;
 if (!cc.sys.isNative || this.am) {
 this.stateStr.string = "状态: 非原生,系统将不进行更新!";
@@ -7878,7 +8571,7 @@ displayName: "矩形大小"
 c([ r({
 visible: !1
 }) ], e.prototype, "image", void 0);
-return c([ a(), h(), p(), u(cc.Mask), l("渲染组件/矩形圆角遮罩") ], e);
+return c([ a(), h(), p(), u(cc.Mask), l("公共/矩形圆角遮罩") ], e);
 }(cc.Component);
 o.default = d;
 cc._RF.pop();
@@ -7951,4 +8644,4 @@ return this.curSp;
 });
 cc._RF.pop();
 }, {} ]
-}, {}, [ "AtlasLib", "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "Notice", "Observer", "SceneManager", "ScrollViewRenderData", "SetView", "TimerStruct", "Toast", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "Main", "Player", "SGSetView", "SGView", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "rectframe", "switchsp" ]);
+}, {}, [ "AtlasLib", "CountDown", "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "NodePool", "Notice", "Observer", "SceneManager", "ScrollViewRenderData", "SetView", "TimerStruct", "Toast", "rectframe", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "CardLib", "MainSg", "Player", "PlayerInfo", "SGSetView", "SGView", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "switchsp" ]);

@@ -27,7 +27,13 @@ declare enum BGM_CODE{
     BGM_HALL,
 }
 declare enum EFF_CODE{
-   
+    EFF_BQANIM_CHICKEN,
+    EFF_BQANIM_TOMATO,
+    EFF_BQANIM_FLOWER,
+    EFF_BQANIM_BOOM,
+    EFF_BQANIM_WATER,
+    EFF_SG_SENDCARD,
+    EFF_SG_NEWGAME,
 }
 declare enum LOGIN_METHOD {
     PASSWORD,
@@ -107,8 +113,8 @@ declare interface MoneyFlow{
 	limit:number;
 }
 declare interface SendAnimation{
-    sendid:number;
-    receive:number;
+    sendid:string;
+    receive:string;
     animationid:number;
 }
 
@@ -157,7 +163,6 @@ declare interface RommListNum{
 }
 declare interface HallPrefabArr{
     PopupLeftButton:cc.Prefab;
-    otherL:cc.Prefab,
 }
 
 declare interface ForeachPlayInfo{
@@ -186,14 +191,25 @@ declare interface AtlasMap{
     path:string;
     atlas:cc.SpriteAtlas;
 }
-declare interface PlayerInfo{
+declare interface PlayerData{
     charid:number,
-    id:number,
+    id:string,
     bet:number,
     gold:number,
     avatar:string,
     nickname:string,
     gender:number,
+}
+declare interface AnimPrefab{
+    tomato:cc.Prefab,
+    flower:cc.Prefab,
+    boom:cc.Prefab,
+    water:cc.Prefab,
+    hand:cc.Prefab,
+}
+declare interface NodePoolData{
+    prefab:cc.Prefab,
+    pool:cc.NodePool,
 }
 declare class SwitchSp {
     /**

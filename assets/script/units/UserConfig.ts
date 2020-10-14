@@ -21,6 +21,15 @@ export default class UserConfig{
         this.BgmNameArr = [
             '',
             'bgm/hzj'
+        ];
+        this.EffNameArr  =[
+            'eff/animbq/chicken',
+            'eff/animbq/tomato',
+            'eff/animbq/flower',
+            'eff/animbq/boom',
+            'eff/animbq/water',
+            'eff/card/send_card',
+            'eff/newgame',
         ]
         this.userinfo = {
             gold:0,

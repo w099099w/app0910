@@ -6,7 +6,12 @@ export default class TimerStruct{
         this.timeStamp = Date.now();
     }
     public getSurPlus():number{
-        let surPlus = Date.now()-(this.timeStamp+(1000*this.coutDown))
+        let surPlus = (this.timeStamp+(1000*this.coutDown))-Date.now();
+        console.log(surPlus > 1000? Math.floor(surPlus/1000):0)
         return surPlus > 1000? Math.floor(surPlus/1000):0;
+    }
+    public getSurPlusMilliSecond():number{
+        let surPlus =(this.timeStamp+Math.floor(this.coutDown*1000)) - Date.now();
+        return surPlus > 0? surPlus:0;
     }
 }
