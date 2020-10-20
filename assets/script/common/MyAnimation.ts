@@ -165,4 +165,17 @@ export default class MyAnimation{
             }
         },800)
     }
+    protected RunBetAnim(Node:cc.Node,OnePos:cc.Vec2,TwoPos:cc.Vec2,callBack:Function){
+        cc.tween(Node).to(0.2,{x:OnePos.x,y:OnePos.y},{easing:'quadOut'}).delay(0.5).to(0.4,{x:TwoPos.x,y:TwoPos.y},{easing:'quadOut'}).call(callBack).start();
+    }
+    protected RunOpenCard(Node:cc.Node){
+        let swSp:SwitchSp = Node.getComponent('switchsp');
+        if(!swSp){
+            cc.warn('没有组件 switchsp');
+            return;
+        }
+        cc.tween(Node).to(0.2,{scaleX:0}).call(()=>{
+            swSp.setSpriteFrame(1);
+        }).to(0.2,{scaleX:1}).start();
+    }
 }

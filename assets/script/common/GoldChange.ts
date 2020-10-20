@@ -38,9 +38,10 @@ export default class GoldChange extends cc.Component {
         Component.verticalAlign = cc.Label.VerticalAlign.CENTER;
         Component.horizontalAlign = cc.Label.HorizontalAlign.CENTER;
     }
-    
-    private addNode:cc.Node;
-    private subNode:cc.Node;
+    @property(cc.Node)
+    addNode:cc.Node = null;
+    @property(cc.Node)
+    subNode:cc.Node = null;
     private _string:number;
     get string():number{
         return this._string;

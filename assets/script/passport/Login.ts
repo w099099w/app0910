@@ -6,6 +6,8 @@ import TimerStruct from "../common/TimerStruct";
 import Tool from "../units/Tool";
 import Regist from "./Regist";
 import UserConfig from "../units/UserConfig";
+import HttpRequest from "../units/HttpRequest";
+import Load from "../common/Load";
 
 export default class Login extends MyAnimation{
     private node:cc.Node;
@@ -34,27 +36,31 @@ export default class Login extends MyAnimation{
     private i_getVerify:cc.Node;
     private i_forgetPd:cc.Node;
     private i_regist:cc.Node;
-    
+    private m_loginTypes:number;
 
     //密码登录
     private c_pdViewPhoneInput:cc.EditBox;
     private c_pdViewPdInput:cc.EditBox;
-    private _pdLoginParam:PdLogin;
-	get pdLoginParam(): PdLogin{
-        let data = {
-            phone:this.c_pdViewPhoneInput.string,
+    private _pdLoginParam:LoginParams;
+	get pdLoginParam(): LoginParams{
+        let data:LoginParams = {
+            types:this.m_loginTypes,
+            mobile:this.c_pdViewPhoneInput.string,
             password:this.c_pdViewPdInput.string,
+            client_id:"0",
         };
 		return data;
     }
     //验证码登录
     private c_verifyViewPhoneInput:cc.EditBox;
     private c_verifyViewVerfyInput:cc.EditBox;
-    private _verifyLoginParam:VerifyLogin;
-    get verifyLoginParam(): VerifyLogin{
-        let data = {
-            phone:this.c_verifyViewPhoneInput.string,
-            verify:this.c_verifyViewVerfyInput.string,
+    private _verifyLoginParam:LoginParams;
+    get verifyLoginParam(): LoginParams{
+        let data:LoginParams = {
+            types:this.m_loginTypes,
+            mobile:this.c_verifyViewPhoneInput.string,
+            password:this.c_verifyViewVerfyInput.string,
+            client_id:"0",
         };
 		return data;
     }
@@ -62,7 +68,8 @@ export default class Login extends MyAnimation{
     private _verifyPhoneParam:VerifyPhone;
     get verifyPhoneParam():VerifyPhone{
         let data = {
-            phone:this.c_verifyViewPhoneInput.string,
+            types:2,
+            mobile:this.c_verifyViewPhoneInput.string,
         };
         return data;
     }
@@ -111,10 +118,10 @@ export default class Login extends MyAnimation{
     }
     public requestPdLogin(){
         //网络请求从pdLogin拉取信息
-        if(this.pdLoginParam.phone.length == 0){
+        if(this.pdLoginParam.mobile.length == 0){
             Toast.getInstance().show('手机号不能为空',this.m_toast);
             return;
-        }else if(!Tool.getInstance().isPhoneNumber(this.pdLoginParam.phone)){
+        }else if(!Tool.getInstance().isPhoneNumber(this.pdLoginParam.mobile)){
             Toast.getInstance().show('请输入正确的手机号',this.m_toast);
             return;
         }else if(this.pdLoginParam.password.length < 6){
@@ -124,26 +131,42 @@ export default class Login extends MyAnimation{
             Toast.getInstance().show('请先同意勾选用户协议',this.m_toast);
             return;
         }
-        cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
-        UserConfig.getInstance().setUserInfo({phone:this.pdLoginParam.phone});
-        SceneManager.getInstance().loadScene('hall');
+        this.RequestLogin(true);
+    }
+    private RequestLogin(IsPdLogin:boolean){
+        HttpRequest.Req('post','/foo/sign-in',IsPdLogin?this.pdLoginParam:this.verifyLoginParam,Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+               HttpRequest.Token = Success.data.token;
+               HttpRequest.Req('get','/foo/info',{},Load.getInstance(),(Success:HttpReq)=>{
+                    if(Success.code === 0 && Success.message === 'OK'){
+                        cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
+                        UserConfig.getInstance().setUserInfo(Success.data);
+                        SceneManager.getInstance().loadScene('hall');
+                    }
+                },(Failed:HttpReq)=>{
+                    Toast.getInstance().show(Failed.message,this.m_toast);
+                }); 
+            }
+        },(Failed:HttpReq)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        }); 
     }
     public requestVerifyLogin(){
         //网络请求从pdLogin拉取信息
-        if(this.verifyLoginParam.phone.length == 0){
+        if(this.verifyLoginParam.mobile.length == 0){
             Toast.getInstance().show('手机号不能为空',this.m_toast);
             return;
-        }else if(!Tool.getInstance().isPhoneNumber(this.verifyLoginParam.phone)){
+        }else if(!Tool.getInstance().isPhoneNumber(this.verifyLoginParam.mobile)){
             Toast.getInstance().show('请输入正确的手机号',this.m_toast);
             return;
-        }else if(this.verifyLoginParam.verify.length !== 6){
+        }else if(this.verifyLoginParam.password.length !== 6){
             Toast.getInstance().show('验证码长度应为6位',this.m_toast);
             return;
         }else if(!this.i_chooseUserAgree.parent.getChildByName('isagree').active){
-            Toast.getInstance().show('请先同意勾选用户协议',this.m_toast);
+            Toast.getInstance().show('请先勾选同意用户协议',this.m_toast);
             return;
         }
-        SceneManager.getInstance().loadScene('hall');
+        this.RequestLogin(false);
     }
     public requestVerify():boolean{
         //请求验证码
@@ -151,20 +174,16 @@ export default class Login extends MyAnimation{
         if(coutdown !== '获取验证码'){
             return false;
         }
-        this.m_verifyCoutDown = new TimerStruct(60);
-        let i = this.m_verifyCoutDown.coutDown;
-        this.i_getVerify.getComponent(cc.Label).string = i+'s';
-        this.t_timerVerfyCountDown = setInterval(()=>{
-            i--;
-            if(i == 0){
-                this.i_getVerify.getComponent(cc.Label).string = '获取验证码';
-                this.m_verifyCoutDown = null;
-                clearInterval(this.t_timerVerfyCountDown);
-                this.t_timerVerfyCountDown = null;
-            }else{
-                this.i_getVerify.getComponent(cc.Label).string = i+'s';
+        //Http
+        HttpRequest.Req('post','/foo/mobile/code',this.verifyPhoneParam,Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                Toast.getInstance().show('验证码已发送到手机 '+ this.verifyPhoneParam.mobile+' 请注意查收',this.m_toast);
+                this.m_verifyCoutDown = new TimerStruct(60);
+                this.setVerifyCountDown(60);
             }
-        },1000);
+        },(Failed:HttpReq)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        });
         return true;
     }
     public setVerifyCountDown(Time:number){
@@ -188,11 +207,11 @@ export default class Login extends MyAnimation{
         return true;
     }
     public reset() {
-        let remberpd:PdLogin = JSON.parse(cc.sys.localStorage.getItem('remberpd'));
+        let remberpd:LoginParams = JSON.parse(cc.sys.localStorage.getItem('remberpd'));
         let userAgree:boolean = JSON.parse(cc.sys.localStorage.getItem('userAgree'));
         this.i_chooseUserAgree.parent.getChildByName('isagree').active = userAgree;
         if(remberpd){
-            this.c_pdViewPhoneInput.string = remberpd.phone;
+            this.c_pdViewPhoneInput.string = remberpd.mobile;
             this.c_pdViewPdInput.string  = remberpd.password;
             this.i_remember.parent.getChildByName('isagree').active = true;
         }else{
@@ -204,17 +223,22 @@ export default class Login extends MyAnimation{
         this.c_verifyViewVerfyInput.string = '';
     }
     public switchLoginMethod(MethodID:LOGIN_METHOD){
+        if(this.m_loginMethod === MethodID){
+            return;
+        }
         if(this.m_verifyCoutDown && this.m_verifyCoutDown.getSurPlus() > 0){
             this.setVerifyCountDown(this.m_verifyCoutDown.getSurPlus());
         }
         this.m_loginMethod = MethodID;
         this.i_choosePd.parent.sortAllChildren();
         if(MethodID == 0){
+            this.m_loginTypes = 1;
             this.i_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
             this.i_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
             this.m_pdView.active = true;
             this.m_verifyView.active = false;
         }else if(MethodID == 1){
+            this.m_loginTypes = 2;
             this.i_choosePd.getChildByName('value').getComponent('switchsp').setSpriteFrame(0);
             this.i_chooseVerify.getChildByName('value').getComponent('switchsp').setSpriteFrame(1);
             this.m_pdView.active = false;
@@ -297,7 +321,7 @@ export default class Login extends MyAnimation{
             }
         },this);
         this.i_getVerify.on('touchend',()=>{
-            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.phone)){
+            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.mobile)){
                 Toast.getInstance().show('请输入正确的手机号',this.m_toast);
                 return false;
             }
@@ -311,6 +335,8 @@ export default class Login extends MyAnimation{
             clearInterval(this.t_timerVerfyCountDown)
             this.t_timerVerfyCountDown = null;
         }
-        this.m_verifyCoutDown = null;  
+        this.m_verifyCoutDown = null;
+        this.cl_forgetPd.onDestroy();
+        this.cl_regist.onDestroy();
     }
 }

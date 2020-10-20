@@ -1,27 +1,27 @@
 window.__require = function t(e, o, i) {
-function n(s, a) {
-if (!o[s]) {
-if (!e[s]) {
-var r = s.split("/");
+function n(a, s) {
+if (!o[a]) {
+if (!e[a]) {
+var r = a.split("/");
 r = r[r.length - 1];
 if (!e[r]) {
 var l = "function" == typeof __require && __require;
-if (!a && l) return l(r, !0);
+if (!s && l) return l(r, !0);
 if (c) return c(r, !0);
-throw new Error("Cannot find module '" + s + "'");
+throw new Error("Cannot find module '" + a + "'");
 }
-s = r;
+a = r;
 }
-var u = o[s] = {
+var u = o[a] = {
 exports: {}
 };
-e[s][0].call(u.exports, function(t) {
-return n(e[s][1][t] || t);
+e[a][0].call(u.exports, function(t) {
+return n(e[a][1][t] || t);
 }, u, u.exports, t, e, o, i);
 }
-return o[s].exports;
+return o[a].exports;
 }
-for (var c = "function" == typeof __require && __require, s = 0; s < i.length; s++) n(i[s]);
+for (var c = "function" == typeof __require && __require, a = 0; a < i.length; a++) n(i[a]);
 return n;
 }({
 AgentView: [ function(t, e, o) {
@@ -46,7 +46,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MAgent = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -61,7 +61,7 @@ return this.S_agentUrl;
 };
 return e;
 }(c.default);
-o.MAgent = a;
+o.MAgent = s;
 var r = function(t) {
 n(e, t);
 function e(e) {
@@ -78,7 +78,7 @@ return o;
 e.prototype.click_LoginAgent = function() {
 switch (this.getLoginAgentButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -107,7 +107,7 @@ t.hide();
 e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -213,7 +213,7 @@ return cc.audioEngine.playMusic(e, o);
 };
 t.prototype.playEffectFromLocal = function(t, e) {
 void 0 === e && (e = !1);
-cc.resources.load(i.default.getInstance().getEffNameFronCode(t), cc.AudioClip, function(t, o) {
+i.default.getInstance().getAudioConfig().openEff && cc.resources.load(i.default.getInstance().getEffNameFronCode(t), cc.AudioClip, function(t, o) {
 cc.audioEngine.setEffectsVolume(i.default.getInstance().getAudioConfig().effVol);
 return cc.audioEngine.playEffect(o, e);
 });
@@ -275,14 +275,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = cc._decorator, a = s.ccclass, r = s.property, l = function(t) {
+var a = cc._decorator, s = a.ccclass, r = a.property, l = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -377,7 +377,7 @@ c([ r(cc.Label) ], e.prototype, "min", void 0);
 c([ r(cc.Label) ], e.prototype, "max", void 0);
 c([ r(cc.Label) ], e.prototype, "bet", void 0);
 c([ r(cc.Node) ], e.prototype, "i_confirm", void 0);
-return c([ a ], e);
+return c([ s ], e);
 }(cc.Component);
 o.default = l;
 cc._RF.pop();
@@ -400,14 +400,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/AtlasLib"), a = t("../common/NodePool"), r = t("../units/AudioManager"), l = t("../units/UserConfig"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
+var a = t("../common/AtlasLib"), s = t("../common/NodePool"), r = t("../units/AudioManager"), l = t("../units/UserConfig"), u = cc._decorator, h = u.ccclass, d = u.menu, p = u.property, f = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -417,7 +417,7 @@ return e;
 e.prototype.onLoad = function() {
 this.Tween = [];
 this.children = [];
-a.default.getInstance().createrNodePool("card", this.cardPrefab, 54);
+s.default.getInstance().createrNodePool("card", this.cardPrefab, 54);
 };
 e.prototype.setCardBase = function(t, e) {
 if (this.children) for (var o = 0; o < this.children.length; ++o) {
@@ -436,60 +436,60 @@ this.Tween[r].stop();
 this.Tween[r] = null;
 }
 for (var u = 0; u < this.node.children.length; ++u) {
-a.default.getInstance().destroyNode("card", this.node.children[u]);
+s.default.getInstance().destroyNode("card", this.node.children[u]);
 this.children[u] = null;
 }
 for (u = 0; u < c; ++u) {
-var h = a.default.getInstance().getNodeFromPool("card");
+var h = s.default.getInstance().getNodeFromPool("card");
 this.children[u] = h;
 this.node.addChild(h);
-h.getComponent("switchsp").updateFrame(0, s.default.getInstance().getSpriteFrame("card", "base" + n));
+h.getComponent("switchsp").updateFrame(0, a.default.getInstance().getSpriteFrame("card", "base" + n));
 h.width = 83;
 h.height = 111;
 }
-var p = new cc.Vec3(0, 0, 0), d = new cc.Vec3(-80, 0, 0), f = new cc.Vec3(80, 0, 0), m = this.node.children.length;
-this.node.children.forEach(function(n, s) {
-s > Math.floor(c / 2) ? i.Tween[s] = cc.tween(n).delay(.2 * s).to(.3, {
-position: d
+var d = new cc.Vec3(0, 0, 0), p = new cc.Vec3(-80, 0, 0), f = new cc.Vec3(80, 0, 0), m = this.node.children.length;
+this.node.children.forEach(function(n, a) {
+a > Math.floor(c / 2) ? i.Tween[a] = cc.tween(n).delay(.2 * a).to(.3, {
+position: p
 }).to(.3, {
 position: f
 }).to(.3, {
-position: p
+position: d
 }).call(function() {
-i.Tween[s] = null;
+i.Tween[a] = null;
 0 == --m && i.SendCardToPlayer(t, e, o);
-}).start() : i.Tween[s] = cc.tween(n).delay(.2 * s).to(.3, {
+}).start() : i.Tween[a] = cc.tween(n).delay(.2 * a).to(.3, {
 position: f
 }).to(.3, {
-position: d
-}).to(.3, {
 position: p
+}).to(.3, {
+position: d
 }).call(function() {
-i.Tween[s] = null;
+i.Tween[a] = null;
 0 == --m && i.SendCardToPlayer(t, e, o);
 }).start();
 }, this);
 };
 e.prototype.SendCardToPlayer = function(t, e, o) {
 for (var i = this, n = t.length * e, c = function(c) {
-var a, l = t[c], u = l.convertToWorldSpaceAR(l.getChildByName("cardList").position), h = s.node.convertToNodeSpaceAR(u);
-a = "player1" === l.name ? new cc.Vec2(83, 111) : new cc.Vec2(57, 76);
-for (var p = function(t) {
-var u = s.children[c * e + t];
-u ? s.Tween[t] = cc.tween(u).delay(.5 + .5 * c + .1 * t).call(function() {
+var s, l = t[c], u = l.convertToWorldSpaceAR(l.getChildByName("cardList").position), h = a.node.convertToNodeSpaceAR(u);
+s = "player1" === l.name ? new cc.Vec2(83, 111) : new cc.Vec2(57, 76);
+for (var d = function(t) {
+var u = a.children[c * e + t];
+u ? a.Tween[t] = cc.tween(u).delay(.5 + .5 * c + .1 * t).call(function() {
 r.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_SENDCARD, !1);
 }).to(.1, {
 position: new cc.Vec3(h.x + 27 * t, h.y, h.z),
-width: a.x,
-height: a.y
+width: s.x,
+height: s.y
 }).call(function() {
 i.Tween[t] = null;
 0 == --n && o && o();
 u.y = 0;
 u.parent = l.getChildByName("cardList");
 }).start() : cc.error("节点错误", u, c * e + t);
-}, d = 0; d < e; ++d) p(d);
-}, s = this, a = 0; a < t.length; ++a) c(a);
+}, p = 0; p < e; ++p) d(p);
+}, a = this, s = 0; s < t.length; ++s) c(s);
 };
 e.prototype.StopShuffleCard = function() {
 for (var t in this.Tween) if (this.Tween[t]) {
@@ -497,13 +497,13 @@ this.Tween[t].stop();
 this.Tween[t] = null;
 }
 for (var e = 0; e < this.node.children.length; ++e) {
-a.default.getInstance().destroyNode("card", this.node.children[e]);
+s.default.getInstance().destroyNode("card", this.node.children[e]);
 this.children[e] = null;
 }
 };
 e.prototype.onDestroy = function() {};
-c([ d(cc.Prefab) ], e.prototype, "cardPrefab", void 0);
-return c([ h, p("三公/牌库") ], e);
+c([ p(cc.Prefab) ], e.prototype, "cardPrefab", void 0);
+return c([ h, d("三公/牌库") ], e);
 }(cc.Component);
 o.default = f;
 cc._RF.pop();
@@ -531,16 +531,16 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("./TimerStruct"), a = cc._decorator, r = a.ccclass, l = (a.property, a.menu), u = a.disallowMultiple, h = a.executeInEditMode;
+var a = t("./TimerStruct"), s = cc._decorator, r = s.ccclass, l = (s.property, s.menu), u = s.disallowMultiple, h = s.executeInEditMode;
 cc.macro.ENABLE_WEBGL_ANTIALIAS = !0;
-var p = function(t) {
+var d = function(t) {
 n(e, t);
 function e() {
 return null !== t && t.apply(this, arguments) || this;
@@ -562,7 +562,7 @@ configurable: !0
 e.prototype.show = function(t, e) {
 var o = this;
 void 0 === e && (e = null);
-this.m_timeDown = new s.default(t / 1e3);
+this.m_timeDown = new a.default(t / 1e3);
 var i = Math.floor(t / 50), n = null === e ? i : e;
 null === e && (this.m_allcount = i);
 this.fillRange = 1;
@@ -608,7 +608,7 @@ this.m_allcount = null;
 };
 return c([ r(), u(), h(), l("公共/倒计时冷却") ], e);
 }(cc.Sprite);
-o.default = p;
+o.default = d;
 cc._RF.pop();
 }, {
 "./TimerStruct": "TimerStruct"
@@ -680,26 +680,26 @@ this.unlock = !0;
 };
 e.prototype.push = function(t, e, o, i, n, c) {
 if ("string" == typeof t && "number" == typeof e && "string" == typeof o && "number" == typeof i) {
-for (var s = "", a = 0; a < o.length; ++a) switch (a) {
+for (var a = "", s = 0; s < o.length; ++s) switch (s) {
 case 17:
 case 32:
 case 45:
 case 56:
-s += o[a];
-s += "\n";
+a += o[s];
+a += "\n";
 break;
 
 case 62:
-s += "...";
-a = o.length;
+a += "...";
+s = o.length;
 break;
 
 default:
-s += o[a];
+a += o[s];
 }
 this.queenData.push({
 tittle: t,
-label: s,
+label: a,
 iconID: e,
 buttonStyle: i,
 callback: n,
@@ -824,8 +824,8 @@ cc._RF.push(e, "5bd62a08URGVbJvGMo8Q94d", "Emitter");
 var i = this && this.__spreadArrays || function() {
 for (var t = 0, e = 0, o = arguments.length; e < o; e++) t += arguments[e].length;
 var i = Array(t), n = 0;
-for (e = 0; e < o; e++) for (var c = arguments[e], s = 0, a = c.length; s < a; s++, 
-n++) i[n] = c[s];
+for (e = 0; e < o; e++) for (var c = arguments[e], a = 0, s = c.length; a < s; a++, 
+n++) i[n] = c[a];
 return i;
 };
 Object.defineProperty(o, "__esModule", {
@@ -840,8 +840,8 @@ t.listeners[e].push(new n.default(o, i));
 t.remove = function(e, o, i) {
 var n = t.listeners[e];
 if (n) {
-for (var c = n.length, s = 0; s < c; s++) if (n[s].compar(i)) {
-n.splice(s, 1);
+for (var c = n.length, a = 0; a < c; a++) if (n[a].compar(i)) {
+n.splice(a, 1);
 break;
 }
 0 == n.length && delete t.listeners[e];
@@ -851,8 +851,8 @@ t.fire = function(e) {
 for (var o = [], n = 1; n < arguments.length; n++) o[n - 1] = arguments[n];
 console.log("fire", e);
 var c = t.listeners[e];
-if (c) for (var s = c.length, a = 0; a < s; a++) {
-var r = c[a];
+if (c) for (var a = c.length, s = 0; s < a; s++) {
+var r = c[s];
 r.notify.apply(r, i([ e ], o));
 }
 };
@@ -902,7 +902,7 @@ t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o(
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var c = t("../common/MyAnimation"), s = t("../common/TimerStruct"), a = t("../common/Toast"), r = t("../units/Tool"), l = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/TimerStruct"), s = t("../common/Toast"), r = t("../units/Tool"), l = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -962,12 +962,12 @@ t.c_inputRepeatPd.string = "";
 this.closeEvent();
 };
 e.prototype.requestForgetPd = function() {
-0 !== this.forgetPdParam.phone.length ? r.default.getInstance().isPhoneNumber(this.forgetPdParam.phone) ? 6 === this.forgetPdParam.verify.length ? this.forgetPdParam.newPd.length < 6 ? a.default.getInstance().show("新密码长度限制6--16位", this.m_toast) : 0 !== this.forgetPdParam.repeatPd.length ? this.forgetPdParam.newPd === this.forgetPdParam.repeatPd ? a.default.getInstance().show("ERRORCODE:500 请求服务器失败!", this.m_toast) : a.default.getInstance().show("两次输入的密码不相同,请确认", this.m_toast) : a.default.getInstance().show("再次输入新密码不能为空", this.m_toast) : a.default.getInstance().show("验证码长度应为6位", this.m_toast) : a.default.getInstance().show("请输入正确的手机号", this.m_toast) : a.default.getInstance().show("手机号不能为空", this.m_toast);
+0 !== this.forgetPdParam.phone.length ? r.default.getInstance().isPhoneNumber(this.forgetPdParam.phone) ? 6 === this.forgetPdParam.verify.length ? this.forgetPdParam.newPd.length < 6 ? s.default.getInstance().show("新密码长度限制6--16位", this.m_toast) : 0 !== this.forgetPdParam.repeatPd.length ? this.forgetPdParam.newPd === this.forgetPdParam.repeatPd ? s.default.getInstance().show("ERRORCODE:500 请求服务器失败!", this.m_toast) : s.default.getInstance().show("两次输入的密码不相同,请确认", this.m_toast) : s.default.getInstance().show("再次输入新密码不能为空", this.m_toast) : s.default.getInstance().show("验证码长度应为6位", this.m_toast) : s.default.getInstance().show("请输入正确的手机号", this.m_toast) : s.default.getInstance().show("手机号不能为空", this.m_toast);
 };
 e.prototype.requestVerify = function() {
 var t = this;
 if ("获取验证码" !== this.i_getVerify.getComponent(cc.Label).string) return !1;
-this.m_verifyCoutDown = new s.default(60);
+this.m_verifyCoutDown = new a.default(60);
 var e = this.m_verifyCoutDown.coutDown;
 this.i_getVerify.getComponent(cc.Label).string = e + "s";
 this.t_timerVerfyCountDown = setInterval(function() {
@@ -1000,7 +1000,7 @@ return !0;
 e.prototype.addEvent = function() {
 var t = this;
 this.i_getVerify.on("touchend", function() {
-r.default.getInstance().isPhoneNumber(t.verifyPhoneParam.phone) ? t.requestVerify() || a.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast) : a.default.getInstance().show("请输入正确的手机号", t.m_toast);
+r.default.getInstance().isPhoneNumber(t.verifyPhoneParam.phone) ? t.requestVerify() || s.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast) : s.default.getInstance().show("请输入正确的手机号", t.m_toast);
 }, this);
 this.i_confirm.on("touchend", function() {
 t.requestForgetPd();
@@ -1072,7 +1072,7 @@ return this.S_GameLongHu;
 return e;
 }(t("../common/MyAnimation").default);
 o.MGame = c;
-var s = function(t) {
+var a = function(t) {
 n(e, t);
 function e(e, o) {
 var i = t.call(this) || this;
@@ -1161,7 +1161,7 @@ this.InitView();
 e.prototype.onDestroy = function() {};
 return e;
 }(c);
-o.default = s;
+o.default = a;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation"
@@ -1184,21 +1184,23 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = cc._decorator, a = s.ccclass, r = s.property, l = s.menu, u = s.disallowMultiple, h = s.executeInEditMode;
+var a = cc._decorator, s = a.ccclass, r = a.property, l = a.menu, u = a.disallowMultiple, h = a.executeInEditMode;
 cc.macro.ENABLE_WEBGL_ANTIALIAS = !0;
-var p = function(t) {
+var d = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
 e._addFount = null;
 e._subFount = null;
+e.addNode = null;
+e.subNode = null;
 return e;
 }
 Object.defineProperty(e.prototype, "addFount", {
@@ -1306,9 +1308,11 @@ c([ r(cc.Font) ], e.prototype, "_addFount", void 0);
 c([ r(cc.Font) ], e.prototype, "addFount", null);
 c([ r(cc.Font) ], e.prototype, "_subFount", void 0);
 c([ r(cc.Font) ], e.prototype, "subFount", null);
-return c([ a(), u(), h(), l("渲染组件/加减分") ], e);
+c([ r(cc.Node) ], e.prototype, "addNode", void 0);
+c([ r(cc.Node) ], e.prototype, "subNode", void 0);
+return c([ s(), u(), h(), l("渲染组件/加减分") ], e);
 }(cc.Component);
-o.default = p;
+o.default = d;
 cc._RF.pop();
 }, {} ],
 HallModelManager: [ function(t, e, o) {
@@ -1317,7 +1321,7 @@ cc._RF.push(e, "6d0f1fKw9FG8Imd0T2o0x11", "HallModelManager");
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var i = t("./base/Home"), n = t("./base/Left"), c = t("./base/Navbar"), s = t("./popup/ShareView"), a = t("./popup/PlayView"), r = t("./popup/MsgView"), l = t("../common/SetView"), u = t("./popup/AgentView"), h = t("../common/MyAnimation"), p = t("./base/User"), d = t("./popup/ResetPdView"), f = t("./popup/RealNameView"), m = t("./popup/MoneyFlowView"), _ = t("./popup/RecordView"), g = function() {
+var i = t("./base/Home"), n = t("./base/Left"), c = t("./base/Navbar"), a = t("./popup/ShareView"), s = t("./popup/PlayView"), r = t("./popup/MsgView"), l = t("../common/SetView"), u = t("./popup/AgentView"), h = t("../common/MyAnimation"), d = t("./base/User"), p = t("./popup/ResetPdView"), f = t("./popup/RealNameView"), m = t("./popup/MoneyFlowView"), _ = t("./popup/RecordView"), g = function() {
 function t(t, e) {
 void 0 === t && (t = null);
 void 0 === e && (e = null);
@@ -1340,19 +1344,19 @@ this.node = t;
 t.prototype.init = function() {
 this.cl_Home = new i.default(this.node);
 this.cl_Left = new n.default(this.node);
-this.cl_ShareView = new s.default(this.node);
+this.cl_ShareView = new a.default(this.node);
 this.cl_SetView = new l.default(this.node);
 this.cl_AgentView = new u.default(this.node);
 if (this.m_PrefabArr) {
-this.cl_PlayView = new a.default(this.node, this.m_PrefabArr.PopupLeftButton);
+this.cl_PlayView = new s.default(this.node, this.m_PrefabArr.PopupLeftButton);
 this.cl_MsgView = new r.default(this.node, this.m_PrefabArr.PopupLeftButton);
 this.cl_RecordView = new _.default(this.node, this.m_PrefabArr.PopupLeftButton);
 }
 this.cl_Navbar = new c.default(this.node, this.cl_ShareView, this.cl_PlayView, this.cl_MsgView, this.cl_SetView, this.cl_AgentView, this.cl_RecordView);
-this.cl_ResetPdView = new d.default(this.node);
+this.cl_ResetPdView = new p.default(this.node);
 this.cl_RealNameView = new f.default(this.node);
 this.cl_MoneyFlowView = new m.default(this.node);
-this.cl_UserView = new p.default(this.node, this.cl_ResetPdView, this.cl_RealNameView, this.cl_MoneyFlowView);
+this.cl_UserView = new d.default(this.node, this.cl_ResetPdView, this.cl_RealNameView, this.cl_MoneyFlowView);
 };
 t.prototype.start = function() {
 this.cl_SetView.start();
@@ -1424,14 +1428,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/Notice"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("./HallModelManager"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
+var a = t("../common/Notice"), s = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("./HallModelManager"), h = cc._decorator, d = h.ccclass, p = h.menu, f = h.property, m = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -1439,16 +1443,24 @@ e.popupLeftButton = null;
 return e;
 }
 e.prototype.onLoad = function() {
-a.default.getInstance().setScene(cc.director.getScene());
+this.initAudio();
+s.default.getInstance().setScene(cc.director.getScene());
 r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
-s.default.getInstance().setRootNode(cc.find("top/notice", this.node));
-s.default.getInstance().debug();
+a.default.getInstance().setRootNode(cc.find("top/notice", this.node));
+a.default.getInstance().debug();
 this.m_hallPrefabArr = {
 PopupLeftButton: null
 };
 this.m_hallPrefabArr.PopupLeftButton = this.popupLeftButton;
-this.cl_ModelManager = l.default.getInstance(this.node, this.m_hallPrefabArr);
+this.cl_ModelManager = u.default.getInstance(this.node, this.m_hallPrefabArr);
 this.cl_ModelManager.init();
+};
+e.prototype.initAudio = function() {
+if (l.default.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT) {
+l.default.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, !0);
+l.default.getInstance().setBgmVol();
+l.default.getInstance().setEffVol();
+}
 };
 e.prototype.RenderMoneyFlow = function(t, e) {
 this.cl_ModelManager.cl_MoneyFlowView.renderMoneyFlowFunction(t, e);
@@ -1472,18 +1484,19 @@ e.prototype.Toast = function(t, e, o) {
 r.default.getInstance().show("文件路径" + t + "图像宽" + e + "图像高" + o, this.node.getChildByName("common/toast"));
 };
 e.prototype.onDestroy = function() {
-s.default.getInstance().onDestroy();
+a.default.getInstance().onDestroy();
 this.cl_ModelManager.onDestroy();
 };
-c([ d(cc.Prefab) ], e.prototype, "popupLeftButton", void 0);
-return c([ h, p("场景主脚本/Hall") ], e);
+c([ f(cc.Prefab) ], e.prototype, "popupLeftButton", void 0);
+return c([ d, p("场景主脚本/Hall") ], e);
 }(cc.Component);
-o.default = f;
+o.default = m;
 cc._RF.pop();
 }, {
 "../common/Notice": "Notice",
 "../common/SceneManager": "SceneManager",
 "../common/Toast": "Toast",
+"../units/AudioManager": "AudioManager",
 "./HallModelManager": "HallModelManager"
 } ],
 Home: [ function(t, e, o) {
@@ -1508,7 +1521,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MHome = o.ParticleStruct = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/SceneManager"), a = t("../../common/Toast"), r = t("../../units/Tool"), l = function(t, e) {
+var c = t("../../common/MyAnimation"), a = t("../../common/SceneManager"), s = t("../../common/Toast"), r = t("../../units/Tool"), l = function(t, e) {
 this.id = t;
 this.node = e;
 };
@@ -1666,17 +1679,17 @@ this.runPartiCle(e, o);
 e.prototype.click_DLM = function() {
 switch (this.getDLMButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("连接服务器失败!", this.m_toast);
+s.default.getInstance().show("连接服务器失败!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-s.default.getInstance().loadScene("room");
+a.default.getInstance().loadScene("room");
 }
 };
 e.prototype.click_JLB = function() {
 switch (this.getJLBButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -1686,7 +1699,7 @@ return;
 e.prototype.click_CTM = function() {
 switch (this.getCTMButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -1743,7 +1756,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MLeft = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -1758,7 +1771,7 @@ return this.S_opendRoomState;
 };
 return e;
 }(c.default);
-o.MLeft = a;
+o.MLeft = s;
 var r = function(t) {
 n(e, t);
 function e(e) {
@@ -1773,7 +1786,7 @@ return o;
 e.prototype.click_JoinRoom = function() {
 switch (this.getJoinRoomButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -1783,7 +1796,7 @@ return;
 e.prototype.click_OpendRoom = function() {
 switch (this.getOpendRoomButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -1802,7 +1815,7 @@ t.click_OpendRoom();
 e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -1827,26 +1840,26 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s, a = cc._decorator, r = a.ccclass, l = a.property, u = a.disallowMultiple, h = a.menu, p = a.executionOrder;
+var a, s = cc._decorator, r = s.ccclass, l = s.property, u = s.disallowMultiple, h = s.menu, d = s.executionOrder;
 (function(t) {
 t[t.NONE = 0] = "NONE";
 t[t.TOGGLE = 1] = "TOGGLE";
 t[t.SWITCH = 2] = "SWITCH";
-})(s || (s = {}));
-var d = function(t) {
+})(a || (a = {}));
+var p = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
 e.icon = null;
 e.title = null;
-e.selectedMode = s.NONE;
+e.selectedMode = a.NONE;
 e.selectedFlag = null;
 e.selectedSpriteFrame = null;
 e._unselectedSpriteFrame = null;
@@ -1862,11 +1875,11 @@ return this._selected;
 set: function(t) {
 this._selected = t;
 if (this.selectedFlag) switch (this.selectedMode) {
-case s.TOGGLE:
+case a.TOGGLE:
 this.selectedFlag.active = t;
 break;
 
-case s.SWITCH:
+case a.SWITCH:
 var e = this.selectedFlag.getComponent(cc.Sprite);
 e && (e.spriteFrame = t ? this.selectedSpriteFrame : this._unselectedSpriteFrame);
 }
@@ -1926,7 +1939,7 @@ enumerable: !1,
 configurable: !0
 });
 e.prototype.onLoad = function() {
-if (this.selectedMode == s.SWITCH) {
+if (this.selectedMode == a.SWITCH) {
 var t = this.selectedFlag.getComponent(cc.Sprite);
 this._unselectedSpriteFrame = t.spriteFrame;
 }
@@ -2039,29 +2052,29 @@ type: cc.Node,
 tooltip: !1
 }) ], e.prototype, "title", void 0);
 c([ l({
-type: cc.Enum(s),
+type: cc.Enum(a),
 tooltip: !1
 }) ], e.prototype, "selectedMode", void 0);
 c([ l({
 type: cc.Node,
 tooltip: !1,
 visible: function() {
-return this.selectedMode > s.NONE;
+return this.selectedMode > a.NONE;
 }
 }) ], e.prototype, "selectedFlag", void 0);
 c([ l({
 type: cc.SpriteFrame,
 tooltip: !1,
 visible: function() {
-return this.selectedMode == s.SWITCH;
+return this.selectedMode == a.SWITCH;
 }
 }) ], e.prototype, "selectedSpriteFrame", void 0);
 c([ l({
 tooltip: !1
 }) ], e.prototype, "adaptiveSize", void 0);
-return c([ r, u(), h("自定义组件/List Item"), p(-5001) ], e);
+return c([ r, u(), h("自定义组件/List Item"), d(-5001) ], e);
 }(cc.Component);
-o.default = d;
+o.default = p;
 cc._RF.pop();
 }, {} ],
 ListOpacity: [ function(t, e, o) {
@@ -2082,14 +2095,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = cc._decorator, a = s.ccclass, r = (s.property, function(t) {
+var a = cc._decorator, s = a.ccclass, r = (a.property, function(t) {
 n(e, t);
 function e() {
 return null !== t && t.apply(this, arguments) || this;
@@ -2115,7 +2128,7 @@ e.prototype.onDestroy = function() {
 this.scrollview.off("scrolling");
 this.content.off("size-changed");
 };
-return c([ a ], e);
+return c([ s ], e);
 }(cc.Component));
 o.default = r;
 cc._RF.pop();
@@ -2138,23 +2151,23 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s, a, r, l = cc._decorator, u = l.ccclass, h = l.property, p = l.disallowMultiple, d = l.menu, f = l.executionOrder, m = l.requireComponent, _ = t("./ListItem");
+var a, s, r, l = cc._decorator, u = l.ccclass, h = l.property, d = l.disallowMultiple, p = l.menu, f = l.executionOrder, m = l.requireComponent, _ = t("./ListItem");
 (function(t) {
 t[t.NODE = 1] = "NODE";
 t[t.PREFAB = 2] = "PREFAB";
-})(s || (s = {}));
+})(a || (a = {}));
 (function(t) {
 t[t.NORMAL = 1] = "NORMAL";
 t[t.ADHERING = 2] = "ADHERING";
 t[t.PAGE = 3] = "PAGE";
-})(a || (a = {}));
+})(s || (s = {}));
 (function(t) {
 t[t.NONE = 0] = "NONE";
 t[t.SINGLE = 1] = "SINGLE";
@@ -2164,10 +2177,10 @@ var g = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
-e.templateType = s.NODE;
+e.templateType = a.NODE;
 e.tmpNode = null;
 e.tmpPrefab = [];
-e._slideMode = a.NORMAL;
+e._slideMode = s.NORMAL;
 e.pageDistance = .3;
 e.pageChangeEvent = new cc.Component.EventHandler();
 e._virtual = !0;
@@ -2263,8 +2276,8 @@ o._selectedId >= 0 && (o._lastSelectedId = o._selectedId);
 o._selectedId = t;
 var c = !i.selected;
 i.selected = c;
-var s = o.multSelected.indexOf(t);
-c && s < 0 ? o.multSelected.push(t) : !c && s >= 0 && o.multSelected.splice(s, 1);
+var a = o.multSelected.indexOf(t);
+c && a < 0 ? o.multSelected.push(t) : !c && a >= 0 && o.multSelected.splice(a, 1);
 o.selectedEvent && cc.Component.EventHandler.emitEvents([ o.selectedEvent ], e, t % this._actualNumItems, null == o._lastSelectedId ? null : o._lastSelectedId % this._actualNumItems, c);
 }
 },
@@ -2278,7 +2291,7 @@ return this._PrefabIndex ? this._PrefabIndex : 0;
 set: function(t) {
 if (!(t > this.tmpPrefab.length - 1)) {
 this._PrefabIndex = t;
-if (this.templateType == s.PREFAB) {
+if (this.templateType == a.PREFAB) {
 this.onDestroy();
 this._inited = !1;
 this._init();
@@ -2302,7 +2315,7 @@ if (e._virtual) {
 e._resizeContent();
 e.cyclic && (e._numItems = e._cyclicNum * e._numItems);
 e._onScrolling();
-e.frameByFrameRenderNum || e.slideMode != a.PAGE || (e.curPageNum = e.nearestListId);
+e.frameByFrameRenderNum || e.slideMode != s.PAGE || (e.curPageNum = e.nearestListId);
 } else {
 var o = e.content.getComponent(cc.Layout);
 o && (o.enabled = !0);
@@ -2386,8 +2399,8 @@ t._lineGap = t._layout.spacingY;
 t._colLineNum;
 t._verticalDir = t._layout.verticalDirection;
 t._horizontalDir = t._layout.horizontalDirection;
-t.setTemplateItem(cc.instantiate(t.templateType == s.PREFAB ? t.tmpPrefab[t.PrefabIndex] : t.tmpNode));
-if (t._slideMode == a.ADHERING || t._slideMode == a.PAGE) {
+t.setTemplateItem(cc.instantiate(t.templateType == a.PREFAB ? t.tmpPrefab[t.PrefabIndex] : t.tmpNode));
+if (t._slideMode == s.ADHERING || t._slideMode == s.PAGE) {
 t._scrollView.inertia = !1;
 t._scrollView._onMouseWheel = function() {};
 }
@@ -2470,8 +2483,8 @@ this._scrollView._dispatchEvent("scroll-ended-with-threshold");
 this._scrollView._isScrollEndedWithThresholdEventFired = !0;
 }
 c && (this._scrollView._autoScrolling = !1);
-var s = i.sub(this._scrollView.getContentPosition());
-this._scrollView._moveContent(this._scrollView._clampDelta(s), c);
+var a = i.sub(this._scrollView.getContentPosition());
+this._scrollView._moveContent(this._scrollView._clampDelta(a), c);
 this._scrollView._dispatchEvent("scrolling");
 if (!this._scrollView._autoScrolling) {
 this._scrollView._isBouncing = !1;
@@ -2559,15 +2572,15 @@ c && (c.enabled = !1);
 e._allItemSize = t;
 e._allItemSizeNoEdge = e._allItemSize - (e._sizeType ? e._topGap + e._bottomGap : e._leftGap + e._rightGap);
 if (e.cyclic) {
-var s = e._sizeType ? e.node.height : e.node.width;
+var a = e._sizeType ? e.node.height : e.node.width;
 e._cyclicPos1 = 0;
-s -= e._cyclicPos1;
-e._cyclicNum = Math.ceil(s / e._allItemSizeNoEdge) + 1;
-var a = e._sizeType ? e._lineGap : e._columnGap;
-e._cyclicPos2 = e._cyclicPos1 + e._allItemSizeNoEdge + a;
-e._cyclicAllItemSize = e._allItemSize + e._allItemSizeNoEdge * (e._cyclicNum - 1) + a * (e._cyclicNum - 1);
+a -= e._cyclicPos1;
+e._cyclicNum = Math.ceil(a / e._allItemSizeNoEdge) + 1;
+var s = e._sizeType ? e._lineGap : e._columnGap;
+e._cyclicPos2 = e._cyclicPos1 + e._allItemSizeNoEdge + s;
+e._cyclicAllItemSize = e._allItemSize + e._allItemSizeNoEdge * (e._cyclicNum - 1) + s * (e._cyclicNum - 1);
 e._cycilcAllItemSizeNoEdge = e._allItemSizeNoEdge * e._cyclicNum;
-e._cycilcAllItemSizeNoEdge += a * (e._cyclicNum - 1);
+e._cycilcAllItemSizeNoEdge += s * (e._cyclicNum - 1);
 }
 e._lack = !e.cyclic && e._allItemSize < (e._sizeType ? e.node.height : e.node.width);
 var r = e._lack && e.lackCenter || !e.lackSlide ? .1 : 0, l = e._lack ? (e._sizeType ? e.node.height : e.node.width) - r : e.cyclic ? e._cyclicAllItemSize : e._allItemSize;
@@ -2626,13 +2639,13 @@ this._scrollView.isAutoScrolling() && (this._scrollView._autoScrollStartPosition
 }
 }
 this._calcViewPos();
-var n, c, s, a;
+var n, c, a, s;
 if (this._sizeType) {
 n = this.viewTop;
-s = this.viewBottom;
+a = this.viewBottom;
 } else {
 c = this.viewRight;
-a = this.viewLeft;
+s = this.viewLeft;
 }
 if (this._virtual) {
 this.displayData = [];
@@ -2641,44 +2654,44 @@ if (this._customSize) for (var h = !1; l <= u && !h; l++) {
 r = this._calcItemPos(l);
 switch (this._align) {
 case cc.Layout.Type.HORIZONTAL:
-r.right >= a && r.left <= c ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
+r.right >= s && r.left <= c ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
 break;
 
 case cc.Layout.Type.VERTICAL:
-r.bottom <= n && r.top >= s ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
+r.bottom <= n && r.top >= a ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
 break;
 
 case cc.Layout.Type.GRID:
 switch (this._startAxis) {
 case cc.Layout.AxisDirection.HORIZONTAL:
-r.bottom <= n && r.top >= s ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
+r.bottom <= n && r.top >= a ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
 break;
 
 case cc.Layout.AxisDirection.VERTICAL:
-r.right >= a && r.left <= c ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
+r.right >= s && r.left <= c ? this.displayData.push(r) : 0 != l && this.displayData.length > 0 && (h = !0);
 }
 }
 } else {
-var p = this._itemSize.width + this._columnGap, d = this._itemSize.height + this._lineGap;
+var d = this._itemSize.width + this._columnGap, p = this._itemSize.height + this._lineGap;
 switch (this._alignCalcType) {
 case 1:
-l = (a + this._leftGap) / p;
-u = (c + this._rightGap) / p;
+l = (s + this._leftGap) / d;
+u = (c + this._rightGap) / d;
 break;
 
 case 2:
-l = (-c - this._rightGap) / p;
-u = (-a - this._leftGap) / p;
+l = (-c - this._rightGap) / d;
+u = (-s - this._leftGap) / d;
 break;
 
 case 3:
-l = (-n - this._topGap) / d;
-u = (-s - this._bottomGap) / d;
+l = (-n - this._topGap) / p;
+u = (-a - this._bottomGap) / p;
 break;
 
 case 4:
-l = (s + this._bottomGap) / d;
-u = (n + this._topGap) / d;
+l = (a + this._bottomGap) / p;
+u = (n + this._topGap) / p;
 }
 l = Math.floor(l) * this._colLineNum;
 u = Math.ceil(u) * this._colLineNum;
@@ -2752,7 +2765,7 @@ this.viewTop -= this.elasticTop;
 }
 };
 e.prototype._calcItemPos = function(t) {
-var e, o, i, n, c, s, a, r;
+var e, o, i, n, c, a, s, r;
 switch (this._align) {
 case cc.Layout.Type.HORIZONTAL:
 switch (this._horizontalDir) {
@@ -2765,15 +2778,15 @@ e = (u = this._customSize[t]) > 0 ? u : this._itemSize.width;
 c = this._leftGap + (this._itemSize.width + this._columnGap) * t;
 e = this._itemSize.width;
 }
-s = c + e;
+a = c + e;
 if (this.lackCenter) {
 c += h = this.content.width / 2 - this._allItemSizeNoEdge / 2;
-s += h;
+a += h;
 }
 return {
 id: t,
 left: c,
-right: s,
+right: a,
 x: c + this._itemTmp.anchorX * e,
 y: this._itemTmp.y
 };
@@ -2781,20 +2794,20 @@ y: this._itemTmp.y
 case cc.Layout.HorizontalDirection.RIGHT_TO_LEFT:
 if (this._customSize) {
 l = this._getFixedSize(t);
-s = -this._rightGap - (this._itemSize.width + this._columnGap) * (t - l.count) - (l.val + this._columnGap * l.count);
+a = -this._rightGap - (this._itemSize.width + this._columnGap) * (t - l.count) - (l.val + this._columnGap * l.count);
 e = (u = this._customSize[t]) > 0 ? u : this._itemSize.width;
 } else {
-s = -this._rightGap - (this._itemSize.width + this._columnGap) * t;
+a = -this._rightGap - (this._itemSize.width + this._columnGap) * t;
 e = this._itemSize.width;
 }
-c = s - e;
+c = a - e;
 if (this.lackCenter) {
 c -= h = this.content.width / 2 - this._allItemSizeNoEdge / 2;
-s -= h;
+a -= h;
 }
 return {
 id: t,
-right: s,
+right: a,
 left: c,
 x: c + this._itemTmp.anchorX * e,
 y: this._itemTmp.y
@@ -2852,49 +2865,49 @@ y: n + this._itemTmp.anchorY * o
 }
 
 case cc.Layout.Type.GRID:
-var p = Math.floor(t / this._colLineNum);
+var d = Math.floor(t / this._colLineNum);
 switch (this._startAxis) {
 case cc.Layout.AxisDirection.HORIZONTAL:
 switch (this._verticalDir) {
 case cc.Layout.VerticalDirection.TOP_TO_BOTTOM:
-r = (n = (i = -this._topGap - (this._itemSize.height + this._lineGap) * p) - this._itemSize.height) + this._itemTmp.anchorY * this._itemSize.height;
+r = (n = (i = -this._topGap - (this._itemSize.height + this._lineGap) * d) - this._itemSize.height) + this._itemTmp.anchorY * this._itemSize.height;
 break;
 
 case cc.Layout.VerticalDirection.BOTTOM_TO_TOP:
-i = (n = this._bottomGap + (this._itemSize.height + this._lineGap) * p) + this._itemSize.height;
+i = (n = this._bottomGap + (this._itemSize.height + this._lineGap) * d) + this._itemSize.height;
 r = n + this._itemTmp.anchorY * this._itemSize.height;
 }
-a = this._leftGap + t % this._colLineNum * (this._itemSize.width + this._columnGap);
+s = this._leftGap + t % this._colLineNum * (this._itemSize.width + this._columnGap);
 switch (this._horizontalDir) {
 case cc.Layout.HorizontalDirection.LEFT_TO_RIGHT:
-a += this._itemTmp.anchorX * this._itemSize.width;
-a -= this.content.anchorX * this.content.width;
+s += this._itemTmp.anchorX * this._itemSize.width;
+s -= this.content.anchorX * this.content.width;
 break;
 
 case cc.Layout.HorizontalDirection.RIGHT_TO_LEFT:
-a += (1 - this._itemTmp.anchorX) * this._itemSize.width;
-a -= (1 - this.content.anchorX) * this.content.width;
-a *= -1;
+s += (1 - this._itemTmp.anchorX) * this._itemSize.width;
+s -= (1 - this.content.anchorX) * this.content.width;
+s *= -1;
 }
 return {
 id: t,
 top: i,
 bottom: n,
-x: a,
+x: s,
 y: r
 };
 
 case cc.Layout.AxisDirection.VERTICAL:
 switch (this._horizontalDir) {
 case cc.Layout.HorizontalDirection.LEFT_TO_RIGHT:
-s = (c = this._leftGap + (this._itemSize.width + this._columnGap) * p) + this._itemSize.width;
-a = c + this._itemTmp.anchorX * this._itemSize.width;
-a -= this.content.anchorX * this.content.width;
+a = (c = this._leftGap + (this._itemSize.width + this._columnGap) * d) + this._itemSize.width;
+s = c + this._itemTmp.anchorX * this._itemSize.width;
+s -= this.content.anchorX * this.content.width;
 break;
 
 case cc.Layout.HorizontalDirection.RIGHT_TO_LEFT:
-a = (c = (s = -this._rightGap - (this._itemSize.width + this._columnGap) * p) - this._itemSize.width) + this._itemTmp.anchorX * this._itemSize.width;
-a += (1 - this.content.anchorX) * this.content.width;
+s = (c = (a = -this._rightGap - (this._itemSize.width + this._columnGap) * d) - this._itemSize.width) + this._itemTmp.anchorX * this._itemSize.width;
+s += (1 - this.content.anchorX) * this.content.width;
 }
 r = -this._topGap - t % this._colLineNum * (this._itemSize.height + this._lineGap);
 switch (this._verticalDir) {
@@ -2911,8 +2924,8 @@ r *= -1;
 return {
 id: t,
 left: c,
-right: s,
-x: a,
+right: a,
+x: s,
 y: r
 };
 }
@@ -2962,7 +2975,7 @@ t.scrollToListId = null;
 e && e.runAction(cc.sequence(cc.scaleTo(.1, 1.06), cc.scaleTo(.1, 1)));
 }
 t._onScrolling();
-t._slideMode != a.ADHERING || t.adhering ? t._slideMode == a.PAGE && (null != t._beganPos ? this._pageAdhere() : t.adhere()) : t.adhere();
+t._slideMode != s.ADHERING || t.adhering ? t._slideMode == s.PAGE && (null != t._beganPos ? this._pageAdhere() : t.adhere()) : t.adhere();
 };
 e.prototype._onTouchStart = function(t, e) {
 if (!this._scrollView._hasNestedViewGroup(t, e) && (t.eventPhase !== cc.Event.AT_TARGET || t.target !== this.node)) {
@@ -2973,20 +2986,20 @@ this._scrollItem = null != o._listId ? o : t.target;
 e.prototype._onTouchUp = function() {
 var t = this;
 t._scrollPos = null;
-if (t._slideMode == a.ADHERING) {
+if (t._slideMode == s.ADHERING) {
 this.adhering && (this._adheringBarrier = !0);
 t.adhere();
-} else t._slideMode == a.PAGE && (null != t._beganPos ? this._pageAdhere() : t.adhere());
+} else t._slideMode == s.PAGE && (null != t._beganPos ? this._pageAdhere() : t.adhere());
 this._scrollItem = null;
 };
 e.prototype._onTouchCancelled = function(t, e) {
 var o = this;
 if (!o._scrollView._hasNestedViewGroup(t, e) && !t.simulate) {
 o._scrollPos = null;
-if (o._slideMode == a.ADHERING) {
+if (o._slideMode == s.ADHERING) {
 o.adhering && (o._adheringBarrier = !0);
 o.adhere();
-} else o._slideMode == a.PAGE && (null != o._beganPos ? o._pageAdhere() : o.adhere());
+} else o._slideMode == s.PAGE && (null != o._beganPos ? o._pageAdhere() : o.adhere());
 this._scrollItem = null;
 }
 };
@@ -3050,7 +3063,7 @@ this._updateDone = !0;
 this._delRedundantItem();
 this._forceUpdate = !1;
 this._calcNearestItem();
-this.slideMode == a.PAGE && (this.curPageNum = this.nearestListId);
+this.slideMode == s.PAGE && (this.curPageNum = this.nearestListId);
 } else this._updateCounter += this.frameByFrameRenderNum;
 } else if (this._updateCounter < this._numItems) {
 for (t = this._updateCounter + this.frameByFrameRenderNum > this._numItems ? this._numItems : this._updateCounter + this.frameByFrameRenderNum, 
@@ -3059,7 +3072,7 @@ this._updateCounter += this.frameByFrameRenderNum;
 } else {
 this._updateDone = !0;
 this._calcNearestItem();
-this.slideMode == a.PAGE && (this.curPageNum = this.nearestListId);
+this.slideMode == s.PAGE && (this.curPageNum = this.nearestListId);
 }
 };
 e.prototype._createOrUpdateItem = function(t) {
@@ -3208,34 +3221,34 @@ var n, c = i.getItemByListId(t);
 if (c) {
 n = c.getComponent(_.default);
 i._aniDelRuning = !0;
-var s = i.displayData[i.displayData.length - 1].id, a = n.selected;
+var a = i.displayData[i.displayData.length - 1].id, s = n.selected;
 n.showAni(o, function() {
 var o, n, l;
-s < i._numItems - 2 && (o = s + 1);
+a < i._numItems - 2 && (o = a + 1);
 if (null != o) {
 var u = i._calcItemPos(o);
 i.displayData.push(u);
 i._virtual ? i._createOrUpdateItem(u) : i._createOrUpdateItem2(o);
 } else i._numItems--;
-if (i.selectedMode == r.SINGLE) a ? i._selectedId = -1 : i._selectedId - 1 >= 0 && i._selectedId--; else if (i.selectedMode == r.MULT && i.multSelected.length) {
+if (i.selectedMode == r.SINGLE) s ? i._selectedId = -1 : i._selectedId - 1 >= 0 && i._selectedId--; else if (i.selectedMode == r.MULT && i.multSelected.length) {
 var h = i.multSelected.indexOf(t);
 h >= 0 && i.multSelected.splice(h, 1);
-for (var p = i.multSelected.length - 1; p >= 0; p--) (m = i.multSelected[p]) >= t && i.multSelected[p]--;
+for (var d = i.multSelected.length - 1; d >= 0; d--) (m = i.multSelected[d]) >= t && i.multSelected[d]--;
 }
 if (i._customSize) {
 i._customSize[t] && delete i._customSize[t];
-var d = {}, f = void 0;
+var p = {}, f = void 0;
 for (var m in i._customSize) {
 f = i._customSize[m];
 var _ = parseInt(m);
-d[_ - (_ >= t ? 1 : 0)] = f;
+p[_ - (_ >= t ? 1 : 0)] = f;
 }
-i._customSize = d;
+i._customSize = p;
 }
-for (p = null != o ? o : s; p >= t + 1; p--) if (c = i.getItemByListId(p)) {
-var g = i._calcItemPos(p - 1);
+for (d = null != o ? o : a; d >= t + 1; d--) if (c = i.getItemByListId(d)) {
+var g = i._calcItemPos(d - 1);
 n = [ cc.moveTo(.2333, cc.v2(g.x, g.y)) ];
-if (p <= t + 1) {
+if (d <= t + 1) {
 l = !0;
 n.push(cc.callFunc(function() {
 i._aniDelRuning = !1;
@@ -3260,36 +3273,36 @@ if (n.checkInited(!1)) {
 null == e ? e = .5 : e < 0 && (e = 0);
 t < 0 ? t = 0 : t >= n._numItems && (t = n._numItems - 1);
 !n._virtual && n._layout && n._layout.enabled && n._layout.updateLayout();
-var c, s, a = n.getItemPos(t);
+var c, a, s = n.getItemPos(t);
 switch (n._alignCalcType) {
 case 1:
-c = a.left;
+c = s.left;
 c -= null != o ? n.node.width * o : n._leftGap;
-a = cc.v2(c, 0);
+s = cc.v2(c, 0);
 break;
 
 case 2:
-c = a.right - n.node.width;
+c = s.right - n.node.width;
 c += null != o ? n.node.width * o : n._rightGap;
-a = cc.v2(c + n.content.width, 0);
+s = cc.v2(c + n.content.width, 0);
 break;
 
 case 3:
-s = a.top;
-s += null != o ? n.node.height * o : n._topGap;
-a = cc.v2(0, -s);
+a = s.top;
+a += null != o ? n.node.height * o : n._topGap;
+s = cc.v2(0, -a);
 break;
 
 case 4:
-s = a.bottom + n.node.height;
-s -= null != o ? n.node.height * o : n._bottomGap;
-a = cc.v2(0, -s + n.content.height);
+a = s.bottom + n.node.height;
+a -= null != o ? n.node.height * o : n._bottomGap;
+s = cc.v2(0, -a + n.content.height);
 }
 var r = n.content.getPosition();
 r = Math.abs(n._sizeType ? r.y : r.x);
-var l = n._sizeType ? a.y : a.x;
+var l = n._sizeType ? s.y : s.x;
 if (Math.abs((null != n._scrollPos ? n._scrollPos : r) - l) > .5) {
-n._scrollView.scrollToOffset(a, e);
+n._scrollView.scrollToOffset(s, e);
 n._scrollToListId = t;
 n._scrollToEndTime = new Date().getTime() / 1e3 + e;
 n._scrollToSo = n.scheduleOnce(function() {
@@ -3305,65 +3318,65 @@ e <= 0 && n._onScrolling();
 }
 };
 e.prototype._calcNearestItem = function() {
-var t, e, o, i, n, c, s = this;
-s.nearestListId = null;
-s._virtual && s._calcViewPos();
-o = s.viewTop;
-i = s.viewRight;
-n = s.viewBottom;
-c = s.viewLeft;
-for (var a = !1, r = 0; r < s.content.childrenCount && !a; r += s._colLineNum) if (t = s._virtual ? s.displayData[r] : s._calcExistItemPos(r)) {
-e = s._sizeType ? (t.top + t.bottom) / 2 : e = (t.left + t.right) / 2;
-switch (s._alignCalcType) {
+var t, e, o, i, n, c, a = this;
+a.nearestListId = null;
+a._virtual && a._calcViewPos();
+o = a.viewTop;
+i = a.viewRight;
+n = a.viewBottom;
+c = a.viewLeft;
+for (var s = !1, r = 0; r < a.content.childrenCount && !s; r += a._colLineNum) if (t = a._virtual ? a.displayData[r] : a._calcExistItemPos(r)) {
+e = a._sizeType ? (t.top + t.bottom) / 2 : e = (t.left + t.right) / 2;
+switch (a._alignCalcType) {
 case 1:
 if (t.right >= c) {
-s.nearestListId = t.id;
-c > e && (s.nearestListId += s._colLineNum);
-a = !0;
+a.nearestListId = t.id;
+c > e && (a.nearestListId += a._colLineNum);
+s = !0;
 }
 break;
 
 case 2:
 if (t.left <= i) {
-s.nearestListId = t.id;
-i < e && (s.nearestListId += s._colLineNum);
-a = !0;
+a.nearestListId = t.id;
+i < e && (a.nearestListId += a._colLineNum);
+s = !0;
 }
 break;
 
 case 3:
 if (t.bottom <= o) {
-s.nearestListId = t.id;
-o < e && (s.nearestListId += s._colLineNum);
-a = !0;
+a.nearestListId = t.id;
+o < e && (a.nearestListId += a._colLineNum);
+s = !0;
 }
 break;
 
 case 4:
 if (t.top >= n) {
-s.nearestListId = t.id;
-n > e && (s.nearestListId += s._colLineNum);
-a = !0;
+a.nearestListId = t.id;
+n > e && (a.nearestListId += a._colLineNum);
+s = !0;
 }
 }
 }
-if ((t = s._virtual ? s.displayData[s.displayItemNum - 1] : s._calcExistItemPos(s._numItems - 1)) && t.id == s._numItems - 1) {
-e = s._sizeType ? (t.top + t.bottom) / 2 : e = (t.left + t.right) / 2;
-switch (s._alignCalcType) {
+if ((t = a._virtual ? a.displayData[a.displayItemNum - 1] : a._calcExistItemPos(a._numItems - 1)) && t.id == a._numItems - 1) {
+e = a._sizeType ? (t.top + t.bottom) / 2 : e = (t.left + t.right) / 2;
+switch (a._alignCalcType) {
 case 1:
-i > e && (s.nearestListId = t.id);
+i > e && (a.nearestListId = t.id);
 break;
 
 case 2:
-c < e && (s.nearestListId = t.id);
+c < e && (a.nearestListId = t.id);
 break;
 
 case 3:
-n < e && (s.nearestListId = t.id);
+n < e && (a.nearestListId = t.id);
 break;
 
 case 4:
-o > e && (s.nearestListId = t.id);
+o > e && (a.nearestListId = t.id);
 }
 }
 };
@@ -3378,7 +3391,7 @@ this.checkInited() && this.skipPage(this.curPageNum + 1, t);
 e.prototype.skipPage = function(t, e) {
 var o = this;
 if (o.checkInited()) {
-if (o._slideMode != a.PAGE) return cc.error("This function is not allowed to be called, Must SlideMode = PAGE!");
+if (o._slideMode != s.PAGE) return cc.error("This function is not allowed to be called, Must SlideMode = PAGE!");
 if (!(t < 0 || t >= o._numItems) && o.curPageNum != t) {
 o.curPageNum = t;
 o.pageChangeEvent && cc.Component.EventHandler.emitEvents([ o.pageChangeEvent ], t);
@@ -3405,26 +3418,26 @@ return e._customSize;
 }
 };
 c([ h({
-type: cc.Enum(s),
+type: cc.Enum(a),
 tooltip: !1
 }) ], e.prototype, "templateType", void 0);
 c([ h({
 type: cc.Node,
 tooltip: !1,
 visible: function() {
-return this.templateType == s.NODE;
+return this.templateType == a.NODE;
 }
 }) ], e.prototype, "tmpNode", void 0);
 c([ h({
 type: [ cc.Prefab ],
 tooltip: !1,
 visible: function() {
-return this.templateType == s.PREFAB;
+return this.templateType == a.PREFAB;
 }
 }) ], e.prototype, "tmpPrefab", void 0);
 c([ h() ], e.prototype, "_slideMode", void 0);
 c([ h({
-type: cc.Enum(a),
+type: cc.Enum(s),
 tooltip: !1
 }) ], e.prototype, "slideMode", null);
 c([ h({
@@ -3433,14 +3446,14 @@ range: [ 0, 1, .1 ],
 tooltip: !1,
 slide: !0,
 visible: function() {
-return this._slideMode == a.PAGE;
+return this._slideMode == s.PAGE;
 }
 }) ], e.prototype, "pageDistance", void 0);
 c([ h({
 type: cc.Component.EventHandler,
 tooltip: !1,
 visible: function() {
-return this._slideMode == a.PAGE;
+return this._slideMode == s.PAGE;
 }
 }) ], e.prototype, "pageChangeEvent", void 0);
 c([ h() ], e.prototype, "_virtual", void 0);
@@ -3451,7 +3464,7 @@ tooltip: !1
 c([ h({
 tooltip: !1,
 visible: function() {
-var t = this.virtual && this.slideMode == a.NORMAL;
+var t = this.virtual && this.slideMode == s.NORMAL;
 t || (this.cyclic = !1);
 return t;
 }
@@ -3509,7 +3522,7 @@ return this.selectedMode > r.NONE;
 c([ h({
 serializable: !1
 }) ], e.prototype, "_numItems", void 0);
-return c([ u, p(), d("自定义组件/List"), m(cc.ScrollView), f(-5e3) ], e);
+return c([ u, d(), p("自定义组件/List"), m(cc.ScrollView), f(-5e3) ], e);
 }(cc.Component);
 o.default = g;
 cc._RF.pop();
@@ -3625,7 +3638,7 @@ t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o(
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var c = t("../common/SceneManager"), s = t("../common/MyAnimation"), a = t("../common/Toast"), r = t("./ForgetPd"), l = t("../common/TimerStruct"), u = t("../units/Tool"), h = t("./Regist"), p = t("../units/UserConfig"), d = function(t) {
+var c = t("../common/SceneManager"), a = t("../common/MyAnimation"), s = t("../common/Toast"), r = t("./ForgetPd"), l = t("../common/TimerStruct"), u = t("../units/Tool"), h = t("./Regist"), d = t("../units/UserConfig"), p = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -3691,16 +3704,16 @@ enumerable: !1,
 configurable: !0
 });
 e.prototype.requestPdLogin = function() {
-if (0 != this.pdLoginParam.phone.length) if (u.default.getInstance().isPhoneNumber(this.pdLoginParam.phone)) if (this.pdLoginParam.password.length < 6) a.default.getInstance().show("密码长度限制6--16位", this.m_toast); else if (this.i_chooseUserAgree.parent.getChildByName("isagree").active) {
+if (0 != this.pdLoginParam.phone.length) if (u.default.getInstance().isPhoneNumber(this.pdLoginParam.phone)) if (this.pdLoginParam.password.length < 6) s.default.getInstance().show("密码长度限制6--16位", this.m_toast); else if (this.i_chooseUserAgree.parent.getChildByName("isagree").active) {
 cc.sys.localStorage.setItem("remberpd", JSON.stringify(this.pdLoginParam));
-p.default.getInstance().setUserInfo({
+d.default.getInstance().setUserInfo({
 phone: this.pdLoginParam.phone
 });
 c.default.getInstance().loadScene("hall");
-} else a.default.getInstance().show("请先同意勾选用户协议", this.m_toast); else a.default.getInstance().show("请输入正确的手机号", this.m_toast); else a.default.getInstance().show("手机号不能为空", this.m_toast);
+} else s.default.getInstance().show("请先同意勾选用户协议", this.m_toast); else s.default.getInstance().show("请输入正确的手机号", this.m_toast); else s.default.getInstance().show("手机号不能为空", this.m_toast);
 };
 e.prototype.requestVerifyLogin = function() {
-0 != this.verifyLoginParam.phone.length ? u.default.getInstance().isPhoneNumber(this.verifyLoginParam.phone) ? 6 === this.verifyLoginParam.verify.length ? this.i_chooseUserAgree.parent.getChildByName("isagree").active ? c.default.getInstance().loadScene("hall") : a.default.getInstance().show("请先同意勾选用户协议", this.m_toast) : a.default.getInstance().show("验证码长度应为6位", this.m_toast) : a.default.getInstance().show("请输入正确的手机号", this.m_toast) : a.default.getInstance().show("手机号不能为空", this.m_toast);
+0 != this.verifyLoginParam.phone.length ? u.default.getInstance().isPhoneNumber(this.verifyLoginParam.phone) ? 6 === this.verifyLoginParam.verify.length ? this.i_chooseUserAgree.parent.getChildByName("isagree").active ? c.default.getInstance().loadScene("hall") : s.default.getInstance().show("请先勾选同意用户协议", this.m_toast) : s.default.getInstance().show("验证码长度应为6位", this.m_toast) : s.default.getInstance().show("请输入正确的手机号", this.m_toast) : s.default.getInstance().show("手机号不能为空", this.m_toast);
 };
 e.prototype.requestVerify = function() {
 var t = this;
@@ -3843,10 +3856,10 @@ t.requestVerifyLogin();
 }, this);
 this.i_getVerify.on("touchend", function() {
 if (!u.default.getInstance().isPhoneNumber(t.verifyPhoneParam.phone)) {
-a.default.getInstance().show("请输入正确的手机号", t.m_toast);
+s.default.getInstance().show("请输入正确的手机号", t.m_toast);
 return !1;
 }
-t.requestVerify() || a.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast);
+t.requestVerify() || s.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast);
 }, this);
 };
 e.prototype.onDestroy = function() {
@@ -3857,8 +3870,8 @@ this.t_timerVerfyCountDown = null;
 this.m_verifyCoutDown = null;
 };
 return e;
-}(s.default);
-o.default = d;
+}(a.default);
+o.default = p;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
@@ -3888,14 +3901,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("./Player"), l = t("./SGView"), u = cc._decorator, h = u.ccclass, p = u.menu, d = u.property, f = function(t) {
+var a = t("../common/NodePool"), s = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("./Player"), h = t("./SGView"), d = cc._decorator, p = d.ccclass, f = d.menu, m = d.property, _ = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -3904,11 +3917,14 @@ e.flower = null;
 e.boom = null;
 e.water = null;
 e.hand = null;
+e.goldPrefab = null;
 return e;
 }
 e.prototype.onLoad = function() {
+this.initAudio();
+a.default.getInstance().createrNodePool("SgGold", this.goldPrefab, 100);
 s.default.getInstance().setScene(cc.director.getScene());
-a.default.getInstance().setRootNode(cc.find("common/toast", this.node));
+r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
 this.AnimPrefab = {
 tomato: this.tomato,
 flower: this.flower,
@@ -3916,8 +3932,15 @@ boom: this.boom,
 water: this.water,
 hand: this.hand
 };
-this.cl_SGView = new l.default(this.node);
-this.cl_Player = new r.default(this.node, this.AnimPrefab);
+this.cl_SGView = new h.default(this.node);
+this.cl_Player = new u.default(this.node, this.AnimPrefab);
+};
+e.prototype.initAudio = function() {
+if (l.default.getInstance().getBgmCode() !== BGM_CODE.BGM_GAME_SG) {
+l.default.getInstance().playBgmFromLocal(BGM_CODE.BGM_GAME_SG, !0);
+l.default.getInstance().setBgmVol();
+l.default.getInstance().setEffVol();
+}
 };
 e.prototype.start = function() {
 this.cl_SGView.start();
@@ -3927,19 +3950,23 @@ e.prototype.onDestroy = function() {
 this.cl_Player.onDestroy();
 this.cl_SGView.onDestroy();
 this.cl_SGView = null;
+a.default.getInstance().cleanPool("SGgold");
 };
-c([ d(cc.Prefab) ], e.prototype, "tomato", void 0);
-c([ d(cc.Prefab) ], e.prototype, "flower", void 0);
-c([ d(cc.Prefab) ], e.prototype, "boom", void 0);
-c([ d(cc.Prefab) ], e.prototype, "water", void 0);
-c([ d(cc.Prefab) ], e.prototype, "hand", void 0);
-return c([ h, p("场景主脚本/MainSg") ], e);
+c([ m(cc.Prefab) ], e.prototype, "tomato", void 0);
+c([ m(cc.Prefab) ], e.prototype, "flower", void 0);
+c([ m(cc.Prefab) ], e.prototype, "boom", void 0);
+c([ m(cc.Prefab) ], e.prototype, "water", void 0);
+c([ m(cc.Prefab) ], e.prototype, "hand", void 0);
+c([ m(cc.Prefab) ], e.prototype, "goldPrefab", void 0);
+return c([ p, f("场景主脚本/MainSg") ], e);
 }(cc.Component);
-o.default = f;
+o.default = _;
 cc._RF.pop();
 }, {
+"../common/NodePool": "NodePool",
 "../common/SceneManager": "SceneManager",
 "../common/Toast": "Toast",
+"../units/AudioManager": "AudioManager",
 "./Player": "Player",
 "./SGView": "SGView"
 } ],
@@ -3965,7 +3992,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MMoneyFlow = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../units/Tool"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../units/Tool"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -4012,13 +4039,13 @@ e.prototype.RequestMoneyFlowData = function(t) {
 var e = this.curentPage + 1, o = this.m_pageShowNum;
 this.totalCount = 73;
 for (var i = e * o > this.totalCount ? this.totalCount % this.m_pageShowNum : this.m_pageShowNum, n = 0; n < i; n++) {
-var c = Math.ceil(1e5 * Math.random()), a = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (c / .4)) : -Math.ceil(Math.random() * (c / .4)), r = c + a, l = {
+var c = Math.ceil(1e5 * Math.random()), s = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (c / .4)) : -Math.ceil(Math.random() * (c / .4)), r = c + s, l = {
 orderid: (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n)).toString(16) + (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n)).toString(16),
 before: c,
-amount: a,
+amount: s,
 after: r,
 type: Math.ceil(7 * Math.random()),
-date: s.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n))
+date: a.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + n))
 };
 this.m_cache.push(l);
 }
@@ -4027,7 +4054,7 @@ t(this.m_cache.length);
 };
 return e;
 }(c.default);
-o.MMoneyFlow = a;
+o.MMoneyFlow = s;
 var r = function(t) {
 n(e, t);
 function e(e) {
@@ -4095,7 +4122,7 @@ this.m_mainRoot.active = !1;
 };
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -4124,7 +4151,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MMsg = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../units/Tool"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../units/Tool"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -4150,13 +4177,13 @@ content: "appName:港澳联盟\n版本Ver:1.0.0.0\nDESIGNED BY COCOS COREATOR 2.
 });
 this.m_cache.push({
 tittle: "当前时间",
-content: "本次请求时间: " + s.default.getInstance().getCurentTime()
+content: "本次请求时间: " + a.default.getInstance().getCurentTime()
 });
 t();
 };
 return e;
 }(c.default);
-o.MMsg = a;
+o.MMsg = s;
 var r = function(t) {
 n(e, t);
 function e(e, o) {
@@ -4237,7 +4264,7 @@ this.requestMessageData(this.setView.bind(this));
 };
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -4494,6 +4521,29 @@ i.default.getInstance().playEffectFromLocal(e, !1);
 }
 }, 800);
 };
+t.prototype.RunBetAnim = function(t, e, o, i) {
+cc.tween(t).to(.2, {
+x: e.x,
+y: e.y
+}, {
+easing: "quadOut"
+}).delay(.5).to(.4, {
+x: o.x,
+y: o.y
+}, {
+easing: "quadOut"
+}).call(i).start();
+};
+t.prototype.RunOpenCard = function(t) {
+var e = t.getComponent("switchsp");
+e ? cc.tween(t).to(.2, {
+scaleX: 0
+}).call(function() {
+e.setSpriteFrame(1);
+}).to(.2, {
+scaleX: 1
+}).start() : cc.warn("没有组件 switchsp");
+};
 t.m_tweenMap = new Map();
 return t;
 }();
@@ -4525,7 +4575,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MNavbar = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -4560,10 +4610,10 @@ return this.S_setState;
 };
 return e;
 }(c.default);
-o.MNavbar = a;
+o.MNavbar = s;
 var r = function(t) {
 n(e, t);
-function e(e, o, i, n, c, s, a) {
+function e(e, o, i, n, c, a, s) {
 var r = t.call(this) || this;
 r.node = e;
 r.m_toast = cc.find("common/toast", r.node);
@@ -4581,8 +4631,8 @@ r.cl_ShareView = o;
 r.cl_PlayView = i;
 r.cl_MsgView = n;
 r.cl_SetView = c;
-r.cl_AgentView = s;
-r.cl_RecordView = a;
+r.cl_AgentView = a;
+r.cl_RecordView = s;
 r.m_menuSecond.active = !1;
 r.addevent();
 return r;
@@ -4649,7 +4699,7 @@ t.click_Menu();
 e.prototype.click_Share = function() {
 switch (this.getShareButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4659,7 +4709,7 @@ this.cl_ShareView.show();
 e.prototype.click_Play = function() {
 switch (this.getPlayButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4669,7 +4719,7 @@ this.cl_PlayView.show();
 e.prototype.click_Record = function() {
 switch (this.getRecordButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4679,7 +4729,7 @@ this.cl_RecordView.show();
 e.prototype.click_Menu = function() {
 switch (this.getMenuButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4689,7 +4739,7 @@ this.showSecondMenu();
 e.prototype.click_Agent = function() {
 switch (this.getAgentButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4701,7 +4751,7 @@ return !1;
 e.prototype.click_FeedBack = function() {
 switch (this.getFeedbackButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4712,7 +4762,7 @@ return !1;
 e.prototype.click_Message = function() {
 switch (this.getMessageButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4724,7 +4774,7 @@ return !1;
 e.prototype.click_Set = function() {
 switch (this.getSetButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -4736,7 +4786,7 @@ return !1;
 e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -4935,8 +4985,8 @@ cc._RF.push(e, "a1e9cFXOslNZ6S+0ynZbh/6", "Observer");
 var i = this && this.__spreadArrays || function() {
 for (var t = 0, e = 0, o = arguments.length; e < o; e++) t += arguments[e].length;
 var i = Array(t), n = 0;
-for (e = 0; e < o; e++) for (var c = arguments[e], s = 0, a = c.length; s < a; s++, 
-n++) i[n] = c[s];
+for (e = 0; e < o; e++) for (var c = arguments[e], a = 0, s = c.length; a < s; a++, 
+n++) i[n] = c[a];
 return i;
 };
 Object.defineProperty(o, "__esModule", {
@@ -4962,6 +5012,231 @@ return t;
 o.default = n;
 cc._RF.pop();
 }, {} ],
+OpenCard: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "35988Mn30ZOtYGfBFYHfSBs", "OpenCard");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+}), c = this && this.__awaiter || function(t, e, o, i) {
+return new (o || (o = Promise))(function(n, c) {
+function a(t) {
+try {
+r(i.next(t));
+} catch (t) {
+c(t);
+}
+}
+function s(t) {
+try {
+r(i.throw(t));
+} catch (t) {
+c(t);
+}
+}
+function r(t) {
+t.done ? n(t.value) : (e = t.value, e instanceof o ? e : new o(function(t) {
+t(e);
+})).then(a, s);
+var e;
+}
+r((i = i.apply(t, e || [])).next());
+});
+}, a = this && this.__generator || function(t, e) {
+var o, i, n, c, a = {
+label: 0,
+sent: function() {
+if (1 & n[0]) throw n[1];
+return n[1];
+},
+trys: [],
+ops: []
+};
+return c = {
+next: s(0),
+throw: s(1),
+return: s(2)
+}, "function" == typeof Symbol && (c[Symbol.iterator] = function() {
+return this;
+}), c;
+function s(t) {
+return function(e) {
+return r([ t, e ]);
+};
+}
+function r(c) {
+if (o) throw new TypeError("Generator is already executing.");
+for (;a; ) try {
+if (o = 1, i && (n = 2 & c[0] ? i.return : c[0] ? i.throw || ((n = i.return) && n.call(i), 
+0) : i.next) && !(n = n.call(i, c[1])).done) return n;
+(i = 0, n) && (c = [ 2 & c[0], n.value ]);
+switch (c[0]) {
+case 0:
+case 1:
+n = c;
+break;
+
+case 4:
+a.label++;
+return {
+value: c[1],
+done: !1
+};
+
+case 5:
+a.label++;
+i = c[1];
+c = [ 0 ];
+continue;
+
+case 7:
+c = a.ops.pop();
+a.trys.pop();
+continue;
+
+default:
+if (!(n = a.trys, n = n.length > 0 && n[n.length - 1]) && (6 === c[0] || 2 === c[0])) {
+a = 0;
+continue;
+}
+if (3 === c[0] && (!n || c[1] > n[0] && c[1] < n[3])) {
+a.label = c[1];
+break;
+}
+if (6 === c[0] && a.label < n[1]) {
+a.label = n[1];
+n = c;
+break;
+}
+if (n && a.label < n[2]) {
+a.label = n[2];
+a.ops.push(c);
+break;
+}
+n[2] && a.ops.pop();
+a.trys.pop();
+continue;
+}
+c = e.call(t, a);
+} catch (t) {
+c = [ 6, t ];
+i = 0;
+} finally {
+o = n = 0;
+}
+if (5 & c[0]) throw c[1];
+return {
+value: c[0] ? c[1] : void 0,
+done: !0
+};
+}
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var s = t("../common/AtlasLib"), r = t("../common/MyAnimation"), l = t("../common/PeekCard"), u = t("../common/SceneManager"), h = t("../units/UserConfig"), d = function(t) {
+n(e, t);
+function e(e) {
+var o = t.call(this) || this;
+o.node = e;
+o.m_root = cc.find("popup/opencard", o.node);
+o.m_mask = cc.find("popup/mask", o.node);
+o.m_root.active = !1;
+return o;
+}
+e.prototype.setCardBase = function(t) {
+cc.isValid(this.m_peekNode, !0) && this.m_peekNode.getComponent(l.default).setCardBack(t);
+};
+e.prototype.show = function(t, e) {
+for (var o = this, i = function(e) {
+setTimeout(function() {
+if ("game_sg" === u.default.getInstance().getSceneName()) {
+var i = o.m_root.children[e].getComponent("switchsp");
+i.setSpriteFrame(0);
+i.updateFrame(1, s.default.getInstance().getSpriteFrame("card", "x" + t[e]));
+o.RunOpenCard(o.m_root.children[e]);
+}
+}, 250 + 500 * e);
+}, n = 0; n < 2; ++n) i(n);
+this.buildPeekCard(l.default.DirType.horizontal, "peekcard/base" + h.default.getInstance().getSgSetViewConfig().cardid, "peekcard/x" + t[2], e);
+this.popupOpenScaleXY(this.m_root, this.m_mask);
+};
+e.prototype.buildPeekCard = function(t, e, o, i) {
+void 0 === i && (i = null);
+return c(this, void 0, void 0, function() {
+var n;
+return a(this, function(c) {
+switch (c.label) {
+case 0:
+console.log(e, o);
+console.log("动态创建搓牌节点 ", l.default.DirType[t]);
+this.m_peekNode = new cc.Node("PeekCard");
+(n = this.m_peekNode.addComponent(l.default)).onLoad();
+this.m_root.addChild(this.m_peekNode);
+this.m_peekNode.position = new cc.Vec3(37, 0, 0);
+n._originalDir = n._dirType = l.default.DirType.vertical;
+n.setTouchAreaSize(cc.size(253, 370));
+n.setCardSize(cc.size(253, 370));
+n.dirType = t;
+n.setFinishCallBack(i);
+return [ 4, n.setCardBack(e) ];
+
+case 1:
+c.sent();
+return [ 4, n.setCardFace(o) ];
+
+case 2:
+c.sent();
+return [ 4, n.setShadow("shadow") ];
+
+case 3:
+c.sent();
+return [ 4, n.setFinger(null) ];
+
+case 4:
+c.sent();
+n.directionLength = 20;
+n.moveSpeed = .6;
+n.angleFixed = 5;
+n.init();
+return [ 2 ];
+}
+});
+});
+};
+e.prototype.hide = function() {
+var t = this;
+setTimeout(function() {
+if ("game_sg" === u.default.getInstance().getSceneName()) {
+t.m_root.removeChild(t.m_peekNode);
+t.popupCloseScaleXY(t.m_root, t.m_mask, t.hideEvent.bind(t));
+}
+}, 1500);
+};
+e.prototype.addEvent = function() {};
+e.prototype.hideEvent = function() {};
+return e;
+}(r.default);
+o.default = d;
+cc._RF.pop();
+}, {
+"../common/AtlasLib": "AtlasLib",
+"../common/MyAnimation": "MyAnimation",
+"../common/PeekCard": "PeekCard",
+"../common/SceneManager": "SceneManager",
+"../units/UserConfig": "UserConfig"
+} ],
 Passoprt: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "eff49Ph30NH4LICxMygS7NU", "Passoprt");
@@ -4980,14 +5255,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), p = t("./Login"), d = t("./Version"), f = t("../common/Dialog"), m = t("../common/AtlasLib"), _ = cc._decorator, g = _.ccclass, y = _.menu, v = (_.property, 
+var a = t("../common/MyAnimation"), s = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../units/AudioManager"), u = t("../units/UserConfig"), h = t("./Loading"), d = t("./Login"), p = t("./Version"), f = t("../common/Dialog"), m = t("../common/AtlasLib"), _ = cc._decorator, g = _.ccclass, y = _.menu, v = (_.property, 
 function(t) {
 n(e, t);
 function e() {
@@ -5013,23 +5288,25 @@ cc.find("common/toast", this.node).active = !1;
 e.prototype.onLoad = function() {
 this.resetView();
 u.default.getInstance();
-a.default.getInstance().setScene(cc.director.getScene());
+s.default.getInstance().setScene(cc.director.getScene());
 r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
 f.default.getInstance().setRootNode(this.node);
-this.cl_version = this.node.getComponent(d.default);
+this.cl_version = this.node.getComponent(p.default);
 this.cl_loading = new h.default(this.node, this.lauchingFinished.bind(this));
-this.cl_login = new p.default(this.node);
+this.cl_login = new d.default(this.node);
 cc.sys.localStorage.getItem("hotUpdateVer") ? cc.find("loading/version/value", this.node).getComponent(cc.Label).string = "版本号: " + cc.sys.localStorage.getItem("hotUpdateVer") : cc.find("loading/version/value", this.node).getComponent(cc.Label).string = "版本号: " + JSON.parse(JSON.parse(this.cl_version.manifest._nativeAsset).version).hotUpdate;
 };
 e.prototype.initAudio = function() {
+if (l.default.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT) {
 l.default.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, !0);
 l.default.getInstance().setBgmVol();
 l.default.getInstance().setEffVol();
+}
 };
 e.prototype.start = function() {
 var t = this;
 this.cl_loading.runShader();
-if (a.default.getInstance().getIsFirstLoad()) {
+if (s.default.getInstance().getIsFirstLoad()) {
 this.initAudio();
 this.cl_version.validate(function(e) {
 switch (e) {
@@ -5088,7 +5365,7 @@ this.cl_loading.Startlauching();
 }
 };
 e.prototype.onDestroy = function() {
-s.default.onDestory();
+a.default.onDestory();
 this.cl_login.onDestroy();
 this.cl_loading.onDestory();
 };
@@ -5108,6 +5385,632 @@ cc._RF.pop();
 "./Login": "Login",
 "./Version": "Version"
 } ],
+PeekCard: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "b2731TdgddP1rcEzWZqyIH4", "PeekCard");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+}), c = this && this.__decorate || function(t, e, o, i) {
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
+}, a = this && this.__awaiter || function(t, e, o, i) {
+return new (o || (o = Promise))(function(n, c) {
+function a(t) {
+try {
+r(i.next(t));
+} catch (t) {
+c(t);
+}
+}
+function s(t) {
+try {
+r(i.throw(t));
+} catch (t) {
+c(t);
+}
+}
+function r(t) {
+t.done ? n(t.value) : (e = t.value, e instanceof o ? e : new o(function(t) {
+t(e);
+})).then(a, s);
+var e;
+}
+r((i = i.apply(t, e || [])).next());
+});
+}, s = this && this.__generator || function(t, e) {
+var o, i, n, c, a = {
+label: 0,
+sent: function() {
+if (1 & n[0]) throw n[1];
+return n[1];
+},
+trys: [],
+ops: []
+};
+return c = {
+next: s(0),
+throw: s(1),
+return: s(2)
+}, "function" == typeof Symbol && (c[Symbol.iterator] = function() {
+return this;
+}), c;
+function s(t) {
+return function(e) {
+return r([ t, e ]);
+};
+}
+function r(c) {
+if (o) throw new TypeError("Generator is already executing.");
+for (;a; ) try {
+if (o = 1, i && (n = 2 & c[0] ? i.return : c[0] ? i.throw || ((n = i.return) && n.call(i), 
+0) : i.next) && !(n = n.call(i, c[1])).done) return n;
+(i = 0, n) && (c = [ 2 & c[0], n.value ]);
+switch (c[0]) {
+case 0:
+case 1:
+n = c;
+break;
+
+case 4:
+a.label++;
+return {
+value: c[1],
+done: !1
+};
+
+case 5:
+a.label++;
+i = c[1];
+c = [ 0 ];
+continue;
+
+case 7:
+c = a.ops.pop();
+a.trys.pop();
+continue;
+
+default:
+if (!(n = a.trys, n = n.length > 0 && n[n.length - 1]) && (6 === c[0] || 2 === c[0])) {
+a = 0;
+continue;
+}
+if (3 === c[0] && (!n || c[1] > n[0] && c[1] < n[3])) {
+a.label = c[1];
+break;
+}
+if (6 === c[0] && a.label < n[1]) {
+a.label = n[1];
+n = c;
+break;
+}
+if (n && a.label < n[2]) {
+a.label = n[2];
+a.ops.push(c);
+break;
+}
+n[2] && a.ops.pop();
+a.trys.pop();
+continue;
+}
+c = e.call(t, a);
+} catch (t) {
+c = [ 6, t ];
+i = 0;
+} finally {
+o = n = 0;
+}
+if (5 & c[0]) throw c[1];
+return {
+value: c[0] ? c[1] : void 0,
+done: !0
+};
+}
+};
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var r, l = cc._decorator, u = l.ccclass, h = l.property;
+(function(t) {
+t[t.horizontal = 1] = "horizontal";
+t[t.vertical = 2] = "vertical";
+})(r || (r = {}));
+var d = function(t) {
+n(e, t);
+function e() {
+var e = null !== t && t.apply(this, arguments) || this;
+e._originalDir = r.vertical;
+e._dirType = r.vertical;
+e._cardSize = cc.size(0, 0);
+e.mask = void 0;
+e.cardBack = void 0;
+e.cardFace = void 0;
+e.shadowMask = void 0;
+e.shadow = void 0;
+e.finger1 = void 0;
+e.finger2 = void 0;
+e.directionLength = 5;
+e.moveSpeed = .5;
+e.angleFixed = 10;
+e._isOpenCard = !1;
+e._isMoveStart = !1;
+e._tStartPos = void 0;
+e._tMoveVec = void 0;
+e._rotation = 0;
+e._inFingers = [];
+e._finishCallBack = void 0;
+return e;
+}
+Object.defineProperty(e.prototype, "originalDirType", {
+get: function() {
+return this._originalDir;
+},
+set: function(t) {
+this._originalDir != t && (this._originalDir = t);
+},
+enumerable: !1,
+configurable: !0
+});
+Object.defineProperty(e.prototype, "dirType", {
+get: function() {
+return this._dirType;
+},
+set: function(t) {
+t != this.dirType && (this._dirType = t);
+var e = t != this.originalDirType, o = this.cardBack.getComponent(cc.Sprite), i = o.spriteFrame;
+o.spriteFrame = null;
+this._setSpriteFrameRotate(i, e);
+o.spriteFrame = i;
+i = (o = this.cardFace.getComponent(cc.Sprite)).spriteFrame;
+o.spriteFrame = null;
+this._setSpriteFrameRotate(i, e);
+o.spriteFrame = i;
+this.init();
+},
+enumerable: !1,
+configurable: !0
+});
+Object.defineProperty(e.prototype, "cardSize", {
+get: function() {
+return this._cardSize;
+},
+set: function(t) {
+this.setCardSize(t);
+this.init();
+},
+enumerable: !1,
+configurable: !0
+});
+e.prototype.resetInEditor = function() {
+console.log("reset111");
+this.node.destroyAllChildren();
+this._initNodes();
+};
+e.prototype._initNodes = function() {
+function t(t) {
+var e = t.addComponent(cc.Sprite);
+e.sizeMode = cc.Sprite.SizeMode.CUSTOM;
+return e;
+}
+var e = cc.director.getScene().getComponentInChildren(cc.Canvas);
+this.setTouchAreaSize(e.designResolution);
+this.mask = new cc.Node("mask").addComponent(cc.Mask);
+this.node.addChild(this.mask.node);
+this.cardBack = new cc.Node("cardBack");
+t(this.cardBack);
+this.mask.node.addChild(this.cardBack);
+this.cardFace = new cc.Node("cardFace");
+t(this.cardFace);
+this.mask.node.addChild(this.cardFace);
+this.shadowMask = new cc.Node("shadowMask").addComponent(cc.Mask);
+this.shadowMask.type = cc.Mask.Type.IMAGE_STENCIL;
+this.shadowMask.alphaThreshold = .1;
+this.cardFace.addChild(this.shadowMask.node);
+this.shadow = new cc.Node("shadow");
+t(this.shadow);
+this.shadow.parent = this.shadowMask.node;
+this.shadow.setAnchorPoint(0, .5);
+this.finger1 = new cc.Node("finger1");
+this.finger2 = new cc.Node("finger2");
+t(this.finger1);
+t(this.finger2);
+this.node.addChild(this.finger1);
+this.node.addChild(this.finger2);
+};
+e.prototype.onLoad = function() {
+null == this.node.getChildByName("mask") && this._initNodes();
+};
+e.prototype.start = function() {
+this.node.on(cc.Node.EventType.TOUCH_START, this._touchStart, this);
+this.node.on(cc.Node.EventType.TOUCH_MOVE, this._touchMove, this);
+this.node.on(cc.Node.EventType.TOUCH_END, this._touchEnd, this);
+};
+e.prototype.onEnable = function() {};
+e.prototype.setFinishCallBack = function(t) {
+this._finishCallBack = t;
+};
+e.prototype.init = function() {
+this._cardSize || (this._cardSize = this.cardBack.getContentSize());
+this._initCardNode(this.mask.node, this._cardSize, this.dirType != this.originalDirType);
+this._initCardNode(this.cardBack, this._cardSize, this.dirType != this.originalDirType);
+this._initCardNode(this.cardFace, this._cardSize, this.dirType != this.originalDirType);
+this._initCardNode(this.shadowMask.node, this._cardSize, this.dirType != this.originalDirType);
+this.cardFace.setPosition(-this.mask.node.width, 0);
+this.shadow.angle = 0;
+this.shadow.height = 2 * Math.sqrt(Math.pow(this._cardSize.height, 2) + Math.pow(this._cardSize.width, 2));
+this.shadow.width = 40;
+var t = this.cardFace.width / 2 + this.shadowMask.node.width / 2, e = this.cardFace.height / 2 + this.shadowMask.node.height / 2;
+this.shadow.setPosition(t, e);
+this._initFinger();
+this._initStatus();
+};
+e.prototype._touchStart = function(t) {
+this._isOpenCard || (this._tStartPos = t.getLocation());
+};
+e.prototype._touchMove = function(t) {
+if (!this._isOpenCard && this._tStartPos) {
+var e = t.getLocation(), o = t.getPreviousLocation();
+if (!e.equals(o)) {
+var i = e.sub(this._tStartPos), n = e.sub(o), c = i.mag();
+if (0 == this._isMoveStart && c >= this.directionLength) {
+this._isMoveStart = !0;
+this._tMoveVec = this._fixedDirection(i);
+this._rotation = this._getSignAngle(this._tMoveVec, cc.v2(1, 0));
+var a = this._getOutRectSize(this.cardBack, this._rotation);
+this.mask.node.setContentSize(a);
+this.mask.node.angle = -this._rotation;
+this.cardBack.angle = this._rotation;
+this.cardFace.angle = -this._rotation;
+this.shadow.angle = this._rotation;
+this.cardFace.angle = -this._rotation;
+this.shadow.angle = this._rotation;
+var s = this._getQuadrant(this._tMoveVec), r = this._getNodeVertexByNodeSpaceAR(this.cardFace);
+switch (s) {
+case 1:
+case 5:
+this.cardFace.setPosition(-this.mask.node.width, this.cardBack.y);
+this.shadow.setPosition(r[2]);
+break;
+
+case 2:
+case 6:
+this.cardFace.setPosition(-this.mask.node.width, -this.cardBack.y);
+this.shadow.setPosition(r[3]);
+break;
+
+case 3:
+case 7:
+this.cardFace.setPosition(-this.mask.node.width, -this.cardBack.y);
+this.shadow.setPosition(r[0]);
+break;
+
+case 4:
+case 8:
+this.cardFace.setPosition(-this.mask.node.width, this.cardBack.y);
+this.shadow.setPosition(r[1]);
+break;
+
+default:
+cc.error("移动的方向向量为cc.Vec2(0, 0)");
+this._isMoveStart = !1;
+}
+} else if (this._isMoveStart) {
+var l = n.project(cc.v2(this._tMoveVec)), u = l.neg();
+if (0 == l.mag()) return;
+var h = this.moveSpeed;
+this._moveByVec2(this.mask.node, l, h);
+this._moveByVec2(this.cardBack, u, h);
+this._moveByVec2(this.cardFace, l, h);
+this._moveByVec2(this.shadow, u, h);
+var d = this._getNodeVertexByWorldSpaceAR(this.cardFace, -10), p = this._getNodeVertexByWorldSpaceAR(this.mask.node);
+this._inFingers = [];
+for (var f = 0; f < d.length; f++) cc.Intersection.pointInPolygon(d[f], p) && this._inFingers.push(f);
+for (f = 0; f < this._inFingers.length; f++) {
+var m = this._inFingers[f], _ = this["finger" + (f + 1)];
+if (_) {
+_.active = !0;
+_.setPosition(_.parent.convertToNodeSpaceAR(d[m]));
+_.angle = this._rotation - 90;
+}
+}
+if (0 == (c = this._inFingers.length)) {
+this.finger1.active = !1;
+this.finger2.active = !1;
+} else 1 == c && (this.finger2.active = !1);
+this._canOpen() && this.openCard();
+if (l.x * this._tMoveVec.x <= 0 && l.y * this._tMoveVec.y <= 0 && 0 == c) {
+this._touchEnd();
+this._tStartPos = void 0;
+console.log("禁止继续回退");
+}
+}
+}
+}
+};
+e.prototype._touchEnd = function() {
+!this._isOpenCard && this._tStartPos && this.init();
+};
+e.prototype.setTouchAreaSize = function(t, e) {
+var o = this._getSize(t, e);
+this.node.setContentSize(o);
+};
+e.prototype.setCardSize = function(t, e) {
+var o = this._getSize(t, e);
+this._cardSize = o;
+this.dirType != this.originalDirType && (o = cc.size(o.height, o.width));
+this.mask.node.setContentSize(o);
+this.cardBack.setContentSize(o);
+this.cardFace.setContentSize(o);
+this.shadowMask.node.setContentSize(o);
+};
+e.prototype.setCardBack = function(t) {
+return a(this, void 0, void 0, function() {
+return s(this, function(e) {
+switch (e.label) {
+case 0:
+return [ 4, this._setNodeSpriteFrame(this.cardBack, t, this.dirType != this.originalDirType) ];
+
+case 1:
+t = e.sent();
+this.shadowMask.spriteFrame = t;
+this.shadowMask.type = cc.Mask.Type.IMAGE_STENCIL;
+this.shadowMask.alphaThreshold = .1;
+return [ 2 ];
+}
+});
+});
+};
+e.prototype.setCardFace = function(t) {
+return a(this, void 0, void 0, function() {
+return s(this, function(e) {
+switch (e.label) {
+case 0:
+return [ 4, this._setNodeSpriteFrame(this.cardFace, t, this.dirType != this.originalDirType) ];
+
+case 1:
+e.sent();
+return [ 2 ];
+}
+});
+});
+};
+e.prototype.setShadow = function(t) {
+return a(this, void 0, void 0, function() {
+return s(this, function(e) {
+switch (e.label) {
+case 0:
+return [ 4, this._setNodeSpriteFrame(this.shadow, t) ];
+
+case 1:
+e.sent();
+return [ 2 ];
+}
+});
+});
+};
+e.prototype.setFinger = function(t, e) {
+return a(this, void 0, void 0, function() {
+return s(this, function(o) {
+switch (o.label) {
+case 0:
+return [ 4, this._setNodeSpriteFrame(this.finger1, t) ];
+
+case 1:
+o.sent();
+return [ 4, this._setNodeSpriteFrame(this.finger2, t) ];
+
+case 2:
+o.sent();
+e instanceof cc.Size && this.setFingerSize(e);
+return [ 2 ];
+}
+});
+});
+};
+e.prototype.setFingerSize = function(t, e) {
+var o = this._getSize(t, e);
+this.finger1.setContentSize(o);
+this.finger2.setContentSize(o);
+};
+e.prototype._canOpen = function() {
+return this._getMoveLength() > this._getMoveMaxLength() / 2;
+};
+e.prototype._getMoveLength = function() {
+return this.mask.node.getPosition().mag();
+};
+e.prototype._getMoveMaxLength = function() {
+return this.mask.node.width;
+};
+e.prototype.openCard = function() {
+cc.log("开牌");
+this.init();
+this.cardFace.setPosition(0, 0);
+this._isOpenCard = !0;
+"function" == typeof this._finishCallBack && this._finishCallBack();
+};
+e.prototype._getOutRectSize = function(t, e) {
+(e = Math.abs(e)) > 90 && e <= 180 && (e = 180 - e);
+var o = Math.PI / 180 * e, i = t.height * Math.sin(o) + t.width * Math.cos(o), n = t.height * Math.cos(o) + t.width * Math.sin(o);
+return cc.size(i, n);
+};
+e.prototype._moveByVec2 = function(t, e, o) {
+void 0 === o && (o = 1);
+var i = t.parent.convertToWorldSpaceAR(t.getPosition()), n = cc.v2(i.x + e.x * o, i.y + e.y * o), c = t.parent.convertToNodeSpaceAR(n);
+t.setPosition(c);
+};
+e.prototype._getSignAngle = function(t, e) {
+var o = t.signAngle(e);
+return 180 / Math.PI * o;
+};
+e.prototype._fixedDirection = function(t) {
+if (this.angleFixed) {
+var e = this.angleFixed, o = cc.v2(1, 0);
+if ((i = this._getSignAngle(t, o)) <= e + 0 && i >= 0 - e || i <= e + -180 || i >= 180 - e) return t.project(o);
+var i, n = cc.v2(0, 1);
+if ((i = this._getSignAngle(t, n)) <= e + 0 && i >= 0 - e || i <= e + -180 || i >= 180 - e) return t.project(n);
+}
+return t;
+};
+e.prototype._getNodeVertexByWorldSpaceAR = function(t, e) {
+void 0 === e && (e = 0);
+for (var o = this._getNodeVertexByNodeSpaceAR(t, e), i = 0; i < o.length; i++) o[i] = t.convertToWorldSpaceAR(o[i]);
+return o;
+};
+e.prototype._getNodeVertexByNodeSpaceAR = function(t, e) {
+void 0 === e && (e = 0);
+var o = t.width * t.anchorX + e, i = t.width * (1 - t.anchorX) + e, n = t.height * t.anchorY + e, c = t.height * (1 - t.anchorY) + e;
+return [ cc.v2(-o, c), cc.v2(i, c), cc.v2(i, -n), cc.v2(-o, -n) ];
+};
+e.prototype._getQuadrant = function(t) {
+var e = t.x, o = t.y;
+if (0 == e) {
+if (0 == o) return 9;
+if (o > 0) return 6;
+if (o < 0) return 8;
+} else if (e > 0) {
+if (0 == o) return 5;
+if (o > 0) return 1;
+if (o < 0) return 4;
+} else if (e < 0) {
+if (0 == o) return 7;
+if (o > 0) return 2;
+if (o < 0) return 3;
+}
+cc.error("参数错误::" + JSON.stringify(t));
+return 0;
+};
+e.prototype._initCardNode = function(t, e) {
+if (e) {
+this.dirType != this.originalDirType ? t.setContentSize(e.height, e.width) : t.setContentSize(e);
+t.angle = 0;
+t.setPosition(0, 0);
+}
+};
+e.prototype._initFinger = function() {
+this._inFingers = [];
+this.finger1.active = !1;
+this.finger2.active = !1;
+};
+e.prototype._initStatus = function() {
+this._isOpenCard = !1;
+this._isMoveStart = !1;
+this._rotation = 0;
+};
+e.prototype._getSize = function(t, e) {
+return null == t ? cc.size(0, 0) : t instanceof cc.Size ? t : null != e ? cc.size(t, e) : cc.size(t, t);
+};
+e.prototype._loadSpriteFrameSync = function(t) {
+return a(this, void 0, void 0, function() {
+return s(this, function() {
+return [ 2, new Promise(function(e) {
+cc.resources.load(t, cc.SpriteFrame, function(t, o) {
+e(t ? null : o);
+});
+}) ];
+});
+});
+};
+e.prototype._setNodeSpriteFrame = function(t, e, o) {
+void 0 === o && (o = !1);
+return a(this, void 0, void 0, function() {
+return s(this, function(i) {
+switch (i.label) {
+case 0:
+return "string" != typeof e ? [ 3, 2 ] : [ 4, this._loadSpriteFrameSync(e) ];
+
+case 1:
+e = i.sent();
+i.label = 2;
+
+case 2:
+if (null == e) return [ 2 ];
+this._setSpriteFrameRotate(e, o);
+t.getComponent(cc.Sprite).spriteFrame == e && (t.getComponent(cc.Sprite).spriteFrame = null);
+t.getComponent(cc.Sprite).spriteFrame = e;
+return [ 2, e ];
+}
+});
+});
+};
+e.prototype._setSpriteFrameRotate = function(t, e) {
+if (!t) return !1;
+if (t.isRotated() != e) {
+var o, i = t.getRect(), n = t.getTexture();
+if (0 == n.isValid) return !1;
+o = 0 == this._checkDynamicAtlas(n) ? new cc.Rect(0, 0, i.height, i.width) : new cc.Rect(i.x, i.y, i.height, i.width);
+t.setRect(o);
+var c = t.getOriginalSize(), a = cc.size(c.height, c.width);
+t.setOriginalSize(a);
+t.setRotated(e);
+return !0;
+}
+return !1;
+};
+e.prototype._checkDynamicAtlas = function(t) {
+var e = cc.dynamicAtlasManager;
+return 0 != e.enabled && t instanceof cc.RenderTexture && t.width == e.textureSize && t.height == e.textureSize;
+};
+e.DirType = r;
+c([ h ], e.prototype, "_originalDir", void 0);
+c([ h({
+type: cc.Enum(r),
+tooltip: "原始扑克牌纹理的方向"
+}) ], e.prototype, "originalDirType", null);
+c([ h ], e.prototype, "_dirType", void 0);
+c([ h({
+type: cc.Enum(r),
+tooltip: "搓牌时扑克牌纹理的方向"
+}) ], e.prototype, "dirType", null);
+c([ h ], e.prototype, "_cardSize", void 0);
+c([ h({
+type: cc.Size,
+tooltip: "设置扑克牌的大小"
+}) ], e.prototype, "cardSize", null);
+c([ h({
+type: cc.Mask,
+readonly: !0
+}) ], e.prototype, "mask", void 0);
+c([ h({
+type: cc.Node,
+readonly: !0
+}) ], e.prototype, "cardBack", void 0);
+c([ h({
+type: cc.Node,
+readonly: !0
+}) ], e.prototype, "cardFace", void 0);
+c([ h({
+type: cc.Mask,
+readonly: !0
+}) ], e.prototype, "shadowMask", void 0);
+c([ h({
+type: cc.Node,
+readonly: !0
+}) ], e.prototype, "shadow", void 0);
+c([ h({
+type: cc.Node,
+readonly: !0
+}) ], e.prototype, "finger1", void 0);
+c([ h({
+type: cc.Node,
+readonly: !0
+}) ], e.prototype, "finger2", void 0);
+return c([ u ], e);
+}(cc.Component);
+o.default = d;
+cc._RF.pop();
+}, {} ],
 PlayView: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "da501sIZJVKq4MRFN7jiSKg", "PlayView");
@@ -5130,7 +6033,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MPlay = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../units/Tool"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../units/Tool"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -5166,7 +6069,7 @@ t();
 };
 return e;
 }(c.default);
-o.MPlay = a;
+o.MPlay = s;
 var r = function(t) {
 n(e, t);
 function e(e, o) {
@@ -5223,7 +6126,7 @@ this.m_viewSprite.getComponent(cc.Sprite).spriteFrame = null;
 this.m_chooseLayout.forEach(function(o, i) {
 o.getChildByName("value").active = !(i === t);
 o.getChildByName("bg").active = i === t;
-t === i && s.default.getInstance().LoadImageRemote(e.m_viewSprite, e.getPlayInfoFromIndex(i).contentUrl);
+t === i && a.default.getInstance().LoadImageRemote(e.m_viewSprite, e.getPlayInfoFromIndex(i).contentUrl);
 }, this);
 }
 };
@@ -5249,12 +6152,119 @@ this.requestPlayData(this.setView.bind(this));
 };
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
 "../../common/MyAnimation": "MyAnimation",
 "../../units/Tool": "Tool"
+} ],
+PlayerGold: [ function(t, e, o) {
+"use strict";
+cc._RF.push(e, "9b0237/Nu9IgpI7LspOvtS1", "PlayerGold");
+var i, n = this && this.__extends || (i = function(t, e) {
+return (i = Object.setPrototypeOf || {
+__proto__: []
+} instanceof Array && function(t, e) {
+t.__proto__ = e;
+} || function(t, e) {
+for (var o in e) e.hasOwnProperty(o) && (t[o] = e[o]);
+})(t, e);
+}, function(t, e) {
+i(t, e);
+function o() {
+this.constructor = t;
+}
+t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
+});
+Object.defineProperty(o, "__esModule", {
+value: !0
+});
+var c = t("../common/GoldChange"), a = t("../common/MyAnimation"), s = t("../common/NodePool"), r = t("../common/SceneManager"), l = t("../units/AudioManager"), u = t("../units/Tool"), h = function(t) {
+n(e, t);
+function e(e, o, i) {
+var n = t.call(this) || this;
+n.minBet = o;
+n.maxBet = i;
+n.m_betBase = e;
+n.m_betBaseChild = [];
+return n;
+}
+e.prototype.getCreateNum = function(t) {
+return t - this.minBet == 0 ? 1 : Math.ceil((t - this.minBet) / (this.maxBet - this.minBet) * 10);
+};
+e.prototype.getBackNum = function(t, e) {
+var o = this.m_allCount - Math.floor(this.m_allCount / t) * t;
+return e ? Math.floor(this.m_allCount / t) + o : Math.floor(this.m_allCount / t);
+};
+e.prototype.setAllCount = function() {
+var t = this;
+setTimeout(function() {
+if ("game_sg" === r.default.getInstance().getSceneName() && cc.isValid(t.m_betBase)) {
+t.m_allCount = t.m_betBase.children.length;
+t.m_betBaseChild = [];
+for (var e = 0; e < t.m_allCount; ++e) t.m_betBaseChild[e] = t.m_betBase.children[e];
+}
+}, 1500);
+};
+e.prototype.showAddGold = function(t, e) {
+setTimeout(function() {
+"game_sg" === r.default.getInstance().getSceneName() && cc.isValid(t) && (t.getChildByName("addgold").getComponent(c.default).string = e);
+}, 1e3);
+};
+e.prototype.getPos = function(t, e, o) {
+var i = o * Math.PI / 180;
+return new cc.Vec2(t.x + e * Math.cos(i), t.y + e * Math.sin(i));
+};
+e.prototype.playBetAnim = function(t, e) {
+var o = this;
+setTimeout(function() {
+"game_sg" === r.default.getInstance().getSceneName() && l.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_GOLD_ADD, !1);
+}, 800);
+t.getChildByName("bet").getChildByName("value").getComponent(cc.Label).string = String(e);
+var i = t.getChildByName("gold"), n = this.getCreateNum(e);
+console.log("add", t, n);
+for (var c = u.default.getInstance().randomAccess(-100, 100), a = function() {
+var t = s.default.getInstance().getNodeFromPool("SgGold");
+t.active = !0;
+t.parent = i;
+t.position = new cc.Vec3(0, 0, 0);
+var e = h.getPos(new cc.Vec2(0, 0), u.default.getInstance().randomAccess(-40, 40), u.default.getInstance().randomAccess(0, 360)), n = h.m_betBase.parent.convertToWorldSpaceAR(h.m_betBase.position), a = i.convertToNodeSpaceAR(n);
+a.x += e.x + c;
+a.y += e.y;
+h.RunBetAnim(t, e, new cc.Vec2(a.x, a.y), function() {
+var e = t.parent.convertToWorldSpaceAR(a), i = o.m_betBase.convertToNodeSpaceAR(e);
+t.parent = o.m_betBase;
+t.position = i;
+});
+}, h = this, d = 0; d < n; ++d) a();
+};
+e.prototype.playBetAnimBack = function(t, e, o) {
+var i = t.getChildByName("avatar").getChildByName("gold"), n = this.getBackNum(e, o);
+console.log(this.m_betBaseChild.length);
+console.log("bofang", t, n);
+for (var c = function() {
+var t = a.m_betBaseChild.shift(), e = a.getPos(new cc.Vec2(0, 0), u.default.getInstance().randomAccess(-20, 20), u.default.getInstance().randomAccess(0, 360)), o = i.parent.convertToWorldSpaceAR(i.position), n = a.m_betBase.convertToNodeSpaceAR(o);
+n.x += e.x;
+n.y += e.y;
+a.RunBetAnim(t, e, new cc.Vec2(n.x, n.y), function() {
+setTimeout(function() {
+cc.isValid(t) && t.destroy();
+}, 1e3);
+});
+}, a = this, s = 0; s < n; ++s) c();
+};
+return e;
+}(a.default);
+o.default = h;
+cc._RF.pop();
+}, {
+"../common/GoldChange": "GoldChange",
+"../common/MyAnimation": "MyAnimation",
+"../common/NodePool": "NodePool",
+"../common/SceneManager": "SceneManager",
+"../units/AudioManager": "AudioManager",
+"../units/Tool": "Tool"
 } ],
 PlayerInfo: [ function(t, e, o) {
 "use strict";
@@ -5278,7 +6288,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MPlayerInfo = void 0;
-var c = t("../common/CountDown"), s = t("../common/MyAnimation"), a = t("../units/Tool"), r = t("../units/UserConfig"), l = function(t) {
+var c = t("../common/CountDown"), a = t("../common/MyAnimation"), s = t("../units/Tool"), r = t("../units/UserConfig"), l = function(t) {
 n(e, t);
 function e() {
 return t.call(this) || this;
@@ -5291,7 +6301,7 @@ return r.default.getInstance().getUserInfo();
 };
 e.prototype.sendAnimation = function() {};
 return e;
-}(s.default);
+}(a.default);
 o.MPlayerInfo = l;
 var u = function(t) {
 n(e, t);
@@ -5320,7 +6330,7 @@ this.m_layoutAnim.active = this.m_receiver.id !== this.getMyInfo().id;
 this.c_balance.string = "余额: " + String(this.m_receiver.gold);
 this.c_id.string = "玩家ID: " + String(this.m_receiver.id);
 this.c_nickname.string = "昵称: " + String(this.m_receiver.nickname);
-a.default.getInstance().LoadImageRemote(this.c_avatar, this.m_receiver.avatar, new cc.Vec2(128, 128));
+s.default.getInstance().LoadImageRemote(this.c_avatar, this.m_receiver.avatar, new cc.Vec2(128, 128));
 this.node.active = !0;
 this.popupOpenScaleXY(this.m_root, this.m_mask, this.addEvent.bind(this));
 this.m_animList.forEach(function(t) {
@@ -5398,7 +6408,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MPlayer = void 0;
-var c = t("../common/MyAnimation"), s = t("../units/AudioManager"), a = t("../units/Tool"), r = t("../units/UserConfig"), l = t("./BetManager"), u = t("./CardLib"), h = t("./PlayerInfo"), p = function(t) {
+var c = t("../common/AtlasLib"), a = t("../common/MyAnimation"), s = t("../common/SceneManager"), r = t("../units/AudioManager"), l = t("../units/Tool"), u = t("../units/UserConfig"), h = t("./BetManager"), d = t("./CardLib"), p = t("./OpenCard"), f = t("./PlayerGold"), m = t("./PlayerInfo"), _ = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -5413,16 +6423,16 @@ avatar: o.avatar,
 nickname: o.nickname,
 gender: 0
 });
-e.m_playrNum = a.default.getInstance().randomAccess(4, 10);
+e.m_playrNum = l.default.getInstance().randomAccess(4, 10);
 e.timer = setInterval(function() {
 if (e.m_cache.length != e.m_playrNum) {
 e.m_cache.push({
 charid: e.m_cache.length,
-id: a.default.getInstance().randomNumber(5),
+id: l.default.getInstance().randomNumber(5),
 bet: 0,
-gold: a.default.getInstance().randomAccess(4e3, 2e5),
+gold: l.default.getInstance().randomAccess(4e3, 2e5),
 avatar: o.avatar,
-nickname: a.default.getInstance().getRandomName(3),
+nickname: l.default.getInstance().getRandomName(3),
 gender: 0
 });
 e.updateView();
@@ -5434,7 +6444,7 @@ e.Startbet();
 return e;
 }
 e.prototype.getMyInfo = function() {
-return r.default.getInstance().getUserInfo();
+return u.default.getInstance().getUserInfo();
 };
 e.prototype.WebsocketData = function() {
 this.updateView();
@@ -5455,23 +6465,29 @@ return null;
 e.prototype.Startbet = function() {};
 e.prototype.updateView = function() {};
 e.prototype.getTableInfo = function() {
-return r.default.getInstance().getTableInfo();
+return u.default.getInstance().getTableInfo();
 };
 return e;
-}(c.default);
-o.MPlayer = p;
-var d = function(t) {
+}(a.default);
+o.MPlayer = _;
+var g = function(t) {
 n(e, t);
 function e(e, o) {
 var i = t.call(this) || this;
 i.node = e;
 i.m_playerList = cc.find("player", i.node).children;
-i.cl_cardLib = cc.find("state/cardLib", i.node).getComponent(u.default);
-i.cl_playerInfo = new h.default(cc.find("popup", i.node), i);
+i.m_BuRoot = cc.find("ctrlbutton", i.node);
+i.i_openCardBu = cc.find("ctrlbutton/opencard", i.node);
+i.i_peekCardBu = cc.find("ctrlbutton/peekcard", i.node);
+i.cl_cardLib = cc.find("state/cardLib", i.node).getComponent(d.default);
+i.cl_playerInfo = new m.default(cc.find("popup", i.node), i);
+i.cl_playerGold = new f.default(cc.find("state/goldtarget", i.node), i.getTableInfo().min, i.getTableInfo().min + 1e3);
+i.cl_openCard = new p.default(i.node);
 i.m_prefab_anim = o;
 i.c_state = cc.find("state/gamestate/value", i.node).getComponent(cc.Label);
-i.cl_betManager = cc.find("bet", i.node).getComponent(l.default);
+i.cl_betManager = cc.find("bet", i.node).getComponent(h.default);
 i.c_goldBase = cc.find("state/goldbase", i.node).getComponent(cc.Label);
+i.m_BuRoot.active = !1;
 i.cl_betManager.hide();
 i.resetView();
 i.updateView();
@@ -5514,50 +6530,164 @@ this.c_goldBase.string = "池底:0";
 this.c_state.string = "等待玩家中...";
 this.m_playerList.forEach(function(t) {
 if ("player" === t.name.substr(0, 6)) {
-var e = cc.find("avatar/name", t).getComponent(cc.Label), o = cc.find("avatar/gold", t).getComponent(cc.Label), i = cc.find("bet/value", t).getComponent(cc.Label), n = cc.find("avatar/avatar/image", t), c = cc.find("cardList", t), s = cc.find("type", t), a = cc.find("addgold", t);
+var e = cc.find("avatar/name", t).getComponent(cc.Label), o = cc.find("avatar/gold", t).getComponent(cc.Label), i = cc.find("bet/value", t).getComponent(cc.Label), n = cc.find("avatar/avatar/image", t), c = cc.find("cardList", t), a = cc.find("type", t), s = cc.find("addgold", t);
 e.string = "";
 n.getComponent(cc.Sprite).spriteFrame = null;
 o.string = String(0);
 i.string = String(0);
 c.removeAllChildren();
 c.active = !0;
-s.active = !1;
 a.active = !1;
+s.active = !1;
 i.node.parent.active = !0;
 }
 });
 };
 e.prototype.Startbet = function() {
-s.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_NEWGAME, !1);
+var t = this;
+r.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_NEWGAME, !1);
 this.BetCountDown(20);
 this.m_playerList[0].getChildByName("bet").active = !1;
 this.m_playerList[0].getChildByName("cardList").active = !1;
 this.cl_betManager.show(this.getTableInfo().min, this.getTableInfo().max, this.getTableInfo().min + Math.floor((this.getTableInfo().max - this.getTableInfo().min) / 2), this.getBetValue.bind(this));
+var e, o = [], i = [], n = [];
+i.push(0);
+for (var c = 1; c < this.getplayrNum(); ++c) {
+o.push(c);
+i.push(c);
+}
+for (c = 1; c < this.getplayrNum(); ++c) setTimeout(function() {
+if ("game_sg" === s.default.getInstance().getSceneName()) {
+var e = l.default.getInstance().randomAccess(0, o.length - 1);
+t.cl_playerGold.playBetAnim(t.m_playerList[o[e]], t.getTableInfo().min + l.default.getInstance().randomAccess(0, 1e3));
+o.splice(e, 1);
+}
+setTimeout(function() {
+"game_sg" === s.default.getInstance().getSceneName() && t.calcGoldBase();
+}, 300);
+}, 18e3 * Math.random());
+var a = l.default.getInstance().randomAccess(1, this.getplayrNum() - 1);
+for (c = 0; c < a; ++c) {
+var u = l.default.getInstance().randomAccess(0, i.length - 1);
+n.push(i[u]);
+i.splice(u, 1);
+}
+e = i;
+console.log("win", n);
+console.log("lose", e);
+setTimeout(function() {
+if ("game_sg" === s.default.getInstance().getSceneName()) {
+r.default.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_GOLD_SUB, !1);
+for (var o = 0; o < n.length; ++o) {
+t.cl_playerGold.playBetAnimBack(t.m_playerList[n[o]], n.length, 0 === o);
+t.cl_playerGold.showAddGold(t.m_playerList[n[o]], l.default.getInstance().randomAccess(500, 1e4));
+}
+for (o = 0; o < e.length; ++o) t.cl_playerGold.showAddGold(t.m_playerList[e[o]], l.default.getInstance().randomAccess(-1e4, 500));
+}
+setTimeout(function() {
+"game_sg" === s.default.getInstance().getSceneName() && (t.c_goldBase.string = "池底:0");
+}, 300);
+}, 35e3);
+};
+e.prototype.calcGoldBase = function() {
+var t = this, e = 0;
+this.m_playerList.forEach(function(o, i) {
+if ("player" === o.name.substr(0, 6) && o.active) {
+t.getUserInfoFromIndex(i);
+var n = cc.find("bet/value", o).getComponent(cc.Label);
+e += Number(n.string);
+t.c_goldBase.string = "池底:" + e;
+}
+});
 };
 e.prototype.getBetValue = function() {
-this.c_goldBase.string = "池底:" + String(this.cl_betManager.betValue);
+var t = this;
+setTimeout(function() {
+"game_sg" === s.default.getInstance().getSceneName() && t.calcGoldBase();
+}, 300);
 this.m_playerList[0].getChildByName("bet").active = !0;
 this.m_playerList[0].getChildByName("bet").getChildByName("value").getComponent(cc.Label).string = String(this.cl_betManager.betValue);
 this.m_playerList[0].getChildByName("cardList").active = !0;
+this.cl_playerGold.playBetAnim(this.m_playerList[0], this.cl_betManager.betValue);
+this.cl_playerGold.setAllCount();
 };
 e.prototype.shuffleCard = function() {
+this.cardArr = [];
+for (var t = [], e = 0; e < 54; ++e) t.push(e);
+for (e = 0; e < 3; ++e) {
+var o = l.default.getInstance().randomAccess(0, t.length - 1);
+this.cardArr.push(t[o]);
+t.splice(o, 1);
+}
+this.cl_playerGold.setAllCount();
 this.cl_betManager.hide();
 this.c_state.string = "洗牌中...";
-for (var t = [], e = 0; e < this.getplayrNum(); ++e) t.push(this.m_playerList[e]);
-this.cl_cardLib.shuffleCard(t, 3);
+var i = [];
+for (e = 0; e < this.getplayrNum(); ++e) i.push(this.m_playerList[e]);
+this.cl_cardLib.shuffleCard(i, 3);
 };
-e.prototype.BetCountDown = function(t) {
-var e = this;
-this.c_state.string = "下注倒计时 " + t + " 秒";
+e.prototype.BetCountDown = function(t, e) {
+var o = this;
+void 0 === e && (e = "下注倒计时 ");
+this.c_state.string = e + t + " 秒";
 this.timer = setInterval(function() {
-e.c_state.string = "下注倒计时 " + t + " 秒";
+o.c_state.string = e + t + " 秒";
 if (0 === t) {
-clearInterval(e.timer);
-e.timer = null;
-e.shuffleCard();
+clearInterval(o.timer);
+o.timer = null;
+if ("下注倒计时 " === e) {
+o.BetCountDown(13, "金币回收倒计时 ");
+o.shuffleCard();
+} else "金币回收倒计时 " === e ? o.BetCountDown(7, "开牌按钮激活剩余时间 ") : "开牌按钮激活剩余时间 " === e && o.showButton(CTRLBUTTON.OPENCARD);
 }
 t--;
 }, 1e3);
+};
+e.prototype.openCardFinish = function(t) {
+var e = this;
+if (Array.isArray(t)) {
+console.log(this.m_playerList[0].getChildByName("cardList").children);
+for (var o = function(o) {
+setTimeout(function() {
+if ("game_sg" === s.default.getInstance().getSceneName()) {
+var i = e.m_playerList[0].getChildByName("cardList").children[o];
+i.getComponent("switchsp").updateFrame(1, c.default.getInstance().getSpriteFrame("card", "x" + t[o]));
+e.RunOpenCard(i);
+}
+}, 270 + 500 * o);
+}, i = 0; i < t.length; ++i) o(i);
+} else {
+this.cl_openCard.hide();
+this.m_playerList[0].getChildByName("cardList").children[2].getComponent("switchsp").updateFrame(1, c.default.getInstance().getSpriteFrame("card", "x" + t));
+this.RunOpenCard(this.m_playerList[0].getChildByName("cardList").children[2]);
+}
+};
+e.prototype.hideButton = function() {
+this.i_openCardBu.off("touchend");
+this.i_peekCardBu.off("touchend");
+this.popupCloseScaleXY(this.m_BuRoot, null);
+};
+e.prototype.showButton = function(t) {
+console.log(t);
+this.m_buttonCode = t;
+if (t !== CTRLBUTTON.NONE) {
+this.i_openCardBu.on("touchend", this.openCard.bind(this));
+this.i_openCardBu.getComponent(cc.Button).interactable = !0;
+this.i_openCardBu.getComponent("switchsp").setSpriteFrame(CTRLBUTTON.OPENCARD);
+switch (this.m_buttonCode) {
+case CTRLBUTTON.OPENCARD:
+this.i_peekCardBu.on("touchend", this.peekCard.bind(this));
+this.i_openCardBu.getComponent(cc.Button).interactable = !0;
+break;
+
+default:
+this.i_openCardBu.getComponent(cc.Button).interactable = !1;
+}
+this.popupOpenScaleXY(this.m_BuRoot, null);
+} else {
+console.log("finish");
+this.hideButton();
+}
 };
 e.prototype.updateView = function() {
 var t = this;
@@ -5565,17 +6695,30 @@ this.m_playerList.forEach(function(e, o) {
 if ("player" === e.name.substr(0, 6)) {
 var i = t.getUserInfoFromIndex(o);
 if (i) {
-var n = cc.find("avatar/name", e).getComponent(cc.Label), c = cc.find("avatar/gold", e).getComponent(cc.Label), s = cc.find("bet/value", e).getComponent(cc.Label), r = cc.find("avatar/avatar/image", e);
+var n = cc.find("avatar/name", e).getComponent(cc.Label), c = cc.find("avatar/gold", e).getComponent(cc.Label), a = cc.find("bet/value", e).getComponent(cc.Label), s = cc.find("avatar/avatar/image", e);
 n.string = i.nickname;
-c.string = a.default.getInstance().forMat(i.gold, 1e4);
-s.string = String(i.bet);
-a.default.getInstance().LoadImageRemote(r, i.avatar, new cc.Vec2(65, 65));
+c.string = l.default.getInstance().forMat(i.gold, 1e4);
+a.string = String(i.bet);
+l.default.getInstance().LoadImageRemote(s, i.avatar, new cc.Vec2(65, 65));
 e.active = !0;
 } else e.active = !1;
 }
 });
 };
-e.prototype.SendCard = function() {};
+e.prototype.openCard = function() {
+console.log("开牌");
+this.showButton(CTRLBUTTON.NONE);
+this.openCardFinish(this.cardArr);
+};
+e.prototype.peekCard = function() {
+var t = this;
+console.log("搓牌");
+this.showButton(CTRLBUTTON.NONE);
+this.openCardFinish([ this.cardArr[0], this.cardArr[1] ]);
+this.cl_openCard.show(this.cardArr, function() {
+t.openCardFinish(t.cardArr[2]);
+});
+};
 e.prototype.addEvent = function() {
 var t = this;
 this.m_playerList.forEach(function(e, o) {
@@ -5589,22 +6732,27 @@ this.WebsocketData(t);
 };
 e.prototype.start = function() {};
 e.prototype.onDestroy = function() {
+for (var t = setTimeout(";"), e = 0; e < t; e++) clearTimeout(e);
 if (this.timer) {
 clearInterval(this.timer);
 this.timer = null;
 }
 };
 return e;
-}(p);
-o.default = d;
+}(_);
+o.default = g;
 cc._RF.pop();
 }, {
+"../common/AtlasLib": "AtlasLib",
 "../common/MyAnimation": "MyAnimation",
+"../common/SceneManager": "SceneManager",
 "../units/AudioManager": "AudioManager",
 "../units/Tool": "Tool",
 "../units/UserConfig": "UserConfig",
 "./BetManager": "BetManager",
 "./CardLib": "CardLib",
+"./OpenCard": "OpenCard",
+"./PlayerGold": "PlayerGold",
 "./PlayerInfo": "PlayerInfo"
 } ],
 RealNameView: [ function(t, e, o) {
@@ -5629,7 +6777,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MRealName = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = t("../../units/Tool"), r = t("../../units/UserConfig"), l = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = t("../../units/Tool"), r = t("../../units/UserConfig"), l = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -5647,7 +6795,7 @@ return t.idnumber === t.realname && "" === t.realname ? null : r.default.getInst
 e.prototype.RequestRealName = function(t, e) {
 if (0 === t.realname.length) return REALNAME_RESULT.REALNAME_LENGTH_NONE;
 if (0 === t.idnumber.length) return REALNAME_RESULT.ID_LENGTH_NONE;
-if (!a.default.getInstance().isIdCardNumber(t.idnumber)) return REALNAME_RESULT.ID_CHECK_ERR;
+if (!s.default.getInstance().isIdCardNumber(t.idnumber)) return REALNAME_RESULT.ID_CHECK_ERR;
 r.default.getInstance().setRealNameInfo(t);
 e();
 return REALNAME_RESULT.SUCCESS;
@@ -5688,12 +6836,12 @@ configurable: !0
 e.prototype.click_confirm = function() {
 switch (this.getRealNameButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
 var t = this.RequestRealName(this.realNameParam, this.setView.bind(this));
-s.default.getInstance().show(this.realNameArr[t], this.m_toast);
+a.default.getInstance().show(this.realNameArr[t], this.m_toast);
 }
 };
 e.prototype.setView = function() {
@@ -5759,7 +6907,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MRecord = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../scrollviewData/SanGongData"), a = t("../../units/Tool"), r = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../scrollviewData/SanGongData"), s = t("../../units/Tool"), r = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -5811,13 +6959,13 @@ this.totalCount = 10;
 var o = e.page * e.limit > this.totalCount ? this.totalCount % this.m_pageShowNum : this.m_pageShowNum;
 console.log(e.page, e.limit, this.totalCount, o);
 for (var i = 0; i < o; i++) {
-var n = Math.ceil(1e5 * Math.random()), c = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (n / .4)) : -Math.ceil(Math.random() * (n / .4)), s = n + c, r = {
+var n = Math.ceil(1e5 * Math.random()), c = 10 * Math.random() > 5 ? Math.ceil(Math.random() * (n / .4)) : -Math.ceil(Math.random() * (n / .4)), a = n + c, r = {
 orderid: (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i)).toString(16) + (Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i)).toString(16),
 before: n,
 amount: c,
-after: s,
+after: a,
 type: Math.ceil(7 * Math.random()),
-date: a.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i))
+date: s.default.getInstance().getCurentTime(Date.now() + 8e3 * (this.curentPage * this.m_pageShowNum + i))
 };
 this.m_cache.push(r);
 }
@@ -5842,7 +6990,7 @@ i.m_scrollview = cc.find("popup/record/base/scrollview", i.node);
 i.i_close = cc.find("popup/record/base/button_close", i.node);
 i.c_list = cc.find("popup/record/base/scrollview", i.node).getComponent("List");
 i.m_prefab = o;
-i.p_renderData = new s.default(cc.find("popup/record", i.node));
+i.p_renderData = new a.default(cc.find("popup/record", i.node));
 i.m_mainNode.active = !0;
 i.m_root.active = !0;
 return i;
@@ -5930,7 +7078,7 @@ t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o(
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var c = t("../common/MyAnimation"), s = t("../common/TimerStruct"), a = t("../common/Toast"), r = t("../units/Tool"), l = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/TimerStruct"), s = t("../common/Toast"), r = t("../units/Tool"), l = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -5993,12 +7141,12 @@ t.c_inputRepeatPd.string = "";
 this.closeEvent();
 };
 e.prototype.requestForgetPd = function() {
-0 !== this.registParam.invateCode.length ? 0 !== this.registParam.phone.length ? r.default.getInstance().isPhoneNumber(this.registParam.phone) ? 6 === this.registParam.verify.length ? this.registParam.newPd.length < 6 ? a.default.getInstance().show("新密码长度限制6--16位", this.m_toast) : 0 !== this.registParam.repeatPd.length ? this.registParam.newPd === this.registParam.repeatPd ? a.default.getInstance().show("ERRORCODE:500 请求服务器失败!", this.m_toast) : a.default.getInstance().show("两次输入的密码不相同,请确认", this.m_toast) : a.default.getInstance().show("再次输入新密码不能为空", this.m_toast) : a.default.getInstance().show("验证码长度应为6位", this.m_toast) : a.default.getInstance().show("请输入正确的手机号", this.m_toast) : a.default.getInstance().show("手机号不能为空", this.m_toast) : a.default.getInstance().show("邀请码不能为空", this.m_toast);
+0 !== this.registParam.invateCode.length ? 0 !== this.registParam.phone.length ? r.default.getInstance().isPhoneNumber(this.registParam.phone) ? 6 === this.registParam.verify.length ? this.registParam.newPd.length < 6 ? s.default.getInstance().show("新密码长度限制6--16位", this.m_toast) : 0 !== this.registParam.repeatPd.length ? this.registParam.newPd === this.registParam.repeatPd ? s.default.getInstance().show("ERRORCODE:500 请求服务器失败!", this.m_toast) : s.default.getInstance().show("两次输入的密码不相同,请确认", this.m_toast) : s.default.getInstance().show("再次输入新密码不能为空", this.m_toast) : s.default.getInstance().show("验证码长度应为6位", this.m_toast) : s.default.getInstance().show("请输入正确的手机号", this.m_toast) : s.default.getInstance().show("手机号不能为空", this.m_toast) : s.default.getInstance().show("邀请码不能为空", this.m_toast);
 };
 e.prototype.requestVerify = function() {
 var t = this;
 if ("获取验证码" !== this.i_getVerify.getComponent(cc.Label).string) return !1;
-this.m_verifyCoutDown = new s.default(60);
+this.m_verifyCoutDown = new a.default(60);
 var e = this.m_verifyCoutDown.coutDown;
 this.i_getVerify.getComponent(cc.Label).string = e + "s";
 this.t_timerVerfyCountDown = setInterval(function() {
@@ -6031,7 +7179,7 @@ return !0;
 e.prototype.addEvent = function() {
 var t = this;
 this.i_getVerify.on("touchend", function() {
-r.default.getInstance().isPhoneNumber(t.verifyPhoneParam.phone) ? t.requestVerify() || a.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast) : a.default.getInstance().show("请输入正确的手机号", t.m_toast);
+r.default.getInstance().isPhoneNumber(t.verifyPhoneParam.phone) ? t.requestVerify() || s.default.getInstance().show("请在倒计时结束后获取验证码", t.m_toast) : s.default.getInstance().show("请输入正确的手机号", t.m_toast);
 }, this);
 this.i_confirm.on("touchend", function() {
 t.requestForgetPd();
@@ -6077,7 +7225,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MResetPd = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/SceneManager"), a = t("../../common/Toast"), r = t("../../units/UserConfig"), l = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/SceneManager"), s = t("../../common/Toast"), r = t("../../units/UserConfig"), l = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -6134,17 +7282,17 @@ configurable: !0
 e.prototype.click_confirm = function() {
 switch (this.getResetPdButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
 var t = this.RequestChangePd(this.resetPdParam);
 if (t === RESETPD_RESULT.SUCCESS) {
-a.default.getInstance().show(this.resetPdStateArr[t], this.m_toast);
+s.default.getInstance().show(this.resetPdStateArr[t], this.m_toast);
 setTimeout(function() {
-s.default.getInstance().loadScene("passport");
+a.default.getInstance().loadScene("passport");
 }, 1500);
-} else a.default.getInstance().show(this.resetPdStateArr[t], this.m_toast);
+} else s.default.getInstance().show(this.resetPdStateArr[t], this.m_toast);
 }
 };
 e.prototype.show = function() {
@@ -6196,7 +7344,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MRoom = void 0;
-var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/SceneManager"), s = t("../common/Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -6301,7 +7449,7 @@ switch (i.pos) {
 case ROOM_CLICK_POS.UPTABLE:
 switch (this.getTableButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6313,14 +7461,14 @@ max: n.max,
 gamenum: n.gamenum,
 rule: n.rule
 });
-s.default.getInstance().loadScene("game_sg");
+a.default.getInstance().loadScene("game_sg");
 }
 break;
 
 case ROOM_CLICK_POS.DOWNTABLE:
 switch (this.getTableButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6332,14 +7480,14 @@ max: n.max,
 gamenum: n.gamenum,
 rule: n.rule
 });
-s.default.getInstance().loadScene("game_sg");
+a.default.getInstance().loadScene("game_sg");
 }
 break;
 
 case ROOM_CLICK_POS.UPRULE:
 switch (this.getTableRuleButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6357,7 +7505,7 @@ break;
 case ROOM_CLICK_POS.DOWNRULE:
 switch (this.getTableRuleButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6444,14 +7592,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/MyAnimation"), a = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../common/SetView"), h = t("./GameView"), p = t("./RoomView"), d = t("./RuleView"), f = t("./TopView"), m = cc._decorator, _ = m.ccclass, g = m.menu, y = m.property, v = function(t) {
+var a = t("../common/MyAnimation"), s = t("../common/SceneManager"), r = t("../common/Toast"), l = t("../hall/popup/RecordView"), u = t("../common/SetView"), h = t("./GameView"), d = t("./RoomView"), p = t("./RuleView"), f = t("./TopView"), m = t("../units/AudioManager"), _ = cc._decorator, g = _.ccclass, y = _.menu, v = _.property, S = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -6459,14 +7607,22 @@ e.PopupButton = null;
 return e;
 }
 e.prototype.onLoad = function() {
-a.default.getInstance().setScene(cc.director.getScene());
+this.initAudio();
+s.default.getInstance().setScene(cc.director.getScene());
 r.default.getInstance().setRootNode(cc.find("common/toast", this.node));
 this.cl_RecordView = new l.default(this.node, this.PopupButton);
 this.cl_SetView = new u.default(this.node);
 this.cl_TopView = new f.default(this.node, this.cl_RecordView, this.cl_SetView);
-this.cl_RuleView = new d.default(cc.find("popup", this.node));
-this.cl_RoomView = new p.default(this.node, this.cl_RuleView);
+this.cl_RuleView = new p.default(cc.find("popup", this.node));
+this.cl_RoomView = new d.default(this.node, this.cl_RuleView);
 this.cl_GameView = new h.default(this.node, this.cl_RoomView);
+};
+e.prototype.initAudio = function() {
+if (m.default.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT) {
+m.default.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, !0);
+m.default.getInstance().setBgmVol();
+m.default.getInstance().setEffVol();
+}
 };
 e.prototype.RenderRoom = function(t, e) {
 this.cl_RoomView.RenderMainFunction(t, e);
@@ -6487,7 +7643,7 @@ e.prototype.ClickRecordPopupNode = function(t, e, o) {
 this.cl_RecordView.clickPopupItemFunction(t, e, o);
 };
 e.prototype.button_back = function() {
-a.default.getInstance().loadScene("hall");
+s.default.getInstance().loadScene("hall");
 };
 e.prototype.start = function() {
 this.cl_SetView.start();
@@ -6495,15 +7651,15 @@ this.cl_GameView.start();
 this.cl_RecordView.start();
 };
 e.prototype.onDestroy = function() {
-s.default.onDestory();
+a.default.onDestory();
 this.cl_RoomView.OnDestroy();
 this.cl_GameView.onDestroy();
 this.cl_RecordView.onDestroy();
 };
-c([ y(cc.Prefab) ], e.prototype, "PopupButton", void 0);
-return c([ _, g("场景主脚本/Room") ], e);
+c([ v(cc.Prefab) ], e.prototype, "PopupButton", void 0);
+return c([ g, y("场景主脚本/Room") ], e);
 }(cc.Component);
-o.default = v;
+o.default = S;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
@@ -6511,6 +7667,7 @@ cc._RF.pop();
 "../common/SetView": "SetView",
 "../common/Toast": "Toast",
 "../hall/popup/RecordView": "RecordView",
+"../units/AudioManager": "AudioManager",
 "./GameView": "GameView",
 "./RoomView": "RoomView",
 "./RuleView": "RuleView",
@@ -6538,13 +7695,13 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MRule = void 0;
-var c = t("../common/MyAnimation"), s = t("../common/Toast"), a = t("../units/UserConfig"), r = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/Toast"), s = t("../units/UserConfig"), r = function(t) {
 n(e, t);
 function e() {
 return t.call(this) || this;
 }
 e.prototype.getUserInfo = function() {
-return a.default.getInstance().getUserInfo();
+return s.default.getInstance().getUserInfo();
 };
 return e;
 }(c.default);
@@ -6574,7 +7731,7 @@ this.c_max.string = "下注封顶: " + String(t.max);
 this.c_rule.string = String(t.rule);
 this.c_gamenum.string = "局数: " + String(t.gamenum);
 this.popupOpenScaleXY(this.m_root, this.m_mask, this.addEvent.bind(this));
-} else s.default.getInstance().show("数据错误!", this.m_toast);
+} else a.default.getInstance().show("数据错误!", this.m_toast);
 };
 e.prototype.hide = function() {
 this.popupCloseScaleXY(this.m_root, this.m_mask, this.HideEvent.bind(this));
@@ -6618,7 +7775,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MSet = void 0;
-var c = t("../common/AtlasLib"), s = t("../common/MyAnimation"), a = t("../units/AudioManager"), r = t("../units/UserConfig"), l = t("./CardLib"), u = function(t) {
+var c = t("../common/AtlasLib"), a = t("../common/MyAnimation"), s = t("../units/AudioManager"), r = t("../units/UserConfig"), l = t("./CardLib"), u = function(t) {
 n(e, t);
 function e() {
 return t.call(this) || this;
@@ -6633,7 +7790,7 @@ e.prototype.getAudioConfig = function() {
 return r.default.getInstance().getAudioConfig();
 };
 return e;
-}(s.default);
+}(a.default);
 o.MSet = u;
 var h = function(t) {
 n(e, t);
@@ -6731,12 +7888,12 @@ t.updateView();
 });
 this.i_iconMusic.on("touchend", function() {
 r.default.getInstance().setBgmState(!r.default.getInstance().getAudioConfig().openBgm);
-a.default.getInstance().setBgmVol(r.default.getInstance().getAudioConfig().openBgm ? r.default.getInstance().getAudioConfig().bgmVol : 0);
+s.default.getInstance().setBgmVol(r.default.getInstance().getAudioConfig().openBgm ? r.default.getInstance().getAudioConfig().bgmVol : 0);
 t.updateView();
 }, this);
 this.i_iconEffect.on("touchend", function() {
 r.default.getInstance().setEffState(!r.default.getInstance().getAudioConfig().openEff);
-a.default.getInstance().setEffVol(r.default.getInstance().getAudioConfig().openEff ? r.default.getInstance().getAudioConfig().effVol : 0);
+s.default.getInstance().setEffVol(r.default.getInstance().getAudioConfig().openEff ? r.default.getInstance().getAudioConfig().effVol : 0);
 t.updateView();
 }, this);
 this.i_close.on("touchend", function() {
@@ -6759,11 +7916,11 @@ var t = this.getAudioConfig();
 this.i_iconMusic.getComponent("switchsp").setSpriteFrame(!1 === t.openBgm ? 0 : 1);
 this.i_iconEffect.getComponent("switchsp").setSpriteFrame(!1 === t.openEff ? 0 : 1);
 if (t.openBgm) {
-a.default.getInstance().setBgmVol();
+s.default.getInstance().setBgmVol();
 this.i_sliderMusic.getComponent(cc.Slider).progress = t.bgmVol;
 } else this.i_sliderMusic.getComponent(cc.Slider).progress = 0;
 if (t.openEff) {
-a.default.getInstance().setEffVol();
+s.default.getInstance().setEffVol();
 this.i_sliderEffect.getComponent(cc.Slider).progress = t.effVol;
 } else this.i_sliderEffect.getComponent(cc.Slider).progress = 0;
 this.m_topMusicBar.width = this.i_sliderMusic.getComponent(cc.Slider).progress * this.m_musicBarWidth;
@@ -6806,7 +7963,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.SanGong = void 0;
-var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../room/RuleView"), l = t("../units/UserConfig"), u = t("./SGSetView"), h = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/SceneManager"), s = t("../common/Toast"), r = t("../room/RuleView"), l = t("../units/UserConfig"), u = t("./SGSetView"), h = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -6835,7 +7992,7 @@ return l.default.getInstance().getTableInfo();
 return e;
 }(c.default);
 o.SanGong = h;
-var p = function(t) {
+var d = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -6859,7 +8016,7 @@ this.c_tableInfo.string = "房号: " + t.tablenum + "\n底注: " + t.min + "\n�
 e.prototype.ClickRule = function() {
 switch (this.getRuleButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6869,17 +8026,17 @@ this.cl_RuleView.show(this.getTableInfo());
 e.prototype.ClickBackToRoom = function() {
 switch (this.getBackToRoomButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-s.default.getInstance().loadScene("room");
+a.default.getInstance().loadScene("room");
 }
 };
 e.prototype.ClickSet = function() {
 switch (this.getSetButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6889,7 +8046,7 @@ this.cl_SGSetViw.show();
 e.prototype.ClickChat = function() {
 switch (this.getChatButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6899,7 +8056,7 @@ return;
 e.prototype.ClickBiaoQin = function() {
 switch (this.getBiaoQinButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -6919,7 +8076,7 @@ this.setTableInfo();
 e.prototype.onDestroy = function() {};
 return e;
 }(h);
-o.default = p;
+o.default = d;
 cc._RF.pop();
 }, {
 "../common/MyAnimation": "MyAnimation",
@@ -7011,14 +8168,14 @@ SceneManager: [ function(t, e, o) {
 "use strict";
 cc._RF.push(e, "4995fb4175I0405RpaIQWfV", "SceneManager");
 var i = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var n = cc._decorator, c = n.ccclass, s = (n.property, function() {
+var n = cc._decorator, c = n.ccclass, a = (n.property, function() {
 function t() {
 this.m_isFirstLogin = !0;
 this.loadIndex = 1;
@@ -7043,12 +8200,12 @@ var o = this;
 void 0 === t && (t = null);
 void 0 === e && (e = null);
 var i = 100 / (this.m_sceneNameArr.length - 1), n = i * (this.loadIndex - 1), c = 0;
-cc.director.preloadScene(this.m_sceneNameArr[this.loadIndex], function(s, a) {
-var r = n + s / a * i;
+cc.director.preloadScene(this.m_sceneNameArr[this.loadIndex], function(a, s) {
+var r = n + a / s * i;
 r < c && (r = c);
 c = r;
 t && t(r);
-if (s === a) {
+if (a === s) {
 if (o.loadIndex === o.m_sceneNameArr.length - 1) return;
 o.loadIndex += 1;
 o.preloadSceneForeach(t, e);
@@ -7079,7 +8236,7 @@ return !1;
 var e;
 return e = i([ c ], t);
 }());
-o.default = s;
+o.default = a;
 cc._RF.pop();
 }, {} ],
 ScrollViewRenderData: [ function(t, e, o) {
@@ -7137,7 +8294,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MSet = void 0;
-var c = t("./MyAnimation"), s = t("./SceneManager"), a = t("./Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = t("../units/AudioManager"), h = function(t) {
+var c = t("./MyAnimation"), a = t("./SceneManager"), s = t("./Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = t("../units/AudioManager"), h = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -7157,7 +8314,7 @@ return this.S_quitLoginState;
 return e;
 }(c.default);
 o.MSet = h;
-var p = function(t) {
+var d = function(t) {
 n(e, t);
 function e(e) {
 var o = t.call(this) || this;
@@ -7188,7 +8345,7 @@ return o;
 e.prototype.click_PrivateRoom = function() {
 switch (this.getprivateButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -7198,12 +8355,12 @@ this.showPrivate();
 e.prototype.click_QuitLogin = function() {
 switch (this.getQuitLoginButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
 this.hideEvent();
-s.default.getInstance().loadScene("passport");
+a.default.getInstance().loadScene("passport");
 }
 };
 e.prototype.show = function() {
@@ -7293,7 +8450,7 @@ e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
 }(h);
-o.default = p;
+o.default = d;
 cc._RF.pop();
 }, {
 "../units/AudioManager": "AudioManager",
@@ -7325,7 +8482,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MShareView = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -7368,12 +8525,12 @@ if (cc.sys.os === cc.sys.OS_WINDOWS || cc.sys.os === String(cc.sys.DESKTOP_BROWS
 return !0;
 };
 e.prototype.filpYImage = function(t) {
-for (var e = this.m_width, o = this.m_hight, i = new Uint8Array(e * o * 4), n = 4 * e, c = 0; c < o; c++) for (var s = (o - 1 - c) * e * 4, a = c * e * 4, r = 0; r < n; r++) i[a + r] = t[s + r];
+for (var e = this.m_width, o = this.m_hight, i = new Uint8Array(e * o * 4), n = 4 * e, c = 0; c < o; c++) for (var a = (o - 1 - c) * e * 4, s = c * e * 4, r = 0; r < n; r++) i[s + r] = t[a + r];
 return i;
 };
 return e;
 }(c.default);
-o.MShareView = a;
+o.MShareView = s;
 var r = function(t) {
 n(e, t);
 function e(e) {
@@ -7421,26 +8578,26 @@ var n = new cc.Texture2D();
 n.initWithData(i, 32, this.m_width, this.m_hight);
 var c = new cc.SpriteFrame();
 c.setTexture(n);
-var a = new cc.Node(), r = a.addComponent(cc.Sprite);
-a.addComponent(cc.BlockInputEvents);
+var s = new cc.Node(), r = s.addComponent(cc.Sprite);
+s.addComponent(cc.BlockInputEvents);
 r.spriteFrame = c;
-a.zIndex = cc.macro.MAX_ZINDEX;
-this.node.addChild(a);
+s.zIndex = cc.macro.MAX_ZINDEX;
+this.node.addChild(s);
 var l = cc.winSize.width, u = cc.winSize.height;
-a.x = a.y = 0;
-var h = cc.v3(l / 2 - a.width / 2 * .3, u / 2 - a.height / 2 * .3, 0);
-cc.tween(a).to(.7, {
+s.x = s.y = 0;
+var h = cc.v3(l / 2 - s.width / 2 * .3, u / 2 - s.height / 2 * .3, 0);
+cc.tween(s).to(.7, {
 position: h,
 scale: .3
 }, {
 easing: "quadIn"
 }).delay(2).call(function() {
-a.destroy();
+s.destroy();
 i = null;
-a = null;
+s = null;
 t.m_camera.active = !1;
 t.m_touchend = !0;
-cc.sys.os == cc.sys.OS_IOS && s.default.getInstance().show("请手动截图分享!", t.m_toast);
+cc.sys.os == cc.sys.OS_IOS && a.default.getInstance().show("请手动截图分享!", t.m_toast);
 }).start();
 }
 };
@@ -7455,7 +8612,7 @@ e.prototype.click_SaveImage = function() {
 var t = this;
 switch (this.getSaveImageButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -7465,24 +8622,24 @@ setTimeout(function() {
 t.createSprite();
 }, 1e3);
 this.m_touchend = !1;
-} else s.default.getInstance().show("请等待截图完成!", this.m_toast);
+} else a.default.getInstance().show("请等待截图完成!", this.m_toast);
 }
 };
 e.prototype.click_CopyCode = function() {
 switch (this.getCopyCodeButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
 cc.sys.isNative && jsb.copyTextToClipboard(this.getShareCode());
-s.default.getInstance().show("分享码复制成功!", this.m_toast, !1);
+a.default.getInstance().show("分享码复制成功!", this.m_toast, !1);
 }
 };
 e.prototype.click_Close = function() {
 switch (this.getCloseButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -7504,7 +8661,7 @@ t.click_CopyCode();
 e.prototype.start = function() {};
 e.prototype.onDestory = function() {};
 return e;
-}(a);
+}(s);
 o.default = r;
 cc._RF.pop();
 }, {
@@ -7574,7 +8731,7 @@ return e.m_instance;
 };
 e.prototype.show = function(t, e, o) {
 void 0 === o && (o = !0);
-this.m_cache.push(new s(t, e, o ? e.getChildByName("mask") : null));
+this.m_cache.push(new a(t, e, o ? e.getChildByName("mask") : null));
 this.run();
 };
 e.prototype.setRootNode = function(t) {
@@ -7599,7 +8756,7 @@ t.run();
 return e;
 }(t("./MyAnimation").default);
 o.default = c;
-var s = function(t, e, o) {
+var a = function(t, e, o) {
 void 0 === e && (e = null);
 void 0 === o && (o = null);
 this.str = "";
@@ -7609,7 +8766,7 @@ this.str = t;
 this.root = e;
 this.mask = o;
 };
-o.ToastStruct = s;
+o.ToastStruct = a;
 cc._RF.pop();
 }, {
 "./MyAnimation": "MyAnimation"
@@ -7711,7 +8868,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MTOP = void 0;
-var c = t("../common/MyAnimation"), s = t("../common/SceneManager"), a = t("../common/Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = function(t) {
+var c = t("../common/MyAnimation"), a = t("../common/SceneManager"), s = t("../common/Toast"), r = t("../units/Tool"), l = t("../units/UserConfig"), u = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -7760,17 +8917,17 @@ return n;
 e.prototype.click_AddGold = function() {
 switch (this.getHallAddGoldButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-a.default.getInstance().show("请联系上级充值!", this.m_toast);
+s.default.getInstance().show("请联系上级充值!", this.m_toast);
 }
 };
 e.prototype.click_Record = function() {
 switch (this.getRecordButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -7780,7 +8937,7 @@ this.cl_RecordView.show();
 e.prototype.click_Set = function() {
 switch (this.getSetButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -7790,11 +8947,11 @@ this.cl_SetView.show();
 e.prototype.click_BackToHall = function() {
 switch (this.getBackButtonState()) {
 case BUTTON_STATE.OFF:
-a.default.getInstance().show("暂未开放!", this.m_toast);
+s.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-s.default.getInstance().loadScene("hall");
+a.default.getInstance().loadScene("hall");
 }
 };
 e.prototype.UpdateUserInfo = function() {
@@ -7850,8 +9007,8 @@ openEff: !0,
 bgmVol: 1,
 effVol: 1
 };
-this.BgmNameArr = [ "", "bgm/hzj" ];
-this.EffNameArr = [ "eff/animbq/chicken", "eff/animbq/tomato", "eff/animbq/flower", "eff/animbq/boom", "eff/animbq/water", "eff/card/send_card", "eff/newgame" ];
+this.BgmNameArr = [ "", "bgm/hzj", "", "", "bgm/gtm" ];
+this.EffNameArr = [ "eff/animbq/chicken", "eff/animbq/tomato", "eff/animbq/flower", "eff/animbq/boom", "eff/animbq/water", "eff/card/send_card", "eff/newgame", "eff/gold/add_gold", "eff/gold/sub_gold" ];
 this.userinfo = {
 gold: 0,
 phone: "13345671231",
@@ -7958,7 +9115,7 @@ Object.defineProperty(o, "__esModule", {
 value: !0
 });
 o.MUser = void 0;
-var c = t("../../common/MyAnimation"), s = t("../../common/Toast"), a = t("../../units/Tool"), r = t("../../units/UserConfig"), l = function(t) {
+var c = t("../../common/MyAnimation"), a = t("../../common/Toast"), s = t("../../units/Tool"), r = t("../../units/UserConfig"), l = function(t) {
 n(e, t);
 function e() {
 var e = t.call(this) || this;
@@ -7992,7 +9149,7 @@ return r.default.getInstance().getUserInfo();
 };
 e.prototype.changeName = function(t) {
 if (t.nickname.length < 4 || t.nickname.length > 12) return CHANGE_NAME_RESULT.NAME_LENGTH_ERROR;
-if (!a.default.getInstance().isNickName(t.nickname)) return CHANGE_NAME_RESULT.NAME_CHECK_ERROR;
+if (!s.default.getInstance().isNickName(t.nickname)) return CHANGE_NAME_RESULT.NAME_CHECK_ERROR;
 r.default.getInstance().setUserInfo({
 nickname: t.nickname
 });
@@ -8044,7 +9201,7 @@ configurable: !0
 e.prototype.click_AvatarToUser = function() {
 switch (this.getUserInfoButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -8054,17 +9211,17 @@ this.show();
 e.prototype.click_AddGold = function() {
 switch (this.getHallAddGoldButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-s.default.getInstance().show("请联系上级充值!", this.m_toast);
+a.default.getInstance().show("请联系上级充值!", this.m_toast);
 }
 };
 e.prototype.click_Realname = function() {
 switch (this.getRealNameButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -8074,7 +9231,7 @@ this.cl_RealNameView.show();
 e.prototype.click_ResetPD = function() {
 switch (this.getChangePDButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -8084,7 +9241,7 @@ this.cl_ResetPdView.show();
 e.prototype.click_MoneyFlow = function() {
 switch (this.getMoneyFlowButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
@@ -8095,13 +9252,13 @@ e.prototype.click_Avatar = function() {
 var t = this;
 switch (this.getAvatarButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
-s.default.getInstance().show("正在读取文件...", this.m_toast);
+a.default.getInstance().show("正在读取文件...", this.m_toast);
 setTimeout(function() {
-cc.sys.isNative ? cc.sys.os === cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod(className, "getImgData", "()V") : cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_WINDOWS && s.default.getInstance().show("TIP 浏览器下无法上传头像,请使用APP上传!", t.m_toast) : s.default.getInstance().show("TIP 浏览器下无法上传头像,请使用APP上传!", t.m_toast);
+cc.sys.isNative ? cc.sys.os === cc.sys.OS_ANDROID ? jsb.reflection.callStaticMethod(className, "getImgData", "()V") : cc.sys.os === cc.sys.OS_IOS || cc.sys.os === cc.sys.OS_WINDOWS && a.default.getInstance().show("TIP 浏览器下无法上传头像,请使用APP上传!", t.m_toast) : a.default.getInstance().show("TIP 浏览器下无法上传头像,请使用APP上传!", t.m_toast);
 }, 1e3);
 return;
 }
@@ -8109,12 +9266,12 @@ return;
 e.prototype.click_ChangeName = function() {
 switch (this.getChangeNameButtonState()) {
 case BUTTON_STATE.OFF:
-s.default.getInstance().show("暂未开放!", this.m_toast);
+a.default.getInstance().show("暂未开放!", this.m_toast);
 break;
 
 case BUTTON_STATE.ON:
 var t = this.changeName(this.changeNameParam);
-s.default.getInstance().show(this.changeNameState[t], this.m_toast);
+a.default.getInstance().show(this.changeNameState[t], this.m_toast);
 this.UpdateBaseInfo();
 return;
 }
@@ -8139,8 +9296,8 @@ this.m_inputName.getComponent(cc.EditBox).string = "";
 this.m_inputName.getComponent(cc.EditBox).focus();
 };
 e.prototype.UpdateAvatar = function(t) {
-a.default.getInstance().LoadImageRemote(this.i_avatarNode.getChildByName("avatar"), t, new cc.Vec2(82, 82));
-a.default.getInstance().LoadImageRemote(this.i_hallAvatarSpriteNode.getChildByName("avatar"), t, new cc.Vec2(82, 82));
+s.default.getInstance().LoadImageRemote(this.i_avatarNode.getChildByName("avatar"), t, new cc.Vec2(82, 82));
+s.default.getInstance().LoadImageRemote(this.i_hallAvatarSpriteNode.getChildByName("avatar"), t, new cc.Vec2(82, 82));
 };
 e.prototype.UpdateBaseInfo = function() {
 var t = this.getUserInfo();
@@ -8207,14 +9364,14 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = t("../common/SceneManager"), a = t("../units/AudioManager"), r = cc._decorator, l = r.ccclass, u = r.property, h = function(t) {
+var a = t("../common/SceneManager"), s = t("../units/AudioManager"), r = cc._decorator, l = r.ccclass, u = r.property, h = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -8248,8 +9405,8 @@ this.root.active = !1;
 };
 e.prototype.compare = function(t, e) {
 if (t && e) {
-for (var o = t.split("."), i = e.split("."), n = Math.min(o.length, i.length), c = 0, s = 0; c < n && 0 == (s = parseInt(o[c]) - parseInt(i[c])); ) c++;
-return (s = 0 != s ? s : o.length - i.length) < 0 ? -1 : 1;
+for (var o = t.split("."), i = e.split("."), n = Math.min(o.length, i.length), c = 0, a = 0; c < n && 0 == (a = parseInt(o[c]) - parseInt(i[c])); ) c++;
+return (a = 0 != a ? a : o.length - i.length) < 0 ? -1 : 1;
 }
 return 1;
 };
@@ -8292,7 +9449,7 @@ cc.sys.os, cc.sys.OS_IOS, this.verStr.string = "版本号: " + JSON.parse(this.a
 if (this.am.getLocalManifest() && this.am.getLocalManifest().isLoaded()) {
 this.am.setEventCallback(this.checkCb.bind(this));
 setTimeout(function() {
-"passport" == s.default.getInstance().getSceneName() && e.am.checkUpdate();
+"passport" == a.default.getInstance().getSceneName() && e.am.checkUpdate();
 }, 1e3);
 } else {
 this.stateStr.string = "状态: 获取本地 manifest文件失败!";
@@ -8323,7 +9480,7 @@ this.callback(4);
 this.stateStr.string = "状态: 当前已经是最新版本,更新完成!";
 this.bar.progress = 1;
 setTimeout(function() {
-if ("passport" == s.default.getInstance().getSceneName()) {
+if ("passport" == a.default.getInstance().getSceneName()) {
 e.hide();
 e.callback(0);
 }
@@ -8337,7 +9494,7 @@ this.stateStr.string = "状态: 发现新版本" + c + "   准备更新文件...
 this.remoteVersion = c;
 this.bar.progress = 0;
 setTimeout(function() {
-"passport" == s.default.getInstance().getSceneName() && e.hotUpdate();
+"passport" == a.default.getInstance().getSceneName() && e.hotUpdate();
 }, 3e3);
 break;
 
@@ -8421,7 +9578,7 @@ break;
 case jsb.EventAssetsManager.UPDATE_FAILED:
 this.stateStr.string = "状态: 发现有下载失败的文件,准备重新下载...";
 setTimeout(function() {
-if ("passport" == s.default.getInstance().getSceneName()) {
+if ("passport" == a.default.getInstance().getSceneName()) {
 e.am.downloadFailedAssets();
 e.updating = !1;
 }
@@ -8455,7 +9612,7 @@ jsb.fileUtils.setSearchPaths(n);
 this.stateStr.string = "状态: 更新完成正在重新启动...";
 this.bar.progress = 1;
 setTimeout(function() {
-a.default.getInstance().stopAll();
+s.default.getInstance().stopAll();
 cc.game.restart();
 }, 2e3);
 }
@@ -8487,16 +9644,16 @@ this.constructor = t;
 }
 t.prototype = null === e ? Object.create(e) : (o.prototype = e.prototype, new o());
 }), c = this && this.__decorate || function(t, e, o, i) {
-var n, c = arguments.length, s = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
-if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) s = Reflect.decorate(t, e, o, i); else for (var a = t.length - 1; a >= 0; a--) (n = t[a]) && (s = (c < 3 ? n(s) : c > 3 ? n(e, o, s) : n(e, o)) || s);
-return c > 3 && s && Object.defineProperty(e, o, s), s;
+var n, c = arguments.length, a = c < 3 ? e : null === i ? i = Object.getOwnPropertyDescriptor(e, o) : i;
+if ("object" == typeof Reflect && "function" == typeof Reflect.decorate) a = Reflect.decorate(t, e, o, i); else for (var s = t.length - 1; s >= 0; s--) (n = t[s]) && (a = (c < 3 ? n(a) : c > 3 ? n(e, o, a) : n(e, o)) || a);
+return c > 3 && a && Object.defineProperty(e, o, a), a;
 };
 Object.defineProperty(o, "__esModule", {
 value: !0
 });
-var s = cc._decorator, a = s.ccclass, r = s.property, l = s.menu, u = s.requireComponent, h = s.disallowMultiple, p = s.executeInEditMode;
+var a = cc._decorator, s = a.ccclass, r = a.property, l = a.menu, u = a.requireComponent, h = a.disallowMultiple, d = a.executeInEditMode;
 cc.macro.ENABLE_WEBGL_ANTIALIAS = !0;
-var d = function(t) {
+var p = function(t) {
 n(e, t);
 function e() {
 var e = null !== t && t.apply(this, arguments) || this;
@@ -8571,9 +9728,9 @@ displayName: "矩形大小"
 c([ r({
 visible: !1
 }) ], e.prototype, "image", void 0);
-return c([ a(), h(), p(), u(cc.Mask), l("公共/矩形圆角遮罩") ], e);
+return c([ s(), h(), d(), u(cc.Mask), l("公共/矩形圆角遮罩") ], e);
 }(cc.Component);
-o.default = d;
+o.default = p;
 cc._RF.pop();
 }, {} ],
 switchsp: [ function(t, e) {
@@ -8644,4 +9801,4 @@ return this.curSp;
 });
 cc._RF.pop();
 }, {} ]
-}, {}, [ "AtlasLib", "CountDown", "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "NodePool", "Notice", "Observer", "SceneManager", "ScrollViewRenderData", "SetView", "TimerStruct", "Toast", "rectframe", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "CardLib", "MainSg", "Player", "PlayerInfo", "SGSetView", "SGView", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "switchsp" ]);
+}, {}, [ "AtlasLib", "CountDown", "Dialog", "Emitter", "FlashLightUBO", "GoldChange", "MyAnimation", "NodePool", "Notice", "Observer", "PeekCard", "SceneManager", "ScrollViewRenderData", "SetView", "TimerStruct", "Toast", "rectframe", "Hall", "HallModelManager", "Home", "Left", "Navbar", "User", "AgentView", "MoneyFlowView", "MsgView", "PlayView", "RealNameView", "RecordView", "ResetPdView", "ShareView", "ForgetPd", "Loading", "Login", "Passoprt", "Regist", "Version", "GameView", "Room", "RoomView", "RuleView", "TopView", "SanGongData", "BetManager", "CardLib", "MainSg", "OpenCard", "Player", "PlayerGold", "PlayerInfo", "SGSetView", "SGView", "AudioManager", "EmitterCode", "List", "ListItem", "ListOpacity", "Tool", "UserConfig", "switchsp" ]);

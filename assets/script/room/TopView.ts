@@ -2,7 +2,7 @@ import MyAnimation from "../common/MyAnimation";
 import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import RecordView from "../hall/popup/RecordView";
-import SetView from "../hall/popup/SetView";
+import SetView from "../common/SetView";
 import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 
@@ -20,6 +20,9 @@ export class MTOP extends MyAnimation{
     }
     protected getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
+    }
+    protected getBalance():Balance{
+        return UserConfig.getInstance().balance;
     }
     protected getSetButtonState(){
         return this.S_set;
@@ -103,8 +106,8 @@ export default class TopView extends MTOP{
     public UpdateUserInfo(){
         let UserInfo:UserInfo = this.getUserInfo();
         this.m_nickName.string = '昵称:'+UserInfo.nickname;
-        this.m_Id.string = 'ID: '+UserInfo.id;
-        this.m_gold.string = String(UserInfo.gold);
+        this.m_Id.string = 'ID: '+UserInfo.member_id;
+        this.m_gold.string = String(this.getBalance().rmb);
         this.UpdateAvatar(UserInfo.avatar);
     }
     public UpdateAvatar(Url:string){

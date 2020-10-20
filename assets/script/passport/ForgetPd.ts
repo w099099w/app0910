@@ -1,6 +1,8 @@
+import Load from "../common/Load";
 import MyAnimation from "../common/MyAnimation";
 import TimerStruct from "../common/TimerStruct";
 import Toast from "../common/Toast";
+import HttpRequest from "../units/HttpRequest";
 import Tool from "../units/Tool";
 
 export default class ForgetPd extends MyAnimation{
@@ -25,10 +27,9 @@ export default class ForgetPd extends MyAnimation{
     private _forgetPdParam:ForgetPD;
     get forgetPdParam(){
         let data:ForgetPD = {
-        phone:this.c_inputPhone.string,
-        verify:this.c_inputVerify.string,
-        newPd:this.c_inputNewPd.string,
-        repeatPd:this.c_inputRepeatPd.string
+            mobile:this.c_inputPhone.string,
+            code:this.c_inputVerify.string,
+            password:this.c_inputNewPd.string,
         };
         return data;
     }
@@ -36,8 +37,9 @@ export default class ForgetPd extends MyAnimation{
     //手机号请求验证码
     private _verifyPhoneParam:VerifyPhone;
     get verifyPhoneParam():VerifyPhone{
-        let data = {
-            phone:this.c_inputPhone.string
+        let data:VerifyPhone = {
+            types:3,
+            mobile:this.c_inputPhone.string
         };
         return data;
     }
@@ -83,26 +85,33 @@ export default class ForgetPd extends MyAnimation{
         this.closeEvent();
     }
     public requestForgetPd(){
-        if(this.forgetPdParam.phone.length === 0){
+        console.log(this.forgetPdParam)
+        if(this.forgetPdParam.mobile.length === 0){
             Toast.getInstance().show('手机号不能为空',this.m_toast);
             return;
-        }else if(!Tool.getInstance().isPhoneNumber(this.forgetPdParam.phone)){
+        }else if(!Tool.getInstance().isPhoneNumber(this.forgetPdParam.mobile)){
             Toast.getInstance().show('请输入正确的手机号',this.m_toast);
             return;
-        }else if(this.forgetPdParam.verify.length !== 6){
+        }else if(this.forgetPdParam.code.length !== 6){
             Toast.getInstance().show('验证码长度应为6位',this.m_toast);
             return;
-        }else if(this.forgetPdParam.newPd.length < 6){
+        }else if(this.forgetPdParam.password.length < 6){
             Toast.getInstance().show('新密码长度限制6--16位',this.m_toast);
             return;
-        }else if(this.forgetPdParam.repeatPd.length === 0){
+        }else if(this.c_inputRepeatPd.string.length === 0){
             Toast.getInstance().show('再次输入新密码不能为空',this.m_toast);
             return;
-        }else if(this.forgetPdParam.newPd !== this.forgetPdParam.repeatPd){
+        }else if(this.forgetPdParam.password !== this.c_inputRepeatPd.string){
             Toast.getInstance().show('两次输入的密码不相同,请确认',this.m_toast);
             return;
         }
-        Toast.getInstance().show('ERRORCODE:500 请求服务器失败!',this.m_toast)
+        HttpRequest.Req('put','/foo/forget',this.forgetPdParam,null,(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                Toast.getInstance().show('账号 '+ this.verifyPhoneParam.mobile+' 密码重置成功!',this.m_toast);
+            }
+        },(Failed:HttpReq)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        }); 
     }
     public requestVerify():boolean{
         //请求验证码
@@ -110,20 +119,16 @@ export default class ForgetPd extends MyAnimation{
         if(coutdown !== '获取验证码'){
             return false;
         }
-        this.m_verifyCoutDown = new TimerStruct(60);
-        let i = this.m_verifyCoutDown.coutDown;
-        this.i_getVerify.getComponent(cc.Label).string = i+'s';
-        this.t_timerVerfyCountDown = setInterval(()=>{
-            i--;
-            if(i == 0){
-                this.i_getVerify.getComponent(cc.Label).string = '获取验证码';
-                this.m_verifyCoutDown = null;
-                clearInterval(this.t_timerVerfyCountDown);
-                this.t_timerVerfyCountDown = null;
-            }else{
-                this.i_getVerify.getComponent(cc.Label).string = i+'s';
+        //http
+        HttpRequest.Req('post','/foo/mobile/code',this.verifyPhoneParam,Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                Toast.getInstance().show('验证码已发送到手机 '+ this.verifyPhoneParam.mobile+' 请注意查收',this.m_toast);
+                this.m_verifyCoutDown = new TimerStruct(60);
+                this.setVerifyCountDown(60);
             }
-        },1000);
+        },(Failed:HttpReq)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        }); 
         return true;
     }
 
@@ -149,7 +154,7 @@ export default class ForgetPd extends MyAnimation{
     }
     public addEvent(){
         this.i_getVerify.on('touchend',()=>{
-            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.phone)){
+            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.mobile)){
                 Toast.getInstance().show('请输入正确的手机号',this.m_toast);
                 return;
             }
@@ -168,5 +173,11 @@ export default class ForgetPd extends MyAnimation{
         this.i_getVerify.off('touchend');
         this.i_confirm.off('touchend');
         this.i_cancle.off('touchend');
+    }
+    public onDestroy(){
+        if(this.t_timerVerfyCountDown){
+            clearInterval(this.t_timerVerfyCountDown);
+            this.t_timerVerfyCountDown = null;
+        }
     }
 }

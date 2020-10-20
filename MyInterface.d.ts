@@ -25,6 +25,8 @@ declare enum BGM_CODE{
     BGM_NONE,
     BGM_PASSPORT,
     BGM_HALL,
+    BGM_ROOM,
+    BGM_GAME_SG,
 }
 declare enum EFF_CODE{
     EFF_BQANIM_CHICKEN,
@@ -34,6 +36,8 @@ declare enum EFF_CODE{
     EFF_BQANIM_WATER,
     EFF_SG_SENDCARD,
     EFF_SG_NEWGAME,
+    EFF_SG_GOLD_ADD,
+    EFF_SG_GOLD_SUB,
 }
 declare enum LOGIN_METHOD {
     PASSWORD,
@@ -68,46 +72,40 @@ declare enum DIALOG{
     MB_NO,
     MB_YESNO,
 }
+declare enum CTRLBUTTON{
+    NONE,
+    PANGGUAN,
+    OPENCARD,
+}
 //网络接口
 declare interface VerifyPhone {
-    phone: string;
+    types:number
+    mobile: string;
 }
 declare interface ForgetPD{
-    phone:string;
-    verify:string;
-    newPd:string;
-    repeatPd:string;
+    mobile:string;
+    code:string;
+    password:string;
 }
-declare interface PdLogin {
-    phone: string;
+declare interface LoginParams {
+    types:number;
+    mobile: string;
     password: string;
+    client_id:string;
 }
-declare interface VerifyLogin {
-    phone: string;
-    verify: string;
-}
-
 declare interface RegistRequest{
-    invateCode:string,
-    phone:string;
-    verify:string;
-    newPd:string;
-    repeatPd:string;
+    parent_id:number,
+    mobile:string;
+    code:string;
+    password:string;
+    types:number;
+}
+declare interface ChangeInfo{
+    genre:number;
+    field_one:string;
+    field_two:string;
 }
 
-declare interface ChangeName{
-	nickname:string;
-}
-
-declare interface ResetPd{
-	oldPd:string;
-	newPd:string;
-	confirmPd:string;
-}
-declare interface RealName{
-	realname:string;
-	idnumber:string;
-}
 declare interface MoneyFlow{
 	page:number;
 	limit:number;
@@ -120,6 +118,11 @@ declare interface SendAnimation{
 
 
 //网络接收接口
+declare interface HttpReq{
+    code:any;
+    message:string;
+    data:any;
+}
 declare interface PlayInfo{
     tittle:string;
     contentUrl:string;
@@ -129,8 +132,9 @@ declare interface MsgInfo{
     content:string;
 }
 declare interface RealNameInfo{
-	realname:string;
-	idnumber:string;
+    member_id:number;
+	real_name:string;
+	id_card:string;
 }
 declare interface MoneyFlowInfo{
 	orderid:string;
@@ -139,6 +143,11 @@ declare interface MoneyFlowInfo{
 	after:number;
 	type:number;
 	date:string;
+}
+declare interface Balance{
+    block_rmb:number;
+    rmb:number;
+    withdrawal_rmb:number;
 }
 
 //其他接口(可改接为类方法)
@@ -149,13 +158,16 @@ declare interface AUDIO{
     effVol:number;
 }
 declare interface UserInfo{
-    gold:number,
-    phone:string,
+    member_id:number,
+    parent_id:number,
+    shareholder_id:number,
+    is_agent:number,
+    is_real:number,
+    mobile:string,
     avatar:string,
     nickname:string,
+    username:string,
     pd:string,
-    id:string,
-    parentID:string,
 }
 declare interface RommListNum{
     numItems:number;

@@ -135,4 +135,22 @@ export default class Tool {
         }
         return name
     }
+    public static isJsonStr(str,parse:boolean = true){
+        if (typeof str == 'string') {
+            try {
+                let obj=JSON.parse(str);
+                if(typeof obj == 'object' && obj ){
+                    if(parse){
+                        return obj;
+                    }
+                    return true;
+                }else{
+                    return false;
+                }
+            } catch(e) {
+                return false;
+            }
+        }
+        return false;
+    }
 }

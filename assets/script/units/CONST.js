@@ -23,6 +23,8 @@ const BGM_CODE = cc.Enum({
     BGM_NONE:0,
     BGM_PASSPORT:1,
     BGM_HALL:2,
+    BGM_ROOM:3,
+    BGM_GAME_SG:4
 })
 const EFF_CODE = cc.Enum({
    EFF_BQANIM_CHICKEN:0,
@@ -32,6 +34,8 @@ const EFF_CODE = cc.Enum({
    EFF_BQANIM_WATER:4,
    EFF_SG_SENDCARD:5,
    EFF_SG_NEWGAME:6,
+   EFF_SG_GOLD_ADD:7,
+   EFF_SG_GOLD_SUB:8,
 });
 const LOGIN_METHOD = cc.Enum({
     PASSWORD:0,
@@ -73,3 +77,8 @@ const DIALOG = cc.Enum({
     MB_YESNO: 2,
     MB_GET: 3,
   });
+const CTRLBUTTON = {
+    NONE:-1,
+    PANGGUAN:0,
+    OPENCARD:1,
+}

@@ -8,6 +8,8 @@ import Login from "./Login";
 import Version from "./Version";
 import Dialog from "../common/Dialog";
 import AtlasLib from "../common/AtlasLib";
+import HttpRequest from "../units/HttpRequest";
+import Load from "../common/Load";
 
 const { ccclass, menu,property } = cc._decorator;
 @ccclass
@@ -37,11 +39,13 @@ export default class Passport extends cc.Component {
         cc.find('common/toast', this.node).active = false;
     }
     onLoad() {
+        HttpRequest.InitConfig();
         this.resetView();
         //初始化音频
         UserConfig.getInstance();
         SceneManager.getInstance().setScene(cc.director.getScene());
         Toast.getInstance().setRootNode(cc.find('common/toast', this.node));
+        Load.getInstance().setRootNode(cc.find('common/load', this.node));
         Dialog.getInstance().setRootNode(this.node);
         this.cl_version = this.node.getComponent(Version);
         this.cl_loading = new Loading(this.node, this.lauchingFinished.bind(this));
@@ -54,9 +58,11 @@ export default class Passport extends cc.Component {
 
     }
     initAudio() {
-        AudioManager.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, true);
-        AudioManager.getInstance().setBgmVol();
-        AudioManager.getInstance().setEffVol();
+        if(AudioManager.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT){
+            AudioManager.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, true);
+            AudioManager.getInstance().setBgmVol();
+            AudioManager.getInstance().setEffVol();
+        }
     }
     start() {
         this.cl_loading.runShader();
@@ -98,6 +104,8 @@ export default class Passport extends cc.Component {
     }
     // update (dt) {}
     onDestroy() {
+        Load.getInstance().onDestroy();
+        HttpRequest.onDestroy();
         MyAnimation.onDestory();
         this.cl_login.onDestroy();
         this.cl_loading.onDestory();

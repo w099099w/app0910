@@ -1,6 +1,8 @@
+import Load from "../../common/Load";
 import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
 import AudioManager from "../../units/AudioManager";
+import HttpRequest from "../../units/HttpRequest";
 import Tool from "../../units/Tool";
 import UserConfig from "../../units/UserConfig";
 
@@ -10,16 +12,29 @@ export class MAgent extends MyAnimation{
 
     public constructor(){
        super();
-       this.S_loginAgent =  BUTTON_STATE.OFF;
+       this.S_loginAgent =  BUTTON_STATE.ON;
     }
 
     public getLoginAgentButtonState(){
         return this.S_loginAgent;
     }
-
+    protected reqAgent(){
+        HttpRequest.Req('get','/foo/level',{},Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+               if(Success.data.level === 0){
+                    this.ToastShow('您还不是代理!');
+               }else{
+                   //重新请求地址打开浏览器
+               }
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });   
+    }
     public getAgentUrlButtonState(){
         return this.S_agentUrl;
     }
+    protected ToastShow(str:string){};
 }
 
 
@@ -45,7 +60,7 @@ export default class AgentView extends MAgent{
     public click_LoginAgent(){
         switch(this.getLoginAgentButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:return;break;
+            case BUTTON_STATE.ON:this.reqAgent();;break;
         }
     } 
     public show(){
@@ -66,6 +81,11 @@ export default class AgentView extends MAgent{
             this.hide();
         },this);
     }
+
+    protected ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
+    }
+
     public start(){
         
     }

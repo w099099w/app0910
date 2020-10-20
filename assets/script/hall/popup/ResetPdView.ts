@@ -1,6 +1,8 @@
+import Load from "../../common/Load";
 import MyAnimation from "../../common/MyAnimation";
 import SceneManager from "../../common/SceneManager";
 import Toast from "../../common/Toast";
+import HttpRequest from "../../units/HttpRequest";
 import UserConfig from "../../units/UserConfig";
 
 export class MResetPd extends MyAnimation{
@@ -25,17 +27,26 @@ export class MResetPd extends MyAnimation{
     public getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
     }
-    protected RequestChangePd(ResetPdParam:ResetPd):RESETPD_RESULT{
-        if(ResetPdParam.oldPd.length === 0 || ResetPdParam.newPd.length === 0 || ResetPdParam.confirmPd.length === 0){
-            return RESETPD_RESULT.PASSWORD_LENGTH_NONE;
-        }else if(ResetPdParam.oldPd.length < 6 || ResetPdParam.newPd.length < 6 || ResetPdParam.confirmPd.length < 6){
-            return RESETPD_RESULT.PASSWORD_LENGTH_ERROR;
-        }else if(ResetPdParam.newPd !== ResetPdParam.confirmPd){
-            return RESETPD_RESULT.PASSWORD_NO_SAME
+    protected RequestChangePd(ResetPdParam:ChangeInfo):RESETPD_RESULT{
+        if(ResetPdParam.field_one.length === 0 || ResetPdParam.field_two.length === 0){
+            this.ToastShow(this.resetPdStateArr[RESETPD_RESULT.PASSWORD_LENGTH_NONE]);
+            return;
+        }else if(ResetPdParam.field_one.length < 6 || ResetPdParam.field_two.length < 6){
+            this.ToastShow(this.resetPdStateArr[RESETPD_RESULT.PASSWORD_LENGTH_ERROR])
+            return;
         }
-        UserConfig.getInstance().setUserInfo({pd:ResetPdParam.newPd});
-        return RESETPD_RESULT.SUCCESS;
+        HttpRequest.Req('put','/foo/modify',ResetPdParam,Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                this.ToastShow(this.resetPdStateArr[RESETPD_RESULT.SUCCESS]);
+                setTimeout(()=>{
+                    SceneManager.getInstance().loadScene('passport');
+                },1500);
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });   
     }
+    protected ToastShow(str:string){};
 }
 
 
@@ -54,12 +65,12 @@ export default class ResetPdView extends MResetPd{
     private c_inputConfirmPd:cc.EditBox;
 
 
-    private _resetPdParam:ResetPd;
-    get resetPdParam():ResetPd{
-        let data:ResetPd = {
-            oldPd:this.c_inputOldPd.string,
-            newPd:this.c_inputNewPd.string,
-            confirmPd:this.c_inputConfirmPd.string,
+    private _resetPdParam:ChangeInfo;
+    get resetPdParam():ChangeInfo{
+        let data:ChangeInfo = {
+            field_one:this.c_inputOldPd.string,
+            field_two:this.c_inputNewPd.string,
+            genre:3
         };
         return data;
     }
@@ -84,15 +95,11 @@ export default class ResetPdView extends MResetPd{
         switch(this.getResetPdButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
             case BUTTON_STATE.ON:{
-                let resultCode = this.RequestChangePd(this.resetPdParam);
-                if(resultCode === RESETPD_RESULT.SUCCESS){
-                    Toast.getInstance().show(this.resetPdStateArr[resultCode],this.m_toast);
-                    setTimeout(()=>{
-                        SceneManager.getInstance().loadScene('passport');
-                    },1500);
-                }else{
-                    Toast.getInstance().show(this.resetPdStateArr[resultCode],this.m_toast);
+                if(this.resetPdParam.field_two !== this.c_inputConfirmPd.string){
+                    this.ToastShow(this.resetPdStateArr[RESETPD_RESULT.PASSWORD_NO_SAME]);
+                    return;
                 }
+                this.RequestChangePd(this.resetPdParam);
             }break;
         }
     } 
@@ -112,6 +119,12 @@ export default class ResetPdView extends MResetPd{
        this.i_cancle.on('touchend',this.hide.bind(this));
        this.i_confirm.on('touchend',this.click_confirm.bind(this));
     }
+
+
+    protected ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
+    }
+
     public start(){
         
     }

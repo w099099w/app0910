@@ -1,6 +1,8 @@
+import Load from "../common/Load";
 import MyAnimation from "../common/MyAnimation";
 import TimerStruct from "../common/TimerStruct";
 import Toast from "../common/Toast";
+import HttpRequest from "../units/HttpRequest";
 import Tool from "../units/Tool";
 
 export default class Regist extends MyAnimation{
@@ -23,14 +25,22 @@ export default class Regist extends MyAnimation{
     private c_inputNewPd:cc.EditBox;
     private c_inputRepeatPd:cc.EditBox;
 
+    private _m_types:number;
+    get m_types():number{
+        return this._m_types;
+    }
+    set m_types(val:number){
+        this._m_types = val;
+    }
+
     private _registParam:RegistRequest;
     get registParam(){
         let data:RegistRequest = {
-            invateCode:this.c_inputInvateCode.string,
-            phone:this.c_inputPhone.string,
-            verify:this.c_inputVerify.string,
-            newPd:this.c_inputNewPd.string,
-            repeatPd:this.c_inputRepeatPd.string
+            parent_id:Number(this.c_inputInvateCode.string),
+            mobile:this.c_inputPhone.string,
+            code:this.c_inputVerify.string,
+            password:this.c_inputNewPd.string,
+            types:this._m_types
         };
         return data;
     }
@@ -39,7 +49,8 @@ export default class Regist extends MyAnimation{
     private _verifyPhoneParam:VerifyPhone;
     get verifyPhoneParam():VerifyPhone{
         let data = {
-            phone:this.c_inputPhone.string
+            types:1,
+            mobile:this.c_inputPhone.string
         };
         return data;
     }
@@ -47,6 +58,7 @@ export default class Regist extends MyAnimation{
 
     public constructor(Node:cc.Node){
         super();
+        this.m_types = 1;
         this.node = Node;
         this.m_root = cc.find('popup/regist',this.node);
         this.m_mask = cc.find('popup/mask',this.node);
@@ -87,29 +99,36 @@ export default class Regist extends MyAnimation{
         this.closeEvent();
     }
     public requestForgetPd(){
-        if(this.registParam.invateCode.length === 0){
+        if(String(this.registParam.parent_id).length === 0){
             Toast.getInstance().show('邀请码不能为空',this.m_toast);
             return;
-        }else if(this.registParam.phone.length === 0){
+        }else if(this.registParam.mobile.length === 0){
             Toast.getInstance().show('手机号不能为空',this.m_toast);
             return;
-        }else if(!Tool.getInstance().isPhoneNumber(this.registParam.phone)){
+        }else if(!Tool.getInstance().isPhoneNumber(this.registParam.mobile)){
             Toast.getInstance().show('请输入正确的手机号',this.m_toast);
             return;
-        }else if(this.registParam.verify.length !== 6){
+        }else if(this.registParam.code.length !== 6){
             Toast.getInstance().show('验证码长度应为6位',this.m_toast);
             return;
-        }else if(this.registParam.newPd.length < 6){
+        }else if(this.registParam.password.length < 6){
             Toast.getInstance().show('新密码长度限制6--16位',this.m_toast);
             return;
-        }else if(this.registParam.repeatPd.length === 0){
+        }else if(this.registParam.password.length === 0){
             Toast.getInstance().show('再次输入新密码不能为空',this.m_toast);
             return;
-        }else if(this.registParam.newPd !== this.registParam.repeatPd){
+        }else if(this.registParam.password !== this.c_inputRepeatPd.string){
             Toast.getInstance().show('两次输入的密码不相同,请确认',this.m_toast);
             return;
         }
-        Toast.getInstance().show('ERRORCODE:500 请求服务器失败!',this.m_toast)
+        HttpRequest.Req('post','/foo/sign-up',this.registParam,Load.getInstance(),(Success)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                Toast.getInstance().show('注册成功!',this.m_toast);
+            }
+        },(Failed)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        }) 
+        //Toast.getInstance().show('ERRORCODE:500 请求服务器失败!',this.m_toast)
     }
     public requestVerify():boolean{
         //请求验证码
@@ -117,20 +136,15 @@ export default class Regist extends MyAnimation{
         if(coutdown !== '获取验证码'){
             return false;
         }
-        this.m_verifyCoutDown = new TimerStruct(60);
-        let i = this.m_verifyCoutDown.coutDown;
-        this.i_getVerify.getComponent(cc.Label).string = i+'s';
-        this.t_timerVerfyCountDown = setInterval(()=>{
-            i--;
-            if(i == 0){
-                this.i_getVerify.getComponent(cc.Label).string = '获取验证码';
-                this.m_verifyCoutDown = null;
-                clearInterval(this.t_timerVerfyCountDown);
-                this.t_timerVerfyCountDown = null;
-            }else{
-                this.i_getVerify.getComponent(cc.Label).string = i+'s';
+        HttpRequest.Req('post','/foo/mobile/code',this.verifyPhoneParam,null,(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                Toast.getInstance().show('验证码已发送到手机 '+ this.verifyPhoneParam.mobile+' 请注意查收',this.m_toast);
+                this.m_verifyCoutDown = new TimerStruct(60);
+                this.setVerifyCountDown(60);
             }
-        },1000);
+        },(Failed:HttpReq)=>{
+            Toast.getInstance().show(Failed.message,this.m_toast);
+        }); 
         return true;
     }
 
@@ -156,7 +170,7 @@ export default class Regist extends MyAnimation{
     }
     public addEvent(){
         this.i_getVerify.on('touchend',()=>{
-            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.phone)){
+            if(!Tool.getInstance().isPhoneNumber(this.verifyPhoneParam.mobile)){
                 Toast.getInstance().show('请输入正确的手机号',this.m_toast);
                 return;
             }
@@ -175,5 +189,11 @@ export default class Regist extends MyAnimation{
         this.i_getVerify.off('touchend');
         this.i_confirm.off('touchend');
         this.i_cancle.off('touchend');
+    }
+    public onDestroy(){
+        if(this.t_timerVerfyCountDown){
+            clearInterval(this.t_timerVerfyCountDown);
+            this.t_timerVerfyCountDown = null;
+        }
     }
 }

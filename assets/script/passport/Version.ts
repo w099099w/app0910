@@ -74,6 +74,12 @@ export default class Version extends cc.Component {
 
     public validate(callback:Function) {
         this.stateStr.string = '状态: 非原生,系统将不进行更新!'
+        this.timer = setTimeout(()=>{
+            this.hide();
+            callback(5);
+        },2000);
+        return true;
+        this.stateStr.string = '状态: 非原生,系统将不进行更新!'
         if(cc.sys.localStorage.getItem('hotUpdateVer')){
             this.verStr.string = '版本号: '+cc.sys.localStorage.getItem('hotUpdateVer');
         }else{

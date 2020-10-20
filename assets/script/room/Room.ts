@@ -7,6 +7,7 @@ import GameView from "./GameView";
 import RoomView from "./RoomView";
 import RuleView from "./RuleView";
 import TopView from "./TopView";
+import AudioManager from "../units/AudioManager";
 
 const {ccclass,menu, property} = cc._decorator;
 @ccclass
@@ -21,6 +22,7 @@ export default class RoomViewManager extends cc.Component {
     @property(cc.Prefab)
     PopupButton:cc.Prefab = null;
     onLoad () {
+        this.initAudio();
         //设置场景
         SceneManager.getInstance().setScene(cc.director.getScene());
         Toast.getInstance().setRootNode(cc.find('common/toast',this.node));
@@ -30,6 +32,13 @@ export default class RoomViewManager extends cc.Component {
         this.cl_RuleView = new RuleView(cc.find('popup',this.node));
         this.cl_RoomView = new RoomView(this.node,this.cl_RuleView);
         this.cl_GameView = new GameView(this.node,this.cl_RoomView);
+    }
+    initAudio() {
+        if(AudioManager.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT){
+            AudioManager.getInstance().playBgmFromLocal(BGM_CODE.BGM_PASSPORT, true);
+            AudioManager.getInstance().setBgmVol();
+            AudioManager.getInstance().setEffVol();
+        }
     }
     //scrollview渲染节点
     RenderRoom(Item:cc.Node,Index:number){

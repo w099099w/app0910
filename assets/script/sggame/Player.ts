@@ -1,9 +1,13 @@
+import AtlasLib from "../common/AtlasLib";
 import MyAnimation from "../common/MyAnimation";
+import SceneManager from "../common/SceneManager";
 import AudioManager from "../units/AudioManager";
 import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 import BetManager from "./BetManager";
 import CardLib from "./CardLib";
+import OpenCard from "./OpenCard";
+import PlayerGold from "./PlayerGold";
 import PlayerInfo from "./PlayerInfo";
 
 export class MPlayer extends MyAnimation {
@@ -15,7 +19,7 @@ export class MPlayer extends MyAnimation {
         super();
         this.m_cache = [];
         let MyInfo = this.getMyInfo();
-        this.m_cache.push({charid:0,id:MyInfo.id,bet:0,gold:MyInfo.gold,avatar:MyInfo.avatar,nickname:MyInfo.nickname,gender:0})
+        this.m_cache.push({charid:0,id:String(MyInfo.member_id),bet:0,gold:this.getBalance().rmb,avatar:MyInfo.avatar,nickname:MyInfo.nickname,gender:0})
         this.m_playrNum  = Tool.getInstance().randomAccess(4,10);
         this.timer = setInterval(()=>{
             if(this.m_cache.length != this.m_playrNum){
@@ -26,6 +30,9 @@ export class MPlayer extends MyAnimation {
                 this.Startbet();
             }
         },2000);
+    }
+    protected getBalance():Balance{
+        return UserConfig.getInstance().balance;
     }
     protected getMyInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
@@ -69,23 +76,34 @@ export default class Player extends MPlayer {
    
     private node:cc.Node;
     private m_playerList:cc.Node[];
-
+    private m_buttonCode:CTRLBUTTON;
     private c_state:cc.Label;
 
     private cl_playerInfo:PlayerInfo;
     private cl_cardLib:CardLib; 
     private cl_betManager:BetManager;
+    private cl_playerGold:PlayerGold;
+    private cl_openCard:OpenCard;
+    private m_BuRoot:cc.Node;
+    private i_openCardBu:cc.Node;
+    private i_peekCardBu:cc.Node;
     private m_prefab_anim:AnimPrefab;
     private c_goldBase:cc.Label;
+    private cardArr:number[];
     
     public constructor(Node:cc.Node,AnimPrefab:AnimPrefab){
         super();
         this.node = Node;
         this.m_playerList = cc.find('player',this.node).children;
 
+        this.m_BuRoot = cc.find('ctrlbutton',this.node);
+        this.i_openCardBu = cc.find('ctrlbutton/opencard',this.node);
+        this.i_peekCardBu = cc.find('ctrlbutton/peekcard',this.node);
+
         this.cl_cardLib = cc.find('state/cardLib',this.node).getComponent(CardLib);
         this.cl_playerInfo = new PlayerInfo(cc.find('popup',this.node),this);
-
+        this.cl_playerGold = new PlayerGold(cc.find('state/goldtarget',this.node),this.getTableInfo().min,this.getTableInfo().min+1000);
+        this.cl_openCard = new OpenCard(this.node);
         this.m_prefab_anim = AnimPrefab;
 
         //临时
@@ -93,7 +111,9 @@ export default class Player extends MPlayer {
         this.cl_betManager = cc.find('bet',this.node).getComponent(BetManager);
         this.c_goldBase = cc.find('state/goldbase',this.node).getComponent(cc.Label);
         //*************
+        this.m_BuRoot.active = false;
         this.cl_betManager.hide();
+
         this.resetView();
         this.updateView();
         this.addEvent();
@@ -150,14 +170,95 @@ export default class Player extends MPlayer {
         this.m_playerList[0].getChildByName('bet').active = false;
         this.m_playerList[0].getChildByName('cardList').active = false;
         this.cl_betManager.show(this.getTableInfo().min,this.getTableInfo().max,this.getTableInfo().min+Math.floor((this.getTableInfo().max-this.getTableInfo().min)/2),this.getBetValue.bind(this));
+        // this.cl_playerGold.playBetAnim(this.m_playerList[0],this.getTableInfo().min+1000);
+        //test代码
+        let t = [];
+        let u = [];
+        let s = [];
+        let am = [];
+        let lose = [];
+        u.push(0);
+        for(let i = 1; i < this.getplayrNum();++i){
+            t.push(i);
+            u.push(i);
+        }
+        for(let i = 1; i < this.getplayrNum();++i){
+            setTimeout(()=>{
+                if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                    let index = Tool.getInstance().randomAccess(0,t.length-1);
+                    this.cl_playerGold.playBetAnim(this.m_playerList[t[index]],this.getTableInfo().min+Tool.getInstance().randomAccess(0,1000));
+                    t.splice(index,1);
+                }
+                setTimeout(()=>{
+                    if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                        this.calcGoldBase();
+                    }
+                },300);
+            },18000*Math.random());
+        }
+        let ak = Tool.getInstance().randomAccess(1,this.getplayrNum()-1);
+        for(let i = 0; i < ak;++i){
+            let index = Tool.getInstance().randomAccess(0,u.length-1);
+            s.push(u[index]);
+            u.splice(index,1);
+        }
+        am = u;
+        console.log('win',s);
+        console.log('lose',am);
+        setTimeout(()=>{
+            if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                AudioManager.getInstance().playEffectFromLocal(EFF_CODE.EFF_SG_GOLD_SUB,false);
+                for(let i = 0; i < s.length;++i){
+                    this.cl_playerGold.playBetAnimBack(this.m_playerList[s[i]],s.length,i===0?true:false);
+                    this.cl_playerGold.showAddGold(this.m_playerList[s[i]],Tool.getInstance().randomAccess(500,10000));
+                }
+                for(let i = 0; i < am.length;++i){
+                    this.cl_playerGold.showAddGold(this.m_playerList[am[i]],Tool.getInstance().randomAccess(-10000,500));
+                }
+            }
+            setTimeout(()=>{
+                if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                    this.c_goldBase.string = '池底:'+0;
+                }
+            },300);
+        },35000);
+    }
+    protected calcGoldBase(){
+        let base:number = 0;
+        this.m_playerList.forEach((item,key)=>{
+            if(item.name.substr(0,6) === 'player' && item.active){
+                let PlayerData:PlayerData = this.getUserInfoFromIndex(key);
+                let bet:cc.Label = cc.find('bet/value',item).getComponent(cc.Label);
+                base+=Number(bet.string);
+                this.c_goldBase.string = '池底:'+base;
+            }
+        })
     }
     protected getBetValue(){
-        this.c_goldBase.string = '池底:'+String(this.cl_betManager.betValue);
+        setTimeout(()=>{
+            if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                this.calcGoldBase();
+            }
+        },300);
         this.m_playerList[0].getChildByName('bet').active = true;
         this.m_playerList[0].getChildByName('bet').getChildByName('value').getComponent(cc.Label).string = String(this.cl_betManager.betValue);
         this.m_playerList[0].getChildByName('cardList').active = true;
+        this.cl_playerGold.playBetAnim(this.m_playerList[0],this.cl_betManager.betValue);
+        this.cl_playerGold.setAllCount();
     }
     protected shuffleCard(){
+        this.cardArr = [];
+        let n = [];
+        for(let i = 0;i<54;++i){
+            n.push(i);
+        }
+        for(let i = 0;i<3;++i){
+           let index = Tool.getInstance().randomAccess(0,n.length-1);
+           this.cardArr.push(n[index]);
+           n.splice(index,1);
+        }
+       
+        this.cl_playerGold.setAllCount();
         this.cl_betManager.hide();
         this.c_state.string = '洗牌中...'
         let SendList:cc.Node[] = [];
@@ -166,17 +267,70 @@ export default class Player extends MPlayer {
         }
         this.cl_cardLib.shuffleCard(SendList,3);
     }
-    protected BetCountDown(time:number){
-        this.c_state.string = '下注倒计时 '+ time+' 秒';
+    protected BetCountDown(time:number,value:string = '下注倒计时 '){
+        this.c_state.string = value+ time+' 秒';
         this.timer = setInterval(()=>{
-            this.c_state.string = '下注倒计时 '+ time+' 秒';
+            this.c_state.string = value+ time+' 秒';
             if(time === 0){
                 clearInterval(this.timer);
                 this.timer = null;
-                this.shuffleCard();
+                if(value==='下注倒计时 '){
+                    this.BetCountDown(13,'金币回收倒计时 ')
+                    this.shuffleCard();
+                }else if(value === '金币回收倒计时 '){
+                    this.BetCountDown(7,'开牌按钮激活剩余时间 ')
+                }else if(value === '开牌按钮激活剩余时间 '){
+                    this.showButton(CTRLBUTTON.OPENCARD);
+                }
             }
             time--;
         },1000);
+    }
+    public openCardFinish(val:number|number[]){
+        if(Array.isArray(val)){
+            console.log(this.m_playerList[0].getChildByName('cardList').children)
+            for(let i = 0;i <val.length;++i){
+                setTimeout(()=>{
+                    if(SceneManager.getInstance().getSceneName() === 'game_sg'){
+                        let item:cc.Node = this.m_playerList[0].getChildByName('cardList').children[i];
+                        let swSp:SwitchSp = item.getComponent('switchsp');
+                        swSp.updateFrame(1,AtlasLib.getInstance().getSpriteFrame('card','x'+val[i]))
+                        this.RunOpenCard(item);
+                    }
+                },270+i*0.5*1000);
+            }
+        }else{
+            this.cl_openCard.hide();
+            let item:cc.Node = this.m_playerList[0].getChildByName('cardList').children[2];
+            let swSp:SwitchSp = item.getComponent('switchsp');
+            swSp.updateFrame(1,AtlasLib.getInstance().getSpriteFrame('card','x'+val));
+            this.RunOpenCard(this.m_playerList[0].getChildByName('cardList').children[2]);
+        }
+    }
+    private hideButton(){
+        this.i_openCardBu.off('touchend');
+        this.i_peekCardBu.off('touchend');
+        this.popupCloseScaleXY(this.m_BuRoot,null);
+    }
+    private showButton(ButtonCode:CTRLBUTTON){
+        console.log(ButtonCode)
+        this.m_buttonCode = ButtonCode;
+        if(ButtonCode === CTRLBUTTON.NONE){
+            console.log('finish')
+            this.hideButton();
+            return;
+        } 
+        this.i_openCardBu.on('touchend',this.openCard.bind(this));
+        this.i_openCardBu.getComponent(cc.Button).interactable = true;
+        this.i_openCardBu.getComponent('switchsp').setSpriteFrame(CTRLBUTTON.OPENCARD);
+        switch(this.m_buttonCode){
+            case CTRLBUTTON.OPENCARD:{
+                this.i_peekCardBu.on('touchend',this.peekCard.bind(this));
+                this.i_openCardBu.getComponent(cc.Button).interactable = true;
+            }break;
+            default:this.i_openCardBu.getComponent(cc.Button).interactable = false;
+        }
+        this.popupOpenScaleXY(this.m_BuRoot,null);
     }
     protected updateView(){
         this.m_playerList.forEach((item,key)=>{
@@ -198,8 +352,18 @@ export default class Player extends MPlayer {
             }
         })
     }
-    private SendCard(){
-        
+    private openCard(){
+        console.log('开牌');
+        this.showButton(CTRLBUTTON.NONE);
+        this.openCardFinish(this.cardArr);
+    }
+    private peekCard(){
+        console.log('搓牌');
+        this.showButton(CTRLBUTTON.NONE);
+        this.openCardFinish([this.cardArr[0],this.cardArr[1]]);
+        this.cl_openCard.show(this.cardArr,()=>{
+            this.openCardFinish(this.cardArr[2]);
+        });
     }
     private addEvent(){
         this.m_playerList.forEach((item,key) => {
@@ -216,6 +380,12 @@ export default class Player extends MPlayer {
 
     }
     public onDestroy(){
+        
+        var highestTimeoutId = setTimeout(";");
+        for (var i = 0 ; i < highestTimeoutId ; i++) {
+            clearTimeout(i); 
+        }
+
         if(this.timer){
             clearInterval(this.timer);
             this.timer = null;

@@ -60,7 +60,7 @@ export default class PlayerInfo extends MPlayerInfo {
         }
         this.m_receiver = PlayerInfo;
         this.m_layoutInfo.active = true;
-        this.m_layoutAnim.active = this.m_receiver.id === this.getMyInfo().id?false:true;
+        this.m_layoutAnim.active = this.m_receiver.id === String(this.getMyInfo().member_id)?false:true;
         this.c_balance.string = '余额: '+String(this.m_receiver.gold);
         this.c_id.string = '玩家ID: '+String(this.m_receiver.id);
         this.c_nickname.string = '昵称: '+String(this.m_receiver.nickname);
@@ -85,7 +85,7 @@ export default class PlayerInfo extends MPlayerInfo {
         this.m_animList.forEach((item,key)=>{
             item.getChildByName('icon').on('touchend',()=>{
                 if(item.getChildByName('mask').getComponent(CountDown).countDownFinish){
-                    this.cl_Player.sendAnimation({sendid:String(this.getMyInfo().id),receive:this.m_receiver.id,animationid:key})
+                    this.cl_Player.sendAnimation({sendid:String(this.getMyInfo().member_id),receive:this.m_receiver.id,animationid:key})
                     this.allAnimHide(10000);
                     this.hide();
                 }

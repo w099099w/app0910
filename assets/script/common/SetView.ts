@@ -4,6 +4,8 @@ import Toast from "./Toast";
 import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 import AudioManager from "../units/AudioManager";
+import HttpRequest from "../units/HttpRequest";
+import Load from "./Load";
 
 export class MSet extends MyAnimation{
     private S_privateState:number;
@@ -27,6 +29,20 @@ export class MSet extends MyAnimation{
     public getQuitLoginButtonState(){
         return this.S_quitLoginState;
     }
+    protected reqQuitLogin(){
+        HttpRequest.Req('delete','/foo/sign-out',{},Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                this.ToastShow('正在退出登录!');
+                setTimeout(()=>{
+                    SceneManager.getInstance().loadScene('passport');
+                },1500);
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });
+    }
+
+    protected ToastShow(str:string){}
 }
 
 
@@ -87,7 +103,7 @@ export default class SetView extends MSet{
     private click_QuitLogin(){
         switch(this.getQuitLoginButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:this.hideEvent();SceneManager.getInstance().loadScene('passport');break;
+            case BUTTON_STATE.ON:this.reqQuitLogin();break;
         }
     }    
     public show(){
@@ -177,6 +193,9 @@ export default class SetView extends MSet{
         UserConfig.getInstance().saveMusicConfig();
         
         cc.sys.localStorage.setItem('music',JSON.stringify(Audio));
+    }
+    protected ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
     }
     public start(){
         

@@ -1,5 +1,7 @@
+import Load from "../../common/Load";
 import MyAnimation from "../../common/MyAnimation";
 import Toast from "../../common/Toast";
+import HttpRequest from "../../units/HttpRequest";
 import Tool from "../../units/Tool";
 import UserConfig from "../../units/UserConfig";
 import MoneyFlowView from "../popup/MoneyFlowView";
@@ -18,6 +20,7 @@ export class MUser extends MyAnimation{
 
     public constructor(){
        super();
+       this.reqBalance();
        this.changeNameState = [
            '昵称长度不正确4-12位!',
            '昵称只能为英文汉字或下滑线',
@@ -27,7 +30,16 @@ export class MUser extends MyAnimation{
        this.S_moneyFlow = this.S_realName = this.S_changeName = this.S_changePD = this.S_hallAvatarToUser = this.S_updataAvatar = this.S_hallAddGold = BUTTON_STATE.ON;
        //BUTTON_STATE.OFF;
     }
-
+    protected reqBalance(){
+        HttpRequest.Req('get','/foo/balance',{},null,(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                UserConfig.getInstance().setBalance(Success.data);
+                this.UpdateBaseInfo();
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });
+    }
     public getUserInfoButtonState(){
         return this.S_hallAvatarToUser;
     }
@@ -53,15 +65,34 @@ export class MUser extends MyAnimation{
     public getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
     }
-    protected changeName(Name:ChangeName):CHANGE_NAME_RESULT{
-        if(Name.nickname.length < 4 || Name.nickname.length > 12){
-            return CHANGE_NAME_RESULT.NAME_LENGTH_ERROR;
-        }else if(!Tool.getInstance().isNickName(Name.nickname)){
-            return CHANGE_NAME_RESULT.NAME_CHECK_ERROR;
-        }
-        UserConfig.getInstance().setUserInfo({nickname:Name.nickname})
-        return CHANGE_NAME_RESULT.SUCCESS;
+    public getBalance():Balance{
+        return UserConfig.getInstance().balance;
     }
+    protected changeName(Name:ChangeInfo){
+        if(Name.field_one.length < 4 || Name.field_one.length > 12){
+            this.ToastShow(this.changeNameState[CHANGE_NAME_RESULT.NAME_LENGTH_ERROR]);
+            this.UpdateUserInfo();
+            return;
+        }else if(!Tool.getInstance().isNickName(Name.field_one)){
+            this.ToastShow(this.changeNameState[CHANGE_NAME_RESULT.NAME_CHECK_ERROR]);
+            this.UpdateUserInfo();
+            return;
+        }else if(Name.field_one === this.getUserInfo().nickname){
+            return;
+        }
+        HttpRequest.Req('put','/foo/modify',Name,Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                UserConfig.getInstance().setUserInfo({nickname:Name.field_one});
+                this.UpdateBaseInfo();
+                this.ToastShow('昵称修改成功!');
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });
+    }
+    protected UpdateUserInfo(){};
+    protected UpdateBaseInfo(){};
+    protected ToastShow(str:string){};
 }
 
 
@@ -92,10 +123,12 @@ export default class UserView extends MUser{
     private cl_RealNameView:RealNameView;
     private cl_MoneyFlowView:MoneyFlowView;
 
-    private _changeNameParam:ChangeName;
-    get changeNameParam():ChangeName{
-        let data:ChangeName = {
-            nickname:this.m_inputName.getComponent(cc.EditBox).string,
+    private _changeNameParam:ChangeInfo;
+    get changeNameParam():ChangeInfo{
+        let data:ChangeInfo = {
+            genre:1,
+            field_one:this.m_inputName.getComponent(cc.EditBox).string,
+            field_two:null,
         }
         return data;
     }
@@ -137,33 +170,33 @@ export default class UserView extends MUser{
     } 
     public click_AddGold(){
         switch(this.getHallAddGoldButtonState()){
-            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:Toast.getInstance().show('请联系上级充值!',this.m_toast);break;
+            case BUTTON_STATE.OFF:this.ToastShow('暂未开放!');break;
+            case BUTTON_STATE.ON:this.ToastShow('请联系上级充值!');break;
         }
     } 
     public click_Realname(){
         switch(this.getRealNameButtonState()){
-            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+            case BUTTON_STATE.OFF:this.ToastShow('暂未开放!');break;
             case BUTTON_STATE.ON:this.cl_RealNameView.show();break;
         }
     } 
     public click_ResetPD(){
         switch(this.getChangePDButtonState()){
-            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+            case BUTTON_STATE.OFF:this.ToastShow('暂未开放!');break;
             case BUTTON_STATE.ON:this.cl_ResetPdView.show();break;
         }
     } 
     public click_MoneyFlow(){
         switch(this.getMoneyFlowButtonState()){
-            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+            case BUTTON_STATE.OFF:this.ToastShow('暂未开放!');break;
             case BUTTON_STATE.ON:this.cl_MoneyFlowView.show();break;
         }
     } 
     public click_Avatar(){
         switch(this.getAvatarButtonState()){
-            case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
+            case BUTTON_STATE.OFF:this.ToastShow('暂未开放!');break;
             case BUTTON_STATE.ON:{
-                Toast.getInstance().show('正在读取文件...',this.m_toast);
+                this.ToastShow('正在读取文件...!')
                 setTimeout(()=>{
                     if(cc.sys.isNative){
                         if(cc.sys.os === cc.sys.OS_ANDROID){
@@ -184,11 +217,7 @@ export default class UserView extends MUser{
     public click_ChangeName(){
         switch(this.getChangeNameButtonState()){
             case BUTTON_STATE.OFF:Toast.getInstance().show('暂未开放!',this.m_toast);break;
-            case BUTTON_STATE.ON:{
-                let resultCode = this.changeName(this.changeNameParam);
-                Toast.getInstance().show(this.changeNameState[resultCode],this.m_toast);
-                this.UpdateBaseInfo();
-            }return;break;
+            case BUTTON_STATE.ON:this.changeName(this.changeNameParam);break;
         }
     } 
     public show(){
@@ -202,9 +231,9 @@ export default class UserView extends MUser{
 
     public UpdateUserInfo(){
         let UserInfo:UserInfo = this.getUserInfo();
-        this.m_phone.string = '手机号: '+UserInfo.phone;
-        this.m_id.string = 'ID: '+UserInfo.id;
-        this.m_parentID.string = '上级ID: '+UserInfo.parentID;
+        this.m_phone.string = '手机号: '+UserInfo.mobile;
+        this.m_id.string = 'ID: '+UserInfo.member_id;
+        this.m_parentID.string = '上级ID: '+UserInfo.parent_id;
         this.UpdateAvatar(UserInfo.avatar);
         this.m_inputName.getComponent(cc.EditBox).string = UserInfo.nickname;
     }
@@ -219,8 +248,8 @@ export default class UserView extends MUser{
     
     public UpdateBaseInfo(){
         let UserInfo:UserInfo = this.getUserInfo();
-        this.m_hallgold.string = String(UserInfo.gold);
-        this.m_hallId.string = 'ID: '+UserInfo.id;
+        this.m_hallgold.string = String(this.getBalance().rmb);
+        this.m_hallId.string = 'ID: '+UserInfo.member_id;
         this.m_hallNickName.string = '昵称: '+UserInfo.nickname;
         this.m_inputName.getComponent(cc.EditBox).string = UserInfo.nickname;
         this.UpdateAvatar(UserInfo.avatar);
@@ -251,6 +280,9 @@ export default class UserView extends MUser{
         this.i_hallAddGold.on('touchend',()=>{
             this.click_AddGold();
         },this);
+    }
+    public ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
     }
     public start(){
         
