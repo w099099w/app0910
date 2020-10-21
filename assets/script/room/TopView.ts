@@ -5,6 +5,7 @@ import RecordView from "../hall/popup/RecordView";
 import SetView from "../common/SetView";
 import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
+import HttpRequest from "../units/HttpRequest";
 
 
 export class MTOP extends MyAnimation{
@@ -15,8 +16,19 @@ export class MTOP extends MyAnimation{
 
     public constructor(){
        super();
+       this.reqBalance();
        this.S_hallAddGold = this.S_set = this.S_back  = this.S_record = BUTTON_STATE.ON;
        //BUTTON_STATE.OFF;
+    }
+    protected reqBalance(){
+        HttpRequest.Req('get','/foo/balance',{},null,(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                UserConfig.getInstance().setBalance(Success.data);
+                this.UpdateUserInfo();
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });
     }
     protected getUserInfo():UserInfo{
         return UserConfig.getInstance().getUserInfo();
@@ -36,6 +48,8 @@ export class MTOP extends MyAnimation{
     protected getHallAddGoldButtonState(){
         return this.S_hallAddGold;
     }
+    public UpdateUserInfo(){};
+    protected ToastShow(str:string){};
 }
 
 
@@ -127,6 +141,11 @@ export default class TopView extends MTOP{
         this.i_set.on('touchend',this.click_Set.bind(this));
         this.i_back.on('touchend',this.click_BackToHall.bind(this));
     }
+
+    public ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
+    }
+
     public start(){
         this.addEvent();
     }
