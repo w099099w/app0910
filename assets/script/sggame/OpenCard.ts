@@ -9,7 +9,6 @@ import AtlasLib from "../common/AtlasLib";
 import MyAnimation from "../common/MyAnimation";
 import PeekCard from "../common/PeekCard";
 import SceneManager from "../common/SceneManager";
-import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 
 export default class OpenCard extends MyAnimation {

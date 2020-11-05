@@ -102,7 +102,7 @@ export default class Player extends MPlayer {
 
         this.cl_cardLib = cc.find('state/cardLib',this.node).getComponent(CardLib);
         this.cl_playerInfo = new PlayerInfo(cc.find('popup',this.node),this);
-        this.cl_playerGold = new PlayerGold(cc.find('state/goldtarget',this.node),this.getTableInfo().min,this.getTableInfo().min+1000);
+        this.cl_playerGold = new PlayerGold(cc.find('state/goldtarget',this.node),this.getTableInfo().min,this.getTableInfo().max);
         this.cl_openCard = new OpenCard(this.node);
         this.m_prefab_anim = AnimPrefab;
 
@@ -186,7 +186,7 @@ export default class Player extends MPlayer {
             setTimeout(()=>{
                 if(SceneManager.getInstance().getSceneName() === 'game_sg'){
                     let index = Tool.getInstance().randomAccess(0,t.length-1);
-                    this.cl_playerGold.playBetAnim(this.m_playerList[t[index]],this.getTableInfo().min+Tool.getInstance().randomAccess(0,1000));
+                    this.cl_playerGold.playBetAnim(this.m_playerList[t[index]],Tool.getInstance().randomAccess(this.getTableInfo().min,this.getTableInfo().max));
                     t.splice(index,1);
                 }
                 setTimeout(()=>{

@@ -21,6 +21,12 @@ declare enum RESETPD_RESULT{
     PASSWORD_ERROR,
     SUCCESS,
 }
+declare enum SCENE_ID{
+    PASSPORT,
+    HALL,
+    ROOM,
+    GAME_SG,
+}
 declare enum BGM_CODE{
     BGM_NONE,
     BGM_PASSPORT,
@@ -114,6 +120,14 @@ declare interface SendAnimation{
     sendid:string;
     receive:string;
     animationid:number;
+}
+declare interface SwitchScene{
+    prev_scene_type: number;
+    prev_game_id: number;
+    prev_room_id: number;
+    next_scene_types: number;
+    next_game_id: number;
+    next_room_id: number;
 }
 
 
@@ -223,6 +237,26 @@ declare interface NodePoolData{
     prefab:cc.Prefab,
     pool:cc.NodePool,
 }
+declare interface SocketMessage{
+    code:string;
+    data:any;
+}
+declare interface SocketHeart{
+    id:number;
+    interval:number;
+    isRec:boolean;
+}
+declare interface SocketReconnect{
+    url:string;
+    heartInterval:number;
+    id:number;
+    closeTime:number;
+    isReconnect:boolean;
+}
+declare interface WebsocketMessage{
+    (code:string,data:any):void;
+}
+     
 declare class SwitchSp {
     /**
      * @description 设置显示的键值

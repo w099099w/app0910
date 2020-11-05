@@ -153,4 +153,13 @@ export default class Tool {
         }
         return false;
     }
+    public static Log(...argc){
+        if(!CC_JSB || CC_DEBUG){
+            console.log(Tool.getInstance().getCurentTime());
+            for(let i = 0;i<argc.length;++i){
+                console.log(argc[i])
+            }
+            console.log('*****************************************');
+        }
+    }
 }

@@ -8,6 +8,8 @@ import RoomView from "./RoomView";
 import RuleView from "./RuleView";
 import TopView from "./TopView";
 import AudioManager from "../units/AudioManager";
+import Websocket from "../units/Websocket";
+import Load from "../common/Load";
 
 const {ccclass,menu, property} = cc._decorator;
 @ccclass
@@ -22,6 +24,7 @@ export default class RoomViewManager extends cc.Component {
     @property(cc.Prefab)
     PopupButton:cc.Prefab = null;
     onLoad () {
+        Load.getInstance().setRootNode(cc.find('common/load', this.node));
         this.initAudio();
         //设置场景
         SceneManager.getInstance().setScene(cc.director.getScene());
@@ -32,6 +35,7 @@ export default class RoomViewManager extends cc.Component {
         this.cl_RuleView = new RuleView(cc.find('popup',this.node));
         this.cl_RoomView = new RoomView(this.node,this.cl_RuleView);
         this.cl_GameView = new GameView(this.node,this.cl_RoomView);
+        Websocket.getInstance().gameMessageCallBack = this.onMessage.bind(this);
     }
     initAudio() {
         if(AudioManager.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT){
@@ -74,5 +78,10 @@ export default class RoomViewManager extends cc.Component {
         this.cl_RoomView.OnDestroy();
         this.cl_GameView.onDestroy();
         this.cl_RecordView.onDestroy();
+    }
+    onMessage(code,data){
+        switch(code){
+            case 'game':this.cl_RoomView.OnWebsocketMessage('roomList',JSON.parse(data.info));break;
+        }
     }
 }

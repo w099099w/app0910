@@ -54,7 +54,7 @@ export default class GoldChange extends cc.Component {
             this.addNode.opacity = 255;
             this.subNode.active = false;
             this.addNode.getComponent(cc.Label).string = String('+'+val);
-            cc.tween(this.addNode).delay(1.5).to(0.5,{opacity:0},{easing:'quadOut'}).call(()=>{
+            cc.tween(this.addNode).to(0.2,{scale:1.5}).to(0.1,{scale:1.3}).delay(1.5).to(0.5,{opacity:0},{easing:'quadOut'}).call(()=>{
                 this.addNode.active = false;   
             }).start();
         }else{
@@ -62,7 +62,7 @@ export default class GoldChange extends cc.Component {
             this.subNode.opacity = 255;
             this.subNode.active = true;
             this.subNode.getComponent(cc.Label).string = String('-'+val);
-            cc.tween(this.subNode).delay(1.5).to(0.5,{opacity:0},{easing:'quadOut'}).call(()=>{
+            cc.tween(this.subNode).to(0.2,{scale:1.5}).to(0.1,{scale:1.3}).delay(1.5).to(0.5,{opacity:0},{easing:'quadOut'}).call(()=>{
                 this.subNode.active = false;   
             }).start();
         }

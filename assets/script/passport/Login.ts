@@ -8,6 +8,7 @@ import Regist from "./Regist";
 import UserConfig from "../units/UserConfig";
 import HttpRequest from "../units/HttpRequest";
 import Load from "../common/Load";
+import Websocket from "../units/Websocket";
 
 export default class Login extends MyAnimation{
     private node:cc.Node;
@@ -47,7 +48,7 @@ export default class Login extends MyAnimation{
             types:this.m_loginTypes,
             mobile:this.c_pdViewPhoneInput.string,
             password:this.c_pdViewPdInput.string,
-            client_id:"0",
+            client_id:Websocket.getInstance().clientID,
         };
 		return data;
     }
@@ -60,7 +61,7 @@ export default class Login extends MyAnimation{
             types:this.m_loginTypes,
             mobile:this.c_verifyViewPhoneInput.string,
             password:this.c_verifyViewVerfyInput.string,
-            client_id:"0",
+            client_id:Websocket.getInstance().clientID,
         };
 		return data;
     }
@@ -73,6 +74,20 @@ export default class Login extends MyAnimation{
         };
         return data;
     }
+
+    private _switchSceneHallParam:SwitchScene;
+    get switchSceneHallParam(): SwitchScene{
+        let data:SwitchScene = {
+            prev_scene_type:SCENE_ID.PASSPORT,
+            prev_game_id:SCENE_ID.PASSPORT,
+            prev_room_id:SCENE_ID.PASSPORT,
+            next_scene_types:SCENE_ID.HALL,
+            next_game_id:SCENE_ID.HALL, 
+            next_room_id:SCENE_ID.HALL,   
+        };
+		return data;
+    }
+    
 
     private cl_forgetPd:ForgetPd;
     private cl_regist:Regist;
@@ -141,7 +156,13 @@ export default class Login extends MyAnimation{
                     if(Success.code === 0 && Success.message === 'OK'){
                         cc.sys.localStorage.setItem('remberpd',JSON.stringify(this.pdLoginParam));
                         UserConfig.getInstance().setUserInfo(Success.data);
-                        SceneManager.getInstance().loadScene('hall');
+                        HttpRequest.Req('POST','/foo/operate/scenes',this.switchSceneHallParam,Load.getInstance(),(Success:HttpReq)=>{
+                            if(Success.code === 0 && Success.message === 'OK'){
+                                SceneManager.getInstance().loadScene('hall');
+                            }
+                        },(Failed:HttpReq)=>{
+                            Toast.getInstance().show(Failed.message,this.m_toast);
+                        });
                     }
                 },(Failed:HttpReq)=>{
                     Toast.getInstance().show(Failed.message,this.m_toast);

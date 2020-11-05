@@ -82,3 +82,9 @@ const CTRLBUTTON = {
     PANGGUAN:0,
     OPENCARD:1,
 }
+const SCENE_ID = cc.Enum({
+    PASSPORT:0,
+    HALL:11111,
+    ROOM:22222,
+    GAME_SG:33333,
+})

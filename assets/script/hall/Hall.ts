@@ -3,6 +3,8 @@ import Notice from "../common/Notice";
 import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
 import AudioManager from "../units/AudioManager";
+import Tool from "../units/Tool";
+import Websocket from "../units/Websocket";
 import HallModelManager from "./HallModelManager";
 
 const {ccclass, menu,property} = cc._decorator;
@@ -27,6 +29,7 @@ export default class Hall extends cc.Component {
         this.cl_ModelManager = HallModelManager.getInstance(this.node,this.m_hallPrefabArr);
         //初始化所有模块
         this.cl_ModelManager.init();
+        Websocket.getInstance().gameMessageCallBack = this.onMessage.bind(this);
     }
     initAudio() {
         if(AudioManager.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT){
@@ -62,5 +65,8 @@ export default class Hall extends cc.Component {
         Load.getInstance().onDestroy();
         Notice.getInstance().onDestroy();
         this.cl_ModelManager.onDestroy();
+    }
+    onMessage(code,data){
+        Tool.Log(code,data);
     }
 }

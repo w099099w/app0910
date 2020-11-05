@@ -10,6 +10,8 @@ import Dialog from "../common/Dialog";
 import AtlasLib from "../common/AtlasLib";
 import HttpRequest from "../units/HttpRequest";
 import Load from "../common/Load";
+import Websocket from "../units/Websocket";
+import Tool from "../units/Tool";
 
 const { ccclass, menu,property } = cc._decorator;
 @ccclass
@@ -39,13 +41,14 @@ export default class Passport extends cc.Component {
         cc.find('common/toast', this.node).active = false;
     }
     onLoad() {
+        Load.getInstance().setRootNode(cc.find('common/load', this.node));
         HttpRequest.InitConfig();
         this.resetView();
         //初始化音频
         UserConfig.getInstance();
         SceneManager.getInstance().setScene(cc.director.getScene());
         Toast.getInstance().setRootNode(cc.find('common/toast', this.node));
-        Load.getInstance().setRootNode(cc.find('common/load', this.node));
+        
         Dialog.getInstance().setRootNode(this.node);
         this.cl_version = this.node.getComponent(Version);
         this.cl_loading = new Loading(this.node, this.lauchingFinished.bind(this));
@@ -55,7 +58,8 @@ export default class Passport extends cc.Component {
         } else {
             cc.find('loading/version/value', this.node).getComponent(cc.Label).string = '版本号: ' + JSON.parse(JSON.parse(this.cl_version.manifest._nativeAsset).version).hotUpdate;
         }
-
+        Websocket.getInstance().create('ws://47.108.74.232:7272',10000,true);
+        Websocket.getInstance().gameMessageCallBack = this.onMessage.bind(this);
     }
     initAudio() {
         if(AudioManager.getInstance().getBgmCode() !== BGM_CODE.BGM_PASSPORT){
@@ -104,11 +108,15 @@ export default class Passport extends cc.Component {
     }
     // update (dt) {}
     onDestroy() {
+        Websocket.getInstance().gameMessageCallBack = null;
         Load.getInstance().onDestroy();
         HttpRequest.onDestroy();
         MyAnimation.onDestory();
         this.cl_login.onDestroy();
         this.cl_loading.onDestory();
+    }
+    onMessage(code,data){
+        Tool.Log(code,data);
     }
 }
 

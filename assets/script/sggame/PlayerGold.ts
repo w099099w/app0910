@@ -16,6 +16,7 @@ export default class PlayerGold extends MyAnimation{
     private minBet:number;
     private maxBet:number;
     private getCreateNum(Val:number){
+        console.log(Val,this.minBet,this.maxBet)
         if(Val-this.minBet === 0){
             return 1;
         }

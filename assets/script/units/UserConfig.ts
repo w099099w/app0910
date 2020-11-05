@@ -141,35 +141,38 @@ export default class UserConfig{
     }
     public setUserInfo(Object:any){
         let userinfo:UserInfo = Object
-        if(userinfo.avatar){
+        if(Object.avatar){
             this.userinfo.avatar = userinfo.avatar;
         }
-        if(userinfo.mobile){
+        if(Object.mobile){
             this.userinfo.mobile = userinfo.mobile;
         }
-        if(userinfo.member_id){
+        if(Object.member_id){
             this.userinfo.member_id = userinfo.member_id;
         }
-        if(typeof userinfo.parent_id !== 'undefined'){
+        if(typeof Object.parent_id !== 'undefined'){
             this.userinfo.parent_id = userinfo.parent_id;
         }
-        if(userinfo.nickname){
+        if(Object.nickname){
             this.userinfo.nickname = userinfo.nickname;
         }
-        if(userinfo.username){
+        if(Object.username){
             this.userinfo.username = userinfo.nickname;
         }
-        if(userinfo.is_agent){
+        if(Object.is_agent){
             this.userinfo.is_agent = userinfo.is_agent;
         }
-        if(userinfo.is_real){
+        if(Object.is_real){
             this.userinfo.is_real = userinfo.is_real;
         }
-        if(userinfo.shareholder_id){
+        if(Object.shareholder_id){
             this.userinfo.shareholder_id = userinfo.shareholder_id;
         }
-        if(userinfo.pd){
+        if(Object.pd){
             this.userinfo.pd = userinfo.pd;
+        }
+        if(typeof Object.balance !== 'undefined'){
+            this.balance.rmb = Object.balance;
         }
     }
 }   

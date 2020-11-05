@@ -15,15 +15,18 @@ export default class Load{
         return Load.m_instance;
     }
     public show(str:string,isMask:boolean){
+        this.m_icon.position = new cc.Vec3(0,0,0);
         if(str){
             this.c_label.string = str;
+        }else{
+            this.c_label.string = '';
         }
         if(isMask){
             this.m_mask.active = true;
         }
         this.m_root.parent.active = true;
         this.m_root.active = true;
-        this.m_tween = cc.tween(this.m_icon).repeatForever(cc.tween().by(1,{angle:360})).start();
+        this.m_tween = cc.tween(this.m_icon).repeatForever(cc.tween().by(1.5,{angle:360})).start();
     }
     public hide(){
         this.m_tween.stop();

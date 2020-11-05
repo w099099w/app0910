@@ -1,8 +1,10 @@
 import Emitter from "../../common/Emitter";
+import Load from "../../common/Load";
 import MyAnimation from "../../common/MyAnimation";
 import SceneManager from "../../common/SceneManager";
 import Toast from "../../common/Toast";
 import EmitterCode from "../../units/EmitterCode";
+import HttpRequest from "../../units/HttpRequest";
 import Tool from "../../units/Tool";
 
 export class ParticleStruct {
@@ -106,6 +108,18 @@ export default class Home extends MHome{
     private m_particalOne: ParticleStruct;
     private m_particalTwo: ParticleStruct;
     private m_toast: cc.Node;
+    private _switchSceneRoomParam:SwitchScene;
+    get switchSceneRoomParam(){
+        let data:SwitchScene = {
+            prev_scene_type:SCENE_ID.PASSPORT,
+            prev_game_id:SCENE_ID.HALL,
+            prev_room_id:SCENE_ID.HALL,
+            next_scene_types:SCENE_ID.ROOM,
+            next_game_id:SCENE_ID.ROOM, 
+            next_room_id:SCENE_ID.ROOM,   
+        };
+		return data;
+    }
 
     public constructor(Node: cc.Node) {
         super();
@@ -178,7 +192,15 @@ export default class Home extends MHome{
     public click_DLM() {
         switch (this.getDLMButtonState()) {
             case BUTTON_STATE.OFF: Toast.getInstance().show('连接服务器失败!', this.m_toast); break;
-            case BUTTON_STATE.ON: {SceneManager.getInstance().loadScene('room')}; break;
+            case BUTTON_STATE.ON: {
+                HttpRequest.Req('POST','/foo/operate/scenes',this.switchSceneRoomParam,Load.getInstance(),(Success:HttpReq)=>{
+                    if(Success.code === 0 && Success.message === 'OK'){
+                        SceneManager.getInstance().loadScene('room');
+                    }
+                },(Failed:HttpReq)=>{
+                    Toast.getInstance().show(Failed.message,this.m_toast);
+                });
+            }; break;
         }
     }
     public click_JLB() {

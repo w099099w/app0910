@@ -1,12 +1,15 @@
+import Load from "../common/Load";
 import MyAnimation from "../common/MyAnimation";
 import SceneManager from "../common/SceneManager";
 import Toast from "../common/Toast";
+import HttpRequest from "../units/HttpRequest";
 import List from "../units/List";
 import Tool from "../units/Tool";
 import UserConfig from "../units/UserConfig";
 import RuleView from "./RuleView";
 
 export class MRoom extends MyAnimation {
+    private isfirst:boolean;
     private m_cache = [];
     protected flushRoomViewFunction: Function;
     private S_tableTogame:BUTTON_STATE;
@@ -16,54 +19,29 @@ export class MRoom extends MyAnimation {
     protected tie:number;
     protected constructor(){
         super();
+        this.ReqRoomList();
         this.S_tableToRule = BUTTON_STATE.ON;
         this.S_tableTogame = BUTTON_STATE.ON;
         this.Init();
+    }
+    protected ReqRoomList(){
+        this.isfirst = true;
+        HttpRequest.Req('get','/foo/room/list/1',{page:1,limit:20},Load.getInstance(),(Success:HttpReq)=>{
+            if(Success.code === 0 && Success.message === 'OK'){
+                HttpRequest.Req('get','/foo/room/list/1',{page:1,limit:Success.data},Load.getInstance(),(Success:HttpReq)=>{
+                },(Failed:HttpReq)=>{
+                    this.ToastShow(Failed.message);
+                });
+            }
+        },(Failed:HttpReq)=>{
+            this.ToastShow(Failed.message);
+        });
     }
     protected ReSet(){
         this.m_cache = []
     }
     protected Init() {
-        this.ti = setInterval(() => {
-            if(this.m_cache.length > 5){
-                return;
-            }
-            let minbet = Math.ceil(Math.random() * 100) * 100;
-            let data = {
-                max:Tool.getInstance().randomAccess(minbet,100*100),
-                rule:Tool.getInstance().getRandomName(56),
-                gamenum:Tool.getInstance().randomAccess(400,6000),
-                player: [],
-                maxPlayer:Tool.getInstance().randomAccess(6,10),
-                bet: minbet,
-                tableNum: Tool.getInstance().randomNumber(5)
-            }
-            for(let i = 0; i < data.maxPlayer;++i){
-                data.player.push({
-                    name: Tool.getInstance().getRandomName(3),
-                    active: true
-                });  
-            }
-            this.m_cache.push(data);
-            this.OnWebsocketMessage();
-        }, 2000);
-        this.tic = setTimeout(() => {
-            this.tie = setInterval(() => {
-                let id = Math.ceil(Math.random() * (this.m_cache.length - 1));
-                if(this.m_cache[id]){
-                    let peoPleid = Math.ceil(Math.random() * this.m_cache[id].maxPlayer-1);
-                    if (this.m_cache[id].player[peoPleid].active) {
-                        this.m_cache[id].player[peoPleid].active = false;
-                    } else {
-                        this.m_cache[id].player[peoPleid].name = Tool.getInstance().getRandomName(3);
-                        this.m_cache[id].player[peoPleid].active = true;
-                    }
-                }
-                this.OnWebsocketMessage();
-            }, 2000);
-            this.tic = null;
-        }, 2000);
-
+        this.m_cache = [];
     }
     protected getDataFromIndex(Index: number, IsDown: boolean) {
         if (IsDown) {
@@ -89,9 +67,43 @@ export class MRoom extends MyAnimation {
     protected getTableRuleButtonState():BUTTON_STATE{
         return this.S_tableToRule;
     }
-    protected OnWebsocketMessage() {
+    private roomData(Data){
+        if(this.isfirst){
+            this.isfirst = false;
+            return;
+        }
+        this.m_cache = [];
+        for(let i = 0;i< Data.count;++i){
+            let room = Data.info[i];
+            let data = {
+                        max:Tool.getInstance().randomAccess(room.antes,room.antes*100),
+                        rule:room.max_gamer+'人桌 满'+room.auto_gamer+'人开 快速模式 禁用道具 禁止搓牌 中途禁入',
+                        gamenum:room.max_round,
+                        player: [],
+                        maxPlayer:room.max_gamer,
+                        bet: room.antes,
+                        tableNum: room.room_id
+                    }
+            for(let k = 0;k < room.members_info.length;++k){
+                let player = room.members_info[k];
+                let playerInfo = {
+                    name: player.nickname,
+                    active: true,
+                    avatar:player.avatar,
+                    id:player.member_id
+                }
+                data.player.push(playerInfo);
+            }
+            this.m_cache.push(data);
+        }
+    }
+    public OnWebsocketMessage(code,Data) {
+        switch (code){
+            case 'roomList':this.roomData(Data);break;
+        }
         this.flushRoomViewFunction();
     }
+    protected ToastShow(str:string){};
 }
 
 export default class RoomView extends MRoom {
@@ -116,7 +128,6 @@ export default class RoomView extends MRoom {
     public show(GameID: number) {
         this.ReSet();
         this.RemoveAllChild(GameID);
-        this.FlushRoomView();
         this.m_root.active = true;
     }
     public RemoveAllChild(ChooseView: number) {
@@ -170,7 +181,6 @@ export default class RoomView extends MRoom {
         }
     }
     public RenderMainFunction(Item: cc.Node, Index: number) {
-
         if (Index == this.getRoomNum().numItems - 1 && this.getRoomNum().activeDown == false) {
             Item.getChildByName('down').active = false;
         } else {
@@ -184,8 +194,11 @@ export default class RoomView extends MRoom {
                 item.getChildByName('isclose').active = Boolean(key > data.maxPlayer-1);
                 item.active = true;
                 if(key < data.maxPlayer){
-                    cc.find('isopen/name', item).getComponent(cc.Label).string = data.player[key].name;
-                    item.getChildByName('isopen').active = data.player[key].active;
+                    if(data.player[key]){
+                        cc.find('isopen/name', item).getComponent(cc.Label).string = data.player[key].name;
+                        Tool.getInstance().LoadImageRemote(cc.find('isopen/avatar/image',item),data.player[key].avatar);
+                    }
+                    item.getChildByName('isopen').active = data.player[key]?data.player[key].active:false;
                 }else{
                     item.getChildByName('isopen').active = false;
                 }
@@ -196,6 +209,7 @@ export default class RoomView extends MRoom {
             cc.find('down/peoplestate', Item).getComponent(cc.Label).string = curPeople === data.maxPlayer ? '客满' : curPeople + '/' + data.maxPlayer;
             Item.getChildByName('down').active = true;
         }
+        
         //上部刷新视图
         let data: any = this.getDataFromIndex(Index, false);
         let curPeople: number = 0;
@@ -206,8 +220,11 @@ export default class RoomView extends MRoom {
             item.getChildByName('isclose').active = Boolean(key > data.maxPlayer-1);
             item.active = true;
             if(key < data.maxPlayer){
-                cc.find('isopen/name', item).getComponent(cc.Label).string = data.player[key].name;
-                item.getChildByName('isopen').active = data.player[key].active;
+                if(data.player[key]){
+                    cc.find('isopen/name', item).getComponent(cc.Label).string = data.player[key].name;
+                    Tool.getInstance().LoadImageRemote(cc.find('isopen/avatar/image',item),data.player[key].avatar);
+                }
+                item.getChildByName('isopen').active = data.player[key]?data.player[key].active:false;
             }else{
                 item.getChildByName('isopen').active = false;
             }
@@ -221,6 +238,10 @@ export default class RoomView extends MRoom {
         this.c_list.numItems = this.getRoomNum().numItems;
         this.c_list.updateAll();
     }
+    public ToastShow(str:string){
+        Toast.getInstance().show(str,this.m_toast);
+    }
+
     public OnDestroy() {
         clearInterval(this.ti);
         clearInterval(this.tie);
